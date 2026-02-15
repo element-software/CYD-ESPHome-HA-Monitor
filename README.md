@@ -80,7 +80,7 @@ ap_password: "any-fallback-hotspot-password"
 ### 5. Flash the Configuration
 
 1. In ESPHome, click **Edit** on your new device.
-2. **Replace the entire contents** with the `hamon.yaml` file from this repository.
+2. **Replace the entire contents** with the `ha-monitor.yaml` file from this repository.
 3. Update the `substitutions:` section with your own Home Assistant entity IDs (see [Configuration](#%EF%B8%8F-configuration) below).
 4. Click **Save**.
 5. Click **Install** → **Plug into this computer** (for first-time USB flash).
@@ -149,7 +149,19 @@ This project uses **Google Material Icons**.
 2. Find an icon you like.
 3. Click on it and look for the **Codepoint** (e.g., `EA0B`).
 4. Convert to lowercase and prefix with `\u` in your YAML config (e.g., `\uea0b`).
-5. The glyphs are automatically included from the substitutions — no need to manually edit the `glyphs:` string.
+5. **Important:** Add each **unique** icon to the `icon_glyphs` substitution. If you use the same icon for multiple sensors (e.g., same door icon for front door and back door), only include it once in `icon_glyphs` to avoid "duplicate glyph" errors.
+
+**Example:**
+```yaml
+substitutions:
+  # List each unique icon once (no duplicates!)
+  icon_glyphs: "\ueffc\ue88a\ue1ff"  # door, home, thermometer
+  
+  r1c1_icon: "\ueffc"  # front door
+  r1c2_icon: "\ueffc"  # back door (same icon - OK!)
+  r2c1_icon: "\ue88a"  # garage
+  r2c2_icon: "\ue1ff"  # temperature
+```
 
 ### Common Icons Reference
 

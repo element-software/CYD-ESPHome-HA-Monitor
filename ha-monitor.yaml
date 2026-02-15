@@ -34,6 +34,12 @@ substitutions:
   device_name: "hamon" # Use the device name you entered when setting up a new ESPHome device
   friendly_name: "HAMon" # Can be whatever you like
 
+  # --- Icon Glyphs ---
+  # List each unique icon ONCE here. If you use the same icon multiple times below,
+  # only include it once in this list to avoid "duplicate glyph" errors.
+  # Example: If r1c1_icon and r2c1_icon both use "\uea0b", only list "\uea0b" once.
+  icon_glyphs: "\uea0b\ueffc\ue1ff\ue559\ue7fd\ue88a"
+
   # --- Row 1, Column 1 ---
   r1c1_entity: "sensor.whole_home_energy_usage"
   r1c1_type: "sensor"
@@ -200,7 +206,7 @@ font:
   - file: "gfonts://Material Icons"
     id: icon_font
     size: 28
-    glyphs: "${r1c1_icon}${r1c2_icon}${r2c1_icon}${r2c2_icon}${r3c1_icon}${r3c2_icon}"
+    glyphs: "${icon_glyphs}"
   - file: "gfonts://Roboto"
     id: state_font
     size: 18
