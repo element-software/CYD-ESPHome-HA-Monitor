@@ -32,10 +32,10 @@
 #
 # ==============================================================================
 
-# Include auto-generated font glyphs (deduplicated icons)
-<<: !include font-glyphs.yaml
-
 substitutions:
+  # Include auto-generated font glyphs (deduplicated icons)
+  <<: !include font-glyphs.yaml
+  
   # --- Device ---
   device_name: "hamon" # Use the device name you entered when setting up a new ESPHome device
   friendly_name: "HAMon" # Can be whatever you like

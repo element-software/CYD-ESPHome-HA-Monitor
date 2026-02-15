@@ -1,0 +1,3 @@
+# Test file 1
+substitutions:
+  var1: "value1"
