@@ -1,0 +1,21 @@
+# ESPHome build artifacts
+.esphome/
+*.bin
+*.elf
+*.map
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
