@@ -28,17 +28,17 @@
 #  SUBSTITUTIONS - Customise your dashboard by editing the values below.
 #  Passwords and keys should be stored in your secrets.yaml file.
 #
-#  IMPORTANT: After changing any icon values, run: python3 generate_font_glyphs.py
-#
 # ==============================================================================
-
 substitutions:
-  # Include auto-generated font glyphs (deduplicated icons)
-  <<: !include font-glyphs.yaml
-  
   # --- Device ---
   device_name: "hamon" # Use the device name you entered when setting up a new ESPHome device
   friendly_name: "HAMon" # Can be whatever you like
+
+  # --- Icon Glyphs ---
+  # List each unique icon ONCE here. If you use the same icon multiple times below,
+  # only include it once in this list to avoid "duplicate glyph" errors.
+  # Example: If r1c1_icon and r2c1_icon both use "\uea0b", only list "\uea0b" once.
+  icon_glyphs: "\uea0b\ueffc\ue1ff\ue559\ue7fd\ue88a"
 
   # --- Row 1, Column 1 ---
   r1c1_entity: "sensor.whole_home_energy_usage"
