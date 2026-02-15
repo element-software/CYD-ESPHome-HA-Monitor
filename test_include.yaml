@@ -1,4 +1,0 @@
-<<: !include test_merge.yaml
-
-substitutions:
-  var2: "value2"
