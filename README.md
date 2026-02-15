@@ -80,11 +80,16 @@ ap_password: "any-fallback-hotspot-password"
 ### 5. Flash the Configuration
 
 1. In ESPHome, click **Edit** on your new device.
-2. **Replace the entire contents** with the `hamon.yaml` file from this repository.
+2. **Replace the entire contents** with the `ha-monitor.yaml` file from this repository.
 3. Update the `substitutions:` section with your own Home Assistant entity IDs (see [Configuration](#%EF%B8%8F-configuration) below).
-4. Click **Save**.
-5. Click **Install** → **Plug into this computer** (for first-time USB flash).
-6. Select the correct USB/serial port and wait for the flash to complete.
+4. **Generate the font glyphs file** by running:
+   ```bash
+   python3 generate_font_glyphs.py
+   ```
+   This creates the `font-glyphs.yaml` file with deduplicated icons. Run this script whenever you change icon values.
+5. Click **Save**.
+6. Click **Install** → **Plug into this computer** (for first-time USB flash).
+7. Select the correct USB/serial port and wait for the flash to complete.
 
 ### 6. Add the Device to Home Assistant
 > **Important:** you must add the device to Home Assistant otherwise your HAMon device will not receive any state updates!
@@ -149,7 +154,11 @@ This project uses **Google Material Icons**.
 2. Find an icon you like.
 3. Click on it and look for the **Codepoint** (e.g., `EA0B`).
 4. Convert to lowercase and prefix with `\u` in your YAML config (e.g., `\uea0b`).
-5. The glyphs are automatically included from the substitutions — no need to manually edit the `glyphs:` string.
+5. **Important:** After changing any icon values in `ha-monitor.yaml`, run:
+   ```bash
+   python3 generate_font_glyphs.py
+   ```
+   This script deduplicates the icons and generates the `font-glyphs.yaml` include file, preventing "duplicate glyph" errors if you use the same icon more than once.
 
 ### Common Icons Reference
 

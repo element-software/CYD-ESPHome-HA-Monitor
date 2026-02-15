@@ -28,7 +28,13 @@
 #  SUBSTITUTIONS - Customise your dashboard by editing the values below.
 #  Passwords and keys should be stored in your secrets.yaml file.
 #
+#  IMPORTANT: After changing any icon values, run: python3 generate_font_glyphs.py
+#
 # ==============================================================================
+
+# Include auto-generated font glyphs (deduplicated icons)
+<<: !include font-glyphs.yaml
+
 substitutions:
   # --- Device ---
   device_name: "hamon" # Use the device name you entered when setting up a new ESPHome device
@@ -200,7 +206,7 @@ font:
   - file: "gfonts://Material Icons"
     id: icon_font
     size: 28
-    glyphs: "${r1c1_icon}${r1c2_icon}${r2c1_icon}${r2c2_icon}${r3c1_icon}${r3c2_icon}"
+    glyphs: "${icon_glyphs}"
   - file: "gfonts://Roboto"
     id: state_font
     size: 18
