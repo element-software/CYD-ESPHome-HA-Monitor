@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SensorConfig } from '@/types/config';
-import { commonIcons } from '@/lib/icons';
+import { commonIcons, iconCodeToChar } from '@/lib/icons';
 
 interface SensorConfigPanelProps {
   sensor: SensorConfig;
@@ -115,10 +115,11 @@ export default function SensorConfigPanel({
                 value={sensor.icon}
                 onChange={(e) => updateField('icon', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                style={{ fontFamily: '"Material Icons", system-ui, sans-serif' }}
               >
                 {commonIcons.map((icon) => (
                   <option key={icon.code} value={icon.code}>
-                    {icon.name}
+                    {iconCodeToChar(icon.code)} {icon.name}
                   </option>
                 ))}
               </select>

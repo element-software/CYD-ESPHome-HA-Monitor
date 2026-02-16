@@ -1,3 +1,15 @@
+/**
+ * Convert stored icon code (e.g. '\\uea0b') to the Unicode character for Material Icons font.
+ */
+export function iconCodeToChar(code: string): string {
+  if (!code) return '';
+  const hex = code.replace(/^\\u/i, '').trim();
+  if (!hex) return code;
+  const codepoint = parseInt(hex, 16);
+  if (Number.isNaN(codepoint)) return code;
+  return String.fromCodePoint(codepoint);
+}
+
 export const commonIcons = [
   { name: '⚡ Flash/Power', code: '\\uea0b' },
   { name: '🚪 Door', code: '\\ueffc' },
