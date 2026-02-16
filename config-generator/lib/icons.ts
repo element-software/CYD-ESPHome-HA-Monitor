@@ -14,7 +14,6 @@ export const commonIcons = [
   { name: '🔔 Notifications', code: '\\ue7f4' },
   { name: '⚠️ Warning', code: '\\ue002' },
   { name: '✓ Check', code: '\\ue5ca' },
-  { name: '🌡️ Outdoor Temp', code: '\\ue1ff' },
   { name: '💧 Humidity', code: '\\ueb3e' },
   { name: '🔋 Battery', code: '\\ue1a3' },
   { name: '☀️ Solar', code: '\\ue430' },
