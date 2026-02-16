@@ -8,3 +8,14 @@ export function cydColorToCss(hex: string): string {
   }
   return '#888888';
 }
+
+/**
+ * Convert CSS hex (#RRGGBB) to CYD format (0xRRGGBB).
+ */
+export function cssToCydColor(cssHex: string): string {
+  const cleaned = cssHex.replace(/^#/, '').trim();
+  if (cleaned.length === 6 && /^[0-9a-fA-F]+$/.test(cleaned)) {
+    return `0x${cleaned.toUpperCase()}`;
+  }
+  return '0x888888';
+}

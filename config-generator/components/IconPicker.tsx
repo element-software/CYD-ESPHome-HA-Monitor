@@ -9,6 +9,8 @@ interface IconPickerProps {
   onChange: (code: string) => void;
   iconColor?: string;
   label?: string;
+  /** Optional class for the trigger button (e.g. w-11 h-11 for square). */
+  buttonClassName?: string;
 }
 
 export default function IconPicker({
@@ -16,6 +18,7 @@ export default function IconPicker({
   onChange,
   label = 'Icon',
   iconColor = '0x888888',
+  buttonClassName,
 }: IconPickerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -59,18 +62,15 @@ export default function IconPicker({
             e.stopPropagation();
             open();
           }}
-          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-gray-700 font-medium"
+          className={`flex items-center justify-center gap-1 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-gray-700 font-medium ${buttonClassName ?? 'w-full px-4 py-2.5'}`}
         >
           {selectedIcon ? (
-            <>
               <span
-                className="material-icons text-3xl!"
+                className="material-icons text-2xl"
                 style={{ color: iconCssColor }}
               >
                 {iconCodeToLigature(value)}
               </span>
-              <span className="material-icons text-sm! text-gray-400 cursor-pointer">edit</span>
-            </>
           ) : (
             'Select Icon'
           )}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { SensorConfig } from '@/types/config';
 import IconPicker from '@/components/IconPicker';
+import { cydColorToCss, cssToCydColor } from '@/lib/colorUtils';
 
 interface SensorConfigPanelProps {
   sensor: SensorConfig;
@@ -111,23 +112,31 @@ export default function SensorConfigPanel({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <IconPicker
-              value={sensor.icon}
-              onChange={(code) => updateField('icon', code)}
-              iconColor={sensor.iconColor}
-            />
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Icon Color
-              </label>
-              <input
-                type="text"
-                value={sensor.iconColor}
-                onChange={(e) => updateField('iconColor', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                placeholder="0xFFA500"
-              />
+          <div>
+            <div className="flex items-end gap-2">
+              <div className="shrink-0">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Icon
+                </label>
+                <IconPicker
+                  value={sensor.icon}
+                  onChange={(code) => updateField('icon', code)}
+                  iconColor={sensor.iconColor}
+                  buttonClassName="w-11 h-11 shrink-0 p-1"
+                />
+              </div>
+              <div className="shrink-0">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Icon Color
+                </label>
+                <input
+                  type="color"
+                  value={cydColorToCss(sensor.iconColor)}
+                  onChange={(e) => updateField('iconColor', cssToCydColor(e.target.value))}
+                  className="h-11 w-11 cursor-pointer rounded border border-gray-300 bg-transparent p-1 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 block"
+                  title="Pick icon color"
+                />
+              </div>
             </div>
           </div>
 
