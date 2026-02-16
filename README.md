@@ -97,6 +97,38 @@ ap_password: "any-fallback-hotspot-password"
 
 > **Future updates** can be done wirelessly (OTA) — just click **Install** → **Wirelessly** in ESPHome.
 
+## 🌐 Web Configuration Generator
+
+A web-based configuration generator is available in the `config-generator/` directory. This tool provides an interactive interface to customize your HAMon dashboard without manually editing YAML files.
+
+### Features
+- Visual sensor configuration
+- Icon selection from Material Icons
+- Color customization
+- Real-time YAML generation
+- One-click copy to clipboard
+
+### Usage
+
+1. Navigate to the config-generator directory:
+```bash
+cd config-generator
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser to `http://localhost:3000`
+
+5. Configure your sensors and copy the generated YAML into your ESPHome device configuration.
+
 ## ⚙️ Configuration
 
 All customisation is done in the `substitutions:` block at the top of the YAML file. No need to edit any code below it.
