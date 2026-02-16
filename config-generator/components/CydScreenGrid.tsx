@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ConfigData, SensorConfig } from '@/types/config';
 import { cydColorToCss } from '@/lib/colorUtils';
-import { iconCodeToChar } from '@/lib/icons';
+import { iconCodeToLigature } from '@/lib/icons';
 
 /** Device-matching colors (dark blue/black bg, cyan labels, white values) */
 const DEVICE = {
@@ -65,7 +65,7 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
         }}
         title={sensor.label || sensor.icon}
       >
-        {iconCodeToChar(sensor.icon)}
+        {iconCodeToLigature(sensor.icon)}
       </span>
       <div className="flex flex-col min-w-0 flex-1">
         {/* Label (label_font size 11) */}

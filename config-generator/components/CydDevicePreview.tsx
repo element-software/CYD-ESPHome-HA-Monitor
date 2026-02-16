@@ -22,7 +22,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
       <div className="relative aspect-3/4 w-full overflow-hidden">
         {/* Screen content layer: insets aligned to physical screen (less left, more right/top/bottom to fit) */}
         <div
-          className="absolute z-0 rounded-sm overflow-hidden"
+          className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: 'size',
             backgroundColor: '#0f1419',
@@ -40,7 +40,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           <img
             src="/cyd-device.png"
             alt="CYD device preview"
-            className="absolute inset-0 w-full h-full object-contain z-10 pointer-events-none -rotate-90"
+            className="absolute inset-0 w-full h-full object-contain z-0 pointer-events-none -rotate-90"
             onError={() => setImageError(true)}
           />
         ) : (

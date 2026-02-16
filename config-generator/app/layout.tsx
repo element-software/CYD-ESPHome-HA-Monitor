@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import '@material-design-icons/font/index.css'
 
 export const metadata: Metadata = {
   title: 'CYD HAMon Config Generator',

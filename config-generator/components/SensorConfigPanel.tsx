@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SensorConfig } from '@/types/config';
-import { commonIcons, iconCodeToChar } from '@/lib/icons';
+import IconPicker from '@/components/IconPicker';
 
 interface SensorConfigPanelProps {
   sensor: SensorConfig;
@@ -30,7 +30,12 @@ export default function SensorConfigPanel({
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsExpanded(!isExpanded);
+        }}
         className="w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 flex items-center justify-between transition-colors"
       >
         <div className="flex items-center gap-3">
@@ -107,23 +112,11 @@ export default function SensorConfigPanel({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Icon
-              </label>
-              <select
-                value={sensor.icon}
-                onChange={(e) => updateField('icon', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                style={{ fontFamily: '"Material Icons", system-ui, sans-serif' }}
-              >
-                {commonIcons.map((icon) => (
-                  <option key={icon.code} value={icon.code}>
-                    {iconCodeToChar(icon.code)} {icon.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <IconPicker
+              value={sensor.icon}
+              onChange={(code) => updateField('icon', code)}
+              iconColor={sensor.iconColor}
+            />
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Icon Color
