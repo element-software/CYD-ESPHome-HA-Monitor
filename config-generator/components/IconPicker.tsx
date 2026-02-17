@@ -51,8 +51,8 @@ export default function IconPicker({
 
   return (
     <>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+      <div className="flex flex-col items-center justify-center">
+        <label className="block text-xs font-medium text-gray-500 mb-1">
           {label}
         </label>
         <button

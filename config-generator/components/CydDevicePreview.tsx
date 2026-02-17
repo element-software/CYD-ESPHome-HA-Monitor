@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ConfigData } from '@/types/config';
-import CydScreenGrid from './CydScreenGrid';
+import { useState } from "react";
+import { ConfigData } from "@/types/config";
+import CydScreenGrid from "./CydScreenGrid";
 
 interface CydDevicePreviewProps {
   config: ConfigData;
@@ -18,18 +18,19 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
 
   return (
     <div className="relative w-full min-w-0">
-      {/* Device frame rotated 90° to portrait (aspect 240×320), fills column width */}
+      <p className="text-center text-lg font-bold text-gray-700 mt-2 truncate">
+        {config.friendlyName || config.deviceName} Device Preview
+      </p>
       <div className="relative aspect-3/4 w-full overflow-hidden">
-        {/* Screen content layer: insets aligned to physical screen (less left, more right/top/bottom to fit) */}
         <div
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
-            containerType: 'size',
-            backgroundColor: '#0f1419',
-            top: '22%',
-            right: '24%',
-            bottom: '27%',
-            left: '24%',
+            containerType: "size",
+            backgroundColor: "#0f1419",
+            top: "22%",
+            right: "24%",
+            bottom: "27%",
+            left: "24%",
           }}
           aria-hidden
         >
@@ -47,9 +48,6 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           <div className="absolute inset-0 z-10 rounded-lg border-4 border-amber-400/60 bg-amber-50/50 pointer-events-none rotate-90" />
         )}
       </div>
-      <p className="text-center text-sm text-gray-500 mt-2 truncate">
-        {config.friendlyName || config.deviceName} Device Preview
-      </p>
     </div>
   );
 }
