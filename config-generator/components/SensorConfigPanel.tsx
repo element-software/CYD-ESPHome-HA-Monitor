@@ -58,7 +58,7 @@ function parseFormatToPresets(
   format: string | undefined,
 ): { accuracy: 0 | 1 | 2; unit: string } | null {
   if (!format?.trim()) return { accuracy: 0, unit: "" };
-  const m = format.match(/^%(\.\d)f(.*)$/s);
+  const m = format.match(/^%(\.\d)f(.*)$/);
   if (!m) return null;
   const decimals = m[1];
   const suffix = m[2];

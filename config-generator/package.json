@@ -2,11 +2,13 @@
   "name": "cyd-hamon-config-generator",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://element-software.github.io/CYD-ESPHome-HA-Monitor",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run build && gh-pages -d .next -b gh-pages -r https://github.com/element-software/CYD-ESPHome-HA-Monitor.git"
   },
   "dependencies": {
     "@material-design-icons/font": "^0.14.15",
