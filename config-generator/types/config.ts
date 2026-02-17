@@ -1,0 +1,45 @@
+/** Base fields shared by all sensor configs */
+export interface BaseSensorConfig {
+  id: string;
+  entity: string;
+  label: string;
+}
+
+export interface NumericSensorConfig extends BaseSensorConfig {
+  type: "sensor";
+  icon: string;
+  iconColor: string;
+  format?: string;
+  colorThreshHigh?: string;
+  colorThreshMid?: string;
+  colorThreshLow?: string;
+  /** Colors for each threshold band (value above high = colorHigh, etc.) */
+  colorHigh?: string;
+  colorMid?: string;
+  colorLow?: string;
+}
+
+/** No icon/iconColor; uses iconOn/iconOff and colorOn/colorOff per state. */
+export interface BinarySensorConfig extends BaseSensorConfig {
+  type: "binary";
+  stateOn?: string;
+  stateOff?: string;
+  /** Icon codepoint when state is ON (e.g. \\ue559). */
+  iconOn?: string;
+  /** Icon codepoint when state is OFF (e.g. \\ue558). */
+  iconOff?: string;
+  colorOn?: string;
+  colorOff?: string;
+}
+
+/** Discriminated union of all sensor config types */
+export type SensorConfig = NumericSensorConfig | BinarySensorConfig;
+
+/** Keys that can be updated on any sensor (union of keys from both config types) */
+export type SensorConfigKey = keyof NumericSensorConfig | keyof BinarySensorConfig;
+
+export interface ConfigData {
+  deviceName: string;
+  friendlyName: string;
+  sensors: SensorConfig[];
+}
