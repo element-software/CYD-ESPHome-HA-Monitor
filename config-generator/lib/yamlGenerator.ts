@@ -101,19 +101,19 @@ logger:
 # Replace with the API encryption key provided by your ESPHome instance
 api:
   encryption:
-    key: !secret api_key
+    key: !secret ${deviceName}_api_key
 
 # Replace with the OTA password provided by your ESPHome instance
 ota:
   - platform: esphome
-    password: !secret ota_password
+    password: !secret ${deviceName}_ota_password
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   ap:
     ssid: "\${friendly_name} Fallback"
-    password: !secret ap_password
+    password: !secret ${deviceName}_ap_password
 
 captive_portal:
 
