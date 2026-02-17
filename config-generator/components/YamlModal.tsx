@@ -39,7 +39,7 @@ export default function YamlModal({ config, open, onClose }: YamlModalProps) {
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      className="w-full max-w-3xl max-h-[90vh] rounded-lg shadow-xl border-0 bg-white p-0 overflow-hidden backdrop:bg-black/50"
+      className="fixed inset-0 m-auto w-[90vw] max-w-3xl h-[90vh] max-h-[90vh] rounded-lg shadow-xl border-0 bg-white p-0 overflow-hidden backdrop:bg-black/50"
     >
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="flex items-center justify-between p-4 border-b border-gray-200 shrink-0">
