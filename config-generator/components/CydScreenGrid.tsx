@@ -38,6 +38,54 @@ function formatDate(date: Date) {
   return `${days[date.getDay()]} ${d.toString().padStart(2, '0')}/${m.toString().padStart(2, '0')}`;
 }
 
+/** Sample values per unit type for preview (format suffix hint). */
+const SAMPLE_BY_SUFFIX: Record<string, number> = {
+  'W': 8355,
+  'kW': 2.5,
+  'kWh': 12.4,
+  '°C': 27.0,
+  '°F': 78.0,
+  '%': 65.5,
+  '%%': 65.5,
+  'A': 3.2,
+  'V': 230,
+  'bar': 1.0,
+  'hPa': 1013,
+  'Pa': 101325,
+  'ppm': 420,
+  'μg/m³': 12.5,
+  'm³': 1.2,
+  'L': 12.5,
+  'lux': 350,
+  'lx': 350,
+  'dB': 42,
+  'm/s': 2.5,
+  'km/h': 5.2,
+  'Hz': 50,
+  'kg': 1.2,
+  'g': 250,
+  'mg': 500,
+  'l/min': 8.5,
+  'ml/min': 120,
+};
+const SAMPLE_DEFAULT = 12.34;
+
+/** Format a sample value from a printf-style format (e.g. %.0fW, %.1f°C). */
+function formatSampleFromFormat(format: string | undefined): string {
+  if (!format?.trim()) return '—';
+  const m = format.match(/^%(\.\d)f(.*)$/);
+  if (!m) return format;
+  const decimals = Math.min(3, parseInt(m[1].slice(1), 10) || 0);
+  const suffix = m[2];
+  const sample =
+    suffix in SAMPLE_BY_SUFFIX
+      ? SAMPLE_BY_SUFFIX[suffix as keyof typeof SAMPLE_BY_SUFFIX]
+      : SAMPLE_DEFAULT;
+  const numStr = decimals === 0 ? Math.round(sample).toString() : sample.toFixed(decimals);
+  const suffixDisplay = suffix === '%%' ? '%' : suffix;
+  return numStr + suffixDisplay;
+}
+
 function SensorCell({ sensor }: { sensor: SensorConfig }) {
   const iconCode =
     sensor.type === 'sensor'
@@ -52,11 +100,7 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
   const displayValue =
     sensor.type === 'binary'
       ? (sensor.stateOff ?? 'Closed')
-      : sensor.format?.includes('°C')
-        ? '27.0°C'
-        : sensor.format?.includes('W')
-          ? '8355W'
-          : '—';
+      : formatSampleFromFormat(sensor.type === 'sensor' ? sensor.format : undefined);
 
   return (
     <div
