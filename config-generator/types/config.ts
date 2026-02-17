@@ -1,11 +1,14 @@
-export interface SensorConfig {
+/** Base fields shared by all sensor configs */
+export interface BaseSensorConfig {
   id: string;
-  type: 'sensor' | 'binary';
   entity: string;
   label: string;
+}
+
+export interface NumericSensorConfig extends BaseSensorConfig {
+  type: "sensor";
   icon: string;
   iconColor: string;
-  // For numeric sensors
   format?: string;
   colorThreshHigh?: string;
   colorThreshMid?: string;
@@ -14,7 +17,11 @@ export interface SensorConfig {
   colorHigh?: string;
   colorMid?: string;
   colorLow?: string;
-  // For binary sensors
+}
+
+/** No icon/iconColor; uses iconOn/iconOff and colorOn/colorOff per state. */
+export interface BinarySensorConfig extends BaseSensorConfig {
+  type: "binary";
   stateOn?: string;
   stateOff?: string;
   /** Icon codepoint when state is ON (e.g. \\ue559). */
@@ -23,9 +30,13 @@ export interface SensorConfig {
   iconOff?: string;
   colorOn?: string;
   colorOff?: string;
-  /** When true, display OFF icon/text/colors when entity is ON, and ON when entity is OFF. */
-  invertState?: boolean;
 }
+
+/** Discriminated union of all sensor config types */
+export type SensorConfig = NumericSensorConfig | BinarySensorConfig;
+
+/** Keys that can be updated on any sensor (union of keys from both config types) */
+export type SensorConfigKey = keyof NumericSensorConfig | keyof BinarySensorConfig;
 
 export interface ConfigData {
   deviceName: string;

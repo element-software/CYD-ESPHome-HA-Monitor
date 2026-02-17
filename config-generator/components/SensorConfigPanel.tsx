@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SensorConfig } from "@/types/config";
+import { SensorConfig, SensorConfigKey } from "@/types/config";
 import IconPicker from "@/components/IconPicker";
 import { cydColorToCss, cssToCydColor } from "@/lib/colorUtils";
 
@@ -93,16 +93,13 @@ export default function SensorConfigPanel({
   const [formatUnitForceCustom, setFormatUnitForceCustom] = useState(false);
 
   useEffect(() => {
-    if (
-      sensor.type === "sensor" &&
-      parseFormatToPresets(sensor.format) !== null
-    ) {
+    if (sensor.type === "sensor" && parseFormatToPresets(sensor.format) !== null) {
       setFormatUnitForceCustom(false);
     }
-  }, [sensor.type, sensor.format]);
+  }, [sensor.type, sensor.type === "sensor" ? sensor.format : undefined]);
 
-  const updateField = (field: keyof SensorConfig, value: string) => {
-    onChange({ ...sensor, [field]: value });
+  const updateField = (field: SensorConfigKey, value: string) => {
+    onChange({ ...sensor, [field]: value } as SensorConfig);
   };
 
   const getSensorLabel = () => {
@@ -199,42 +196,31 @@ export default function SensorConfigPanel({
 
           <div>
             <div className="flex gap-2 flex-wrap justify-start items-center">
-              <div className="shrink-0">
-                <IconPicker
-                  value={sensor.icon}
-                  onChange={(code) => updateField("icon", code)}
-                  iconColor={sensor.iconColor}
-                  buttonClassName="w-9 h-9 shrink-0 p-0.5"
-                />
-              </div>
-              <div className="shrink-0">
-                <label className="block text-xs text-gray-600 mb-0.5">
-                  Color
-                </label>
-                <input
-                  type="color"
-                  value={cydColorToCss(sensor.iconColor)}
-                  onChange={(e) =>
-                    updateField("iconColor", cssToCydColor(e.target.value))
-                  }
-                  className="h-9 w-9 cursor-pointer rounded border border-gray-300 bg-transparent p-0.5 focus:ring-2 focus:ring-blue-500 block"
-                  title="Pick icon color"
-                />
-              </div>
-              {sensor.type === "binary" && (
-                <label className="flex items-center gap-1.5 shrink-0">
-                  <input
-                    type="checkbox"
-                    checked={!!sensor.invertState}
-                    onChange={(e) =>
-                      onChange({ ...sensor, invertState: e.target.checked })
-                    }
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
-                  />
-                  <span className="text-xs text-gray-700 whitespace-nowrap">
-                    Invert
-                  </span>
-                </label>
+              {sensor.type === "sensor" && (
+                <>
+                  <div className="shrink-0">
+                    <IconPicker
+                      value={sensor.icon}
+                      onChange={(code) => updateField("icon", code)}
+                      iconColor={sensor.iconColor}
+                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                    />
+                  </div>
+                  <div className="shrink-0">
+                    <label className="block text-xs text-gray-600 mb-0.5">
+                      Color
+                    </label>
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.iconColor)}
+                      onChange={(e) =>
+                        updateField("iconColor", cssToCydColor(e.target.value))
+                      }
+                      className="h-9 w-9 cursor-pointer rounded border border-gray-300 bg-transparent p-0.5 focus:ring-2 focus:ring-blue-500 block"
+                      title="Pick icon color"
+                    />
+                  </div>
+                </>
               )}
               {sensor.type === "sensor" &&
                 (() => {
@@ -430,9 +416,9 @@ export default function SensorConfigPanel({
                       placeholder="Open"
                     />
                     <IconPicker
-                      value={sensor.iconOn ?? sensor.icon}
+                      value={sensor.iconOn ?? sensor.iconOff ?? ''}
                       onChange={(code) => updateField("iconOn", code)}
-                      iconColor={sensor.colorOn || sensor.iconColor}
+                      iconColor={sensor.colorOn || '0xFF5252'}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
                     />
                   </div>
@@ -448,9 +434,9 @@ export default function SensorConfigPanel({
                       placeholder="Closed"
                     />
                     <IconPicker
-                      value={sensor.iconOff ?? sensor.icon}
+                      value={sensor.iconOff ?? sensor.iconOn ?? ''}
                       onChange={(code) => updateField("iconOff", code)}
-                      iconColor={sensor.colorOff || sensor.iconColor}
+                      iconColor={sensor.colorOff || '0x32CD32'}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
                     />
                   </div>

@@ -39,7 +39,15 @@ function formatDate(date: Date) {
 }
 
 function SensorCell({ sensor }: { sensor: SensorConfig }) {
-  const iconColor = cydColorToCss(sensor.iconColor);
+  const iconCode =
+    sensor.type === 'sensor'
+      ? sensor.icon
+      : (sensor.iconOff ?? sensor.iconOn ?? '');
+  const iconColorRaw =
+    sensor.type === 'sensor'
+      ? sensor.iconColor
+      : (sensor.colorOff ?? sensor.colorOn ?? '0x888888');
+  const iconColor = cydColorToCss(iconColorRaw);
 
   const displayValue =
     sensor.type === 'binary'
@@ -63,9 +71,9 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
           width: FONT.icon,
           height: FONT.icon,
         }}
-        title={sensor.label || sensor.icon}
+        title={sensor.label || iconCode}
       >
-        {iconCodeToLigature(sensor.icon)}
+        {iconCodeToLigature(iconCode)}
       </span>
       <div className="flex flex-col min-w-0 flex-1">
         {/* Label (label_font size 11) */}

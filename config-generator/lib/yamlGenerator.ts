@@ -1,13 +1,13 @@
-import { ConfigData, SensorConfig } from '@/types/config';
+import { ConfigData, SensorConfig, BinarySensorConfig } from '@/types/config';
 import { iconCodeToChar } from '@/lib/icons';
 
 export function generateYaml(config: ConfigData): string {
   const { deviceName, friendlyName, sensors } = config;
 
-  // Get unique icon glyphs (deduplicated); include iconOn/iconOff for binary sensors
+  // Get unique icon glyphs (deduplicated); binary uses only iconOn/iconOff
   const allIconCodes = sensors.flatMap((s) =>
     s.type === 'binary'
-      ? [s.icon, s.iconOn ?? s.icon, s.iconOff ?? s.icon]
+      ? [s.iconOn, s.iconOff].filter(Boolean) as string[]
       : [s.icon]
   );
   const uniqueIcons = Array.from(new Set(allIconCodes.filter(Boolean))).join('');
@@ -25,10 +25,10 @@ export function generateYaml(config: ConfigData): string {
     lines.push(`  ${sensor.id}_entity: "${sensor.entity}"`);
     lines.push(`  ${sensor.id}_type: "${sensor.type}"`);
     lines.push(`  ${sensor.id}_label: "${sensor.label}"`);
-    lines.push(`  ${sensor.id}_icon: "${sensor.icon}"`);
-    lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
     
     if (sensor.type === 'sensor') {
+      lines.push(`  ${sensor.id}_icon: "${sensor.icon}"`);
+      lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
       lines.push(`  ${sensor.id}_format: '${sensor.format || '%.0f'}'`);
       lines.push(`  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || '100'}"`);
       lines.push(`  ${sensor.id}_color_thresh_mid: "${sensor.colorThreshMid || '50'}"`);
@@ -37,10 +37,14 @@ export function generateYaml(config: ConfigData): string {
       lines.push(`  ${sensor.id}_color_mid: "${sensor.colorMid || '0xFFA500'}"`);
       lines.push(`  ${sensor.id}_color_low: "${sensor.colorLow || '0x32CD32'}"`);
     } else {
+      const iconOffChar = iconCodeToChar(sensor.iconOff ?? '');
+      const iconOnChar = iconCodeToChar(sensor.iconOn ?? '');
+      lines.push(`  ${sensor.id}_icon: "${iconOffChar}"`);
+      lines.push(`  ${sensor.id}_icon_color: "${sensor.colorOff || '0x32CD32'}"`);
       lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || 'On'}"`);
       lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
-      lines.push(`  ${sensor.id}_icon_on: "${iconCodeToChar(sensor.iconOn ?? sensor.icon)}"`);
-      lines.push(`  ${sensor.id}_icon_off: "${iconCodeToChar(sensor.iconOff ?? sensor.icon)}"`);
+      lines.push(`  ${sensor.id}_icon_on: "${iconOnChar}"`);
+      lines.push(`  ${sensor.id}_icon_off: "${iconOffChar}"`);
       lines.push(`  ${sensor.id}_color_on: "${sensor.colorOn || '0xFF5252'}"`);
       lines.push(`  ${sensor.id}_color_off: "${sensor.colorOff || '0x32CD32'}"`);
     }
@@ -277,15 +281,8 @@ ${generateLvglWidget(getSensor('r2c2'), 2, 2)}
 ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
 `;
 
-  // Generate binary sensor configurations (invertState swaps which icon/text/color is shown for ON vs OFF)
-  const generateBinarySensor = (sensor: SensorConfig): string => {
-    const inv = sensor.invertState;
-    const iconWhenOn = inv ? `${sensor.id}_icon_off` : `${sensor.id}_icon_on`;
-    const iconWhenOff = inv ? `${sensor.id}_icon_on` : `${sensor.id}_icon_off`;
-    const stateWhenOn = inv ? `${sensor.id}_state_off` : `${sensor.id}_state_on`;
-    const stateWhenOff = inv ? `${sensor.id}_state_on` : `${sensor.id}_state_off`;
-    const colorWhenOn = inv ? `${sensor.id}_color_off` : `${sensor.id}_color_on`;
-    const colorWhenOff = inv ? `${sensor.id}_color_on` : `${sensor.id}_color_off`;
+  // Generate binary sensor configurations
+  const generateBinarySensor = (sensor: BinarySensorConfig): string => {
     return `
   - platform: homeassistant
     id: ha_${sensor.id}
@@ -296,26 +293,26 @@ ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
         - lvgl.label.update:
             id: icon_${sensor.id}
             text: !lambda |-
-              if (id(ha_${sensor.id}).state) return "\${${iconWhenOn}}";
-              return "\${${iconWhenOff}}";
+              if (id(ha_${sensor.id}).state) return "\${${sensor.id}_icon_on}";
+              return "\${${sensor.id}_icon_off}";
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${colorWhenOn}});
-              return lv_color_hex(\${${colorWhenOff}});
+              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${sensor.id}_color_on});
+              return lv_color_hex(\${${sensor.id}_color_off});
         - lvgl.label.update:
             id: val_${sensor.id}
             text: !lambda |-
-              if (id(ha_${sensor.id}).state) return "\${${stateWhenOn}}";
-              return "\${${stateWhenOff}}";
+              if (id(ha_${sensor.id}).state) return "\${${sensor.id}_state_on}";
+              return "\${${sensor.id}_state_off}";
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${colorWhenOn}});
-              return lv_color_hex(\${${colorWhenOff}});`;
+              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${sensor.id}_color_on});
+              return lv_color_hex(\${${sensor.id}_color_off});`;
   };
 
   const binarySensors = sensors.filter(s => s.type === 'binary');
   const binarySensorConfig = binarySensors.length > 0 
     ? `
 # --- BINARY SENSOR CONFIG ---
-binary_sensor:${binarySensors.map(s => generateBinarySensor(s)).join('\n')}
+binary_sensor:${binarySensors.map((s) => generateBinarySensor(s as BinarySensorConfig)).join('\n')}
 `
     : '';
 
