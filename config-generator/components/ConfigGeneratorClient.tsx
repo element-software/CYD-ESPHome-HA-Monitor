@@ -13,7 +13,7 @@ export default function ConfigGeneratorClient() {
 
   return (
     <>
-      <div className="grid lg:grid-cols-3 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="space-y-6 min-w-0 col-span-2">
           <ConfigForm config={config} onChange={setConfig} />
         </div>
