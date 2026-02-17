@@ -1,8 +1,7 @@
 # 📱 HAMon - Home Assistant Monitor for CYD
 
 A clean, compact clock and sensor dashboard for the **ESP32-2432S028** (the "Cheap Yellow Display" or CYD), built with **ESPHome** and **LVGL**.
-
-Inspired by [drrcastro's CYD Smart Dashboard for Home Assistant](https://github.com/drrcastro/CYD-Smart-Dashboard-for-Home-Assistant)
+Try out the new [YAML generator](https://element-software.github.io/CYD-ESPHome-HA-Monitor/) - please note: it's not perfect and is a work in progress!
 
 Monitor 6 Home Assistant entities at a glance — binary sensors (doors, motion) and numeric sensors (energy, temperature) — with dynamic colour-coded status indicators.
 
@@ -241,4 +240,4 @@ Feel free to fork this project and submit pull requests! See the [Roadmap](#%EF%
 
 This project is licensed under the **MIT License**. See the header of `hamon.yaml` for the full license text.
 
-Copyright (c) 2026 element-software
+Inspired by [drrcastro's CYD Smart Dashboard for Home Assistant](https://github.com/drrcastro/CYD-Smart-Dashboard-for-Home-Assistant)
