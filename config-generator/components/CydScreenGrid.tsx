@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ConfigData, SensorConfig } from '@/types/config';
+import { ConfigData, SensorConfig, NumericSensorConfig } from '@/types/config';
 import { cydColorToCss } from '@/lib/colorUtils';
 import { iconCodeToLigature } from '@/lib/icons';
 
@@ -70,20 +70,40 @@ const SAMPLE_BY_SUFFIX: Record<string, number> = {
 };
 const SAMPLE_DEFAULT = 12.34;
 
+/** Get the numeric sample value used for preview from format (e.g. %.0fW → 8355). */
+function getSampleValueFromFormat(format: string | undefined): number {
+  if (!format?.trim()) return SAMPLE_DEFAULT;
+  const m = format.match(/^%(\.\d)f(.*)$/);
+  if (!m) return SAMPLE_DEFAULT;
+  const suffix = m[2];
+  return suffix in SAMPLE_BY_SUFFIX
+    ? SAMPLE_BY_SUFFIX[suffix as keyof typeof SAMPLE_BY_SUFFIX]
+    : SAMPLE_DEFAULT;
+}
+
 /** Format a sample value from a printf-style format (e.g. %.0fW, %.1f°C). */
 function formatSampleFromFormat(format: string | undefined): string {
   if (!format?.trim()) return '—';
   const m = format.match(/^%(\.\d)f(.*)$/);
   if (!m) return format;
   const decimals = Math.min(3, parseInt(m[1].slice(1), 10) || 0);
-  const suffix = m[2];
-  const sample =
-    suffix in SAMPLE_BY_SUFFIX
-      ? SAMPLE_BY_SUFFIX[suffix as keyof typeof SAMPLE_BY_SUFFIX]
-      : SAMPLE_DEFAULT;
+  const sample = getSampleValueFromFormat(format);
   const numStr = decimals === 0 ? Math.round(sample).toString() : sample.toFixed(decimals);
+  const suffix = m[2];
   const suffixDisplay = suffix === '%%' ? '%' : suffix;
   return numStr + suffixDisplay;
+}
+
+/** Return threshold-based color for a numeric sensor value (high > mid > low). */
+function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): string {
+  const high = parseFloat(sensor.colorThreshHigh ?? '');
+  const mid = parseFloat(sensor.colorThreshMid ?? '');
+  const low = parseFloat(sensor.colorThreshLow ?? '');
+  const fallback = sensor.iconColor ?? '0x32CD32';
+  if (Number.isFinite(high) && value > high) return sensor.colorHigh ?? fallback;
+  if (Number.isFinite(mid) && value > mid) return sensor.colorMid ?? fallback;
+  if (Number.isFinite(low) && value > low) return sensor.colorLow ?? fallback;
+  return sensor.colorLow ?? fallback;
 }
 
 function SensorCell({ sensor }: { sensor: SensorConfig }) {
@@ -95,7 +115,7 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
         : (sensor.iconOff ?? sensor.iconOn ?? '');
   const iconColorRaw =
     sensor.type === 'sensor'
-      ? sensor.iconColor
+      ? getThresholdColorForValue(sensor, getSampleValueFromFormat(sensor.format))
       : sensor.type === 'light'
         ? (sensor.colorOff ?? sensor.colorOn ?? '0x32CD32')
         : (sensor.colorOff ?? sensor.colorOn ?? '0x888888');
