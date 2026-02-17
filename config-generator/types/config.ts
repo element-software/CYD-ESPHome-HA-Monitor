@@ -5,6 +5,16 @@ export interface BaseSensorConfig {
   label: string;
 }
 
+export interface LightSensorConfig extends BaseSensorConfig {
+  type: "light";
+  stateOn?: string;
+  stateOff?: string;
+  iconOn?: string;
+  iconOff?: string;
+  colorOn?: string;
+  colorOff?: string;
+}
+
 export interface NumericSensorConfig extends BaseSensorConfig {
   type: "sensor";
   icon: string;
@@ -33,10 +43,13 @@ export interface BinarySensorConfig extends BaseSensorConfig {
 }
 
 /** Discriminated union of all sensor config types */
-export type SensorConfig = NumericSensorConfig | BinarySensorConfig;
+export type SensorConfig = NumericSensorConfig | BinarySensorConfig | LightSensorConfig;
 
-/** Keys that can be updated on any sensor (union of keys from both config types) */
-export type SensorConfigKey = keyof NumericSensorConfig | keyof BinarySensorConfig;
+/** Keys that can be updated on any sensor (union of keys from all config types) */
+export type SensorConfigKey =
+  | keyof NumericSensorConfig
+  | keyof BinarySensorConfig
+  | keyof LightSensorConfig;
 
 export interface ConfigData {
   deviceName: string;

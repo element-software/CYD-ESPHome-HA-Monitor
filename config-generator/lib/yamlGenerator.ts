@@ -1,16 +1,15 @@
 import { ConfigData, SensorConfig, BinarySensorConfig } from '@/types/config';
-import { iconCodeToChar } from '@/lib/icons';
+import { iconCodeToChar, iconCodeToHexEscape } from '@/lib/icons';
 
 export function generateYaml(config: ConfigData): string {
   const { deviceName, friendlyName, sensors } = config;
 
-  // Get unique icon glyphs (deduplicated); binary uses only iconOn/iconOff
-  const allIconCodes = sensors.flatMap((s) =>
-    s.type === 'binary'
-      ? [s.iconOn, s.iconOff].filter(Boolean) as string[]
-      : [s.icon]
-  );
-  const uniqueIcons = Array.from(new Set(allIconCodes.filter(Boolean))).join('');
+  // Get unique icon glyphs (deduplicated); binary and light use iconOn/iconOff
+  const allIconCodes = sensors.flatMap((s) => {
+    if (s.type === 'binary' || s.type === 'light') return [s.iconOn, s.iconOff].filter(Boolean) as string[];
+    return [s.icon];
+  });
+  const uniqueIcons = Array.from(new Set(allIconCodes.filter(Boolean).map(iconCodeToHexEscape).filter(Boolean))).join('');
 
   // Helper to get sensor by id
   const getSensor = (id: string): SensorConfig | undefined => 
@@ -27,7 +26,7 @@ export function generateYaml(config: ConfigData): string {
     lines.push(`  ${sensor.id}_label: "${sensor.label}"`);
     
     if (sensor.type === 'sensor') {
-      lines.push(`  ${sensor.id}_icon: "${sensor.icon}"`);
+      lines.push(`  ${sensor.id}_icon: "${iconCodeToHexEscape(sensor.icon)}"`);
       lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
       lines.push(`  ${sensor.id}_format: '${sensor.format || '%.0f'}'`);
       lines.push(`  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || '100'}"`);
@@ -36,15 +35,26 @@ export function generateYaml(config: ConfigData): string {
       lines.push(`  ${sensor.id}_color_high: "${sensor.colorHigh || '0xFF0000'}"`);
       lines.push(`  ${sensor.id}_color_mid: "${sensor.colorMid || '0xFFA500'}"`);
       lines.push(`  ${sensor.id}_color_low: "${sensor.colorLow || '0x32CD32'}"`);
-    } else {
-      const iconOffChar = iconCodeToChar(sensor.iconOff ?? '');
-      const iconOnChar = iconCodeToChar(sensor.iconOn ?? '');
-      lines.push(`  ${sensor.id}_icon: "${iconOffChar}"`);
+    } else if (sensor.type === 'light') {
+      const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? '');
+      const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? '');
+      lines.push(`  ${sensor.id}_icon: "${iconOffEsc}"`);
       lines.push(`  ${sensor.id}_icon_color: "${sensor.colorOff || '0x32CD32'}"`);
       lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || 'On'}"`);
       lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
-      lines.push(`  ${sensor.id}_icon_on: "${iconOnChar}"`);
-      lines.push(`  ${sensor.id}_icon_off: "${iconOffChar}"`);
+      lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
+      lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
+      lines.push(`  ${sensor.id}_color_on: "${sensor.colorOn || '0xFFE082'}"`);
+      lines.push(`  ${sensor.id}_color_off: "${sensor.colorOff || '0x32CD32'}"`);
+    } else {
+      const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? '');
+      const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? '');
+      lines.push(`  ${sensor.id}_icon: "${iconOffEsc}"`);
+      lines.push(`  ${sensor.id}_icon_color: "${sensor.colorOff || '0x32CD32'}"`);
+      lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || 'On'}"`);
+      lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
+      lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
+      lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
       lines.push(`  ${sensor.id}_color_on: "${sensor.colorOn || '0xFF5252'}"`);
       lines.push(`  ${sensor.id}_color_off: "${sensor.colorOff || '0x32CD32'}"`);
     }

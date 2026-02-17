@@ -128,7 +128,9 @@ export default function SensorConfigPanel({
             className={`text-xs px-2 py-1 rounded ${
               sensor.type === "sensor"
                 ? "bg-blue-100 text-blue-800"
-                : "bg-green-100 text-green-800"
+                : sensor.type === "binary"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-amber-100 text-amber-800"
             }`}
           >
             {sensor.type}
@@ -165,6 +167,7 @@ export default function SensorConfigPanel({
               >
                 <option value="sensor">Sensor (Numeric)</option>
                 <option value="binary">Binary Sensor</option>
+                <option value="light">Light</option>
               </select>
             </div>
             <div>
@@ -222,6 +225,7 @@ export default function SensorConfigPanel({
                   </div>
                 </>
               )}
+              {sensor.type === "light" && null}
               {sensor.type === "sensor" &&
                 (() => {
                   const parsed = parseFormatToPresets(sensor.format);
@@ -402,7 +406,7 @@ export default function SensorConfigPanel({
                 </div>
               </div>
             </>
-          ) : (
+          ) : sensor.type === "binary" || sensor.type === "light" ? (
             <>
               <div className="grid grid-cols-2 gap-2">
                 <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
@@ -410,15 +414,15 @@ export default function SensorConfigPanel({
                   <div className="flex items-end gap-1">
                     <input
                       type="text"
-                      value={sensor.stateOn || ""}
+                      value={sensor.stateOn ?? ""}
                       onChange={(e) => updateField("stateOn", e.target.value)}
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder="Open"
+                      placeholder={sensor.type === "light" ? "On" : "Open"}
                     />
                     <IconPicker
-                      value={sensor.iconOn ?? sensor.iconOff ?? ''}
+                      value={sensor.iconOn ?? sensor.iconOff ?? ""}
                       onChange={(code) => updateField("iconOn", code)}
-                      iconColor={sensor.colorOn || '0xFF5252'}
+                      iconColor={sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : "0xFF5252")}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
                     />
                   </div>
@@ -428,22 +432,22 @@ export default function SensorConfigPanel({
                   <div className="flex items-end gap-1">
                     <input
                       type="text"
-                      value={sensor.stateOff || ""}
+                      value={sensor.stateOff ?? ""}
                       onChange={(e) => updateField("stateOff", e.target.value)}
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder="Closed"
+                      placeholder={sensor.type === "light" ? "Off" : "Closed"}
                     />
                     <IconPicker
-                      value={sensor.iconOff ?? sensor.iconOn ?? ''}
+                      value={sensor.iconOff ?? sensor.iconOn ?? ""}
                       onChange={(code) => updateField("iconOff", code)}
-                      iconColor={sensor.colorOff || '0x32CD32'}
+                      iconColor={sensor.colorOff ?? "0x32CD32"}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
                     />
                   </div>
                 </div>
               </div>
             </>
-          )}
+          ) : null}
         </div>
       )}
     </div>

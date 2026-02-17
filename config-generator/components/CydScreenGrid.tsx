@@ -90,17 +90,23 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
   const iconCode =
     sensor.type === 'sensor'
       ? sensor.icon
-      : (sensor.iconOff ?? sensor.iconOn ?? '');
+      : sensor.type === 'light'
+        ? (sensor.iconOff ?? sensor.iconOn ?? '')
+        : (sensor.iconOff ?? sensor.iconOn ?? '');
   const iconColorRaw =
     sensor.type === 'sensor'
       ? sensor.iconColor
-      : (sensor.colorOff ?? sensor.colorOn ?? '0x888888');
+      : sensor.type === 'light'
+        ? (sensor.colorOff ?? sensor.colorOn ?? '0x32CD32')
+        : (sensor.colorOff ?? sensor.colorOn ?? '0x888888');
   const iconColor = cydColorToCss(iconColorRaw);
 
   const displayValue =
     sensor.type === 'binary'
       ? (sensor.stateOff ?? 'Closed')
-      : formatSampleFromFormat(sensor.type === 'sensor' ? sensor.format : undefined);
+      : sensor.type === 'light'
+        ? (sensor.stateOff ?? 'Off')
+        : formatSampleFromFormat(sensor.type === 'sensor' ? sensor.format : undefined);
 
   return (
     <div

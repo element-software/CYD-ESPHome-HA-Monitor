@@ -21,6 +21,16 @@ export function iconCodeToChar(code: string): string {
 }
 
 /**
+ * Convert stored icon code to YAML-style hex escape (e.g. \ueffc).
+ * Use this when writing icon codes into generated YAML so the output is \uXXXX.
+ */
+export function iconCodeToHexEscape(code: string): string {
+  const hex = iconCodeToHex(code);
+  if (!hex) return code || '';
+  return '\\u' + hex;
+}
+
+/**
  * Map icon codepoint (hex) to Material Icons ligature name for reliable rendering.
  * Uses Google's Material Icons names so the font's ligature feature displays the correct glyph.
  */
@@ -35,6 +45,7 @@ const ICON_HEX_TO_NAME: Record<string, string> = {
   e7fd: 'person',
   e88a: 'home',
   e0f0: 'lightbulb',
+  e90f: 'lightbulb_outline',
   e3a9: 'brightness_4',
   efd8: 'air',
   e798: 'water_drop',
@@ -47,6 +58,29 @@ const ICON_HEX_TO_NAME: Record<string, string> = {
   e1a3: 'battery_charging_full',
   e430: 'wb_sunny',
   e63c: 'power',
+  e63e: 'wifi',
+  e639: 'live_tv',
+  e8b8: 'settings',
+  eb47: 'kitchen',
+  eb3b: 'ac_unit',
+  ef55: 'local_fire_department',
+  f011: 'garage',
+  efe2: 'bedroom_parent',
+  ea35: 'eco',
+  e91d: 'pets',
+  e32a: 'security',
+  e3f8: 'leak_add',
+  e286: 'blinds',
+  ec1c: 'electric_bolt',
+  ec1b: 'electric_meter',
+  e307: 'cast',
+  e0b0: 'call',
+  e0be: 'email',
+  e855: 'alarm',
+  e53a: 'hotel',
+  ea43: 'fireplace',
+  e3f4: 'image',
+  e56d: 'ev_station',
 };
 
 /**
