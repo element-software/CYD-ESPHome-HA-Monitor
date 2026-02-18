@@ -1,65 +1,85 @@
-import { ConfigData, SensorConfig, BinarySensorConfig, LightSensorConfig } from '@/types/config';
-import { iconCodeToChar, iconCodeToHexEscape } from '@/lib/icons';
+import {
+  ConfigData,
+  SensorConfig,
+  BinarySensorConfig,
+  LightSensorConfig,
+} from "@/types/config";
+import { iconCodeToHexEscape } from "@/lib/icons";
 
 export function generateYaml(config: ConfigData): string {
   const { deviceName, friendlyName, sensors } = config;
 
   // Get unique icon glyphs (deduplicated); binary and light use iconOn/iconOff
   const allIconCodes = sensors.flatMap((s) => {
-    if (s.type === 'binary' || s.type === 'light') return [s.iconOn, s.iconOff].filter(Boolean) as string[];
+    if (s.type === "binary" || s.type === "light")
+      return [s.iconOn, s.iconOff].filter(Boolean) as string[];
     return [s.icon];
   });
-  const uniqueIcons = Array.from(new Set(allIconCodes.filter(Boolean).map(iconCodeToHexEscape).filter(Boolean))).join('');
+  const uniqueIcons = Array.from(
+    new Set(
+      allIconCodes.filter(Boolean).map(iconCodeToHexEscape).filter(Boolean),
+    ),
+  ).join("");
 
   // Helper to get sensor by id
-  const getSensor = (id: string): SensorConfig | undefined => 
-    sensors.find(s => s.id === id);
+  const getSensor = (id: string): SensorConfig | undefined =>
+    sensors.find((s) => s.id === id);
 
   // Generate substitutions for each sensor position
-  const generateSensorSubstitutions = (sensor: SensorConfig | undefined, position: string): string => {
-    if (!sensor) return '';
-    
+  const generateSensorSubstitutions = (
+    sensor: SensorConfig | undefined,
+    position: string,
+  ): string => {
+    if (!sensor) return "";
+
     const lines: string[] = [];
     lines.push(`  # --- ${position} ---`);
     lines.push(`  ${sensor.id}_entity: "${sensor.entity}"`);
     lines.push(`  ${sensor.id}_type: "${sensor.type}"`);
     lines.push(`  ${sensor.id}_label: "${sensor.label}"`);
-    
-    if (sensor.type === 'sensor') {
+
+    if (sensor.type === "sensor") {
       lines.push(`  ${sensor.id}_icon: "${iconCodeToHexEscape(sensor.icon)}"`);
       lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
-      lines.push(`  ${sensor.id}_format: '${sensor.format || '%.0f'}'`);
-      lines.push(`  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || '100'}"`);
-      lines.push(`  ${sensor.id}_color_thresh_mid: "${sensor.colorThreshMid || '50'}"`);
-      lines.push(`  ${sensor.id}_color_thresh_low: "${sensor.colorThreshLow || '0'}"`);
-      lines.push(`  ${sensor.id}_color_high: "${sensor.colorHigh || '0xFF0000'}"`);
-      lines.push(`  ${sensor.id}_color_mid: "${sensor.colorMid || '0xFFA500'}"`);
-      lines.push(`  ${sensor.id}_color_low: "${sensor.colorLow || '0x32CD32'}"`);
-    } else if (sensor.type === 'light') {
-      const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? '');
-      const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? '');
-      lines.push(`  ${sensor.id}_icon: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_icon_color: "${sensor.colorOff || '0x32CD32'}"`);
-      lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || 'On'}"`);
-      lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
-      lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
-      lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_color_on: ${sensor.colorOn || '0xFFE082'}`);
-      lines.push(`  ${sensor.id}_color_off: ${sensor.colorOff || '0x32CD32'}`);
+      lines.push(`  ${sensor.id}_format: '${sensor.format || "%.0f"}'`);
+      lines.push(
+        `  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || "100"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_thresh_mid: "${sensor.colorThreshMid || "50"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_thresh_low: "${sensor.colorThreshLow || "0"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_high: "${sensor.colorHigh || "0xFF0000"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_mid: "${sensor.colorMid || "0xFFA500"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_low: "${sensor.colorLow || "0x32CD32"}"`,
+      );
     } else {
-      const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? '');
-      const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? '');
+      // binary or light: same substitutions; only default color_on differs (amber for light, red for binary).
+      // Emit color values as numeric (no quotes) so lambdas get lv_color_hex(0xRRGGBB) not lv_color_hex("0x...") and initial widget gets integer text_color.
+      const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? "");
+      const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? "");
+      const defaultColorOn = sensor.type === "light" ? "0xFFA500" : "0xFF5252";
+      const colorOff = sensor.colorOff || "0x32CD32";
       lines.push(`  ${sensor.id}_icon: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_icon_color: "${sensor.colorOff || '0x32CD32'}"`);
-      lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || 'On'}"`);
-      lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
+      lines.push(`  ${sensor.id}_icon_color: "${colorOff}"`);
+      lines.push(`  ${sensor.id}_state_on: "${sensor.stateOn || "On"}"`);
+      lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || "Off"}"`);
       lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
       lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_color_on: ${sensor.colorOn || '0xFF5252'}`);
-      lines.push(`  ${sensor.id}_color_off: ${sensor.colorOff || '0x32CD32'}`);
+      lines.push(
+        `  ${sensor.id}_color_on: "${sensor.colorOn || defaultColorOn}"`,
+      );
+      lines.push(`  ${sensor.id}_color_off: "${colorOff}"`);
     }
-    
-    return lines.join('\n');
+
+    return lines.join("\n");
   };
 
   const substitutions = `substitutions:
@@ -72,17 +92,17 @@ export function generateYaml(config: ConfigData): string {
   # only include it once in this list to avoid "duplicate glyph" errors.
   icon_glyphs: "${uniqueIcons}"
 
-${generateSensorSubstitutions(getSensor('r1c1'), 'Row 1, Column 1')}
+${generateSensorSubstitutions(getSensor("r1c1"), "Row 1, Column 1")}
 
-${generateSensorSubstitutions(getSensor('r1c2'), 'Row 1, Column 2')}
+${generateSensorSubstitutions(getSensor("r1c2"), "Row 1, Column 2")}
 
-${generateSensorSubstitutions(getSensor('r2c1'), 'Row 2, Column 1')}
+${generateSensorSubstitutions(getSensor("r2c1"), "Row 2, Column 1")}
 
-${generateSensorSubstitutions(getSensor('r2c2'), 'Row 2, Column 2')}
+${generateSensorSubstitutions(getSensor("r2c2"), "Row 2, Column 2")}
 
-${generateSensorSubstitutions(getSensor('r3c1'), 'Row 3, Column 1')}
+${generateSensorSubstitutions(getSensor("r3c1"), "Row 3, Column 1")}
 
-${generateSensorSubstitutions(getSensor('r3c2'), 'Row 3, Column 2')}
+${generateSensorSubstitutions(getSensor("r3c2"), "Row 3, Column 2")}
 `;
 
   const boilerplate = `
@@ -207,11 +227,15 @@ time:
 `;
 
   // Generate LVGL display configuration (no LED widget; light icon uses label with smooth color fade).
-  const generateLvglWidget = (sensor: SensorConfig | undefined, row: number, col: number): string => {
-    if (!sensor) return '';
-    
+  const generateLvglWidget = (
+    sensor: SensorConfig | undefined,
+    row: number,
+    col: number,
+  ): string => {
+    if (!sensor) return "";
+
     const xPos = col === 1 ? 2 : 121;
-    const yPos = 100 + ((row - 1) * 70);
+    const yPos = 100 + (row - 1) * 70;
 
     return `
         - obj:
@@ -273,18 +297,20 @@ lvgl:
             align: TOP_MID
             y: 65
 
-        # ====== ROW 1 ======${generateLvglWidget(getSensor('r1c1'), 1, 1)}
-${generateLvglWidget(getSensor('r1c2'), 1, 2)}
+        # ====== ROW 1 ======${generateLvglWidget(getSensor("r1c1"), 1, 1)}
+${generateLvglWidget(getSensor("r1c2"), 1, 2)}
 
-        # ====== ROW 2 ======${generateLvglWidget(getSensor('r2c1'), 2, 1)}
-${generateLvglWidget(getSensor('r2c2'), 2, 2)}
+        # ====== ROW 2 ======${generateLvglWidget(getSensor("r2c1"), 2, 1)}
+${generateLvglWidget(getSensor("r2c2"), 2, 2)}
 
-        # ====== ROW 3 ======${generateLvglWidget(getSensor('r3c1'), 3, 1)}
-${generateLvglWidget(getSensor('r3c2'), 3, 2)}
+        # ====== ROW 3 ======${generateLvglWidget(getSensor("r3c1"), 3, 1)}
+${generateLvglWidget(getSensor("r3c2"), 3, 2)}
 `;
 
   // Binary and light: on_state updates icon and val labels (text + text_color from state); same code path for both.
-  const generateOnOffSensor = (sensor: BinarySensorConfig | LightSensorConfig): string => {
+  const generateOnOffSensor = (
+    sensor: BinarySensorConfig | LightSensorConfig,
+  ): string => {
     const onStateActions = `
       then:
         - lvgl.label.update:
@@ -293,16 +319,16 @@ ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
               if (id(ha_${sensor.id}).state) return "\${${sensor.id}_icon_on}";
               return "\${${sensor.id}_icon_off}";
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${sensor.id}_color_on});
-              return lv_color_hex(\${${sensor.id}_color_off});
+              if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
+              return lv_color_hex((uint32_t)\${${sensor.id}_color_off});
         - lvgl.label.update:
             id: val_${sensor.id}
             text: !lambda |-
               if (id(ha_${sensor.id}).state) return "\${${sensor.id}_state_on}";
               return "\${${sensor.id}_state_off}";
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex(\${${sensor.id}_color_on});
-              return lv_color_hex(\${${sensor.id}_color_off});`;
+              if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
+              return lv_color_hex((uint32_t)\${${sensor.id}_color_off});`;
     return `
   - platform: homeassistant
     id: ha_${sensor.id}
@@ -311,17 +337,22 @@ ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
     on_state:${onStateActions}`;
   };
 
-  const binarySensors = sensors.filter((s): s is BinarySensorConfig => s.type === 'binary');
-  const lightSensors = sensors.filter((s): s is LightSensorConfig => s.type === 'light');
+  const binarySensors = sensors.filter(
+    (s): s is BinarySensorConfig => s.type === "binary",
+  );
+  const lightSensors = sensors.filter(
+    (s): s is LightSensorConfig => s.type === "light",
+  );
   const allOnOffSensors = [...binarySensors, ...lightSensors];
-  const binarySensorConfig = allOnOffSensors.length > 0
-    ? `
+  const binarySensorConfig =
+    allOnOffSensors.length > 0
+      ? `
 # --- BINARY SENSOR & LIGHT ENTITY STATE ---
 # Binary sensors and HA light entities (on/off state); icon color follows state (color_on / color_off).
-binary_sensor:${allOnOffSensors.map((s) => generateOnOffSensor(s)).join('\n')}
+binary_sensor:${allOnOffSensors.map((s) => generateOnOffSensor(s)).join("\n")}
 
 `
-    : '';
+      : "";
 
   // Light config: display backlight only (no LVGL light; icon uses label with on_state color update like binary).
   const lightConfig = `
@@ -356,13 +387,14 @@ light:
               return lv_color_hex(\${${sensor.id}_color_low});`;
   };
 
-  const numericSensors = sensors.filter(s => s.type === 'sensor');
-  const numericSensorConfig = numericSensors.length > 0
-    ? `
+  const numericSensors = sensors.filter((s) => s.type === "sensor");
+  const numericSensorConfig =
+    numericSensors.length > 0
+      ? `
 # --- NUMERIC SENSOR CONFIG ---
-sensor:${numericSensors.map(s => generateNumericSensor(s)).join('\n')}
+sensor:${numericSensors.map((s) => generateNumericSensor(s)).join("\n")}
 `
-    : '';
+      : "";
 
   // Combine all parts
   const header = `# ==============================================================================
@@ -381,5 +413,13 @@ sensor:${numericSensors.map(s => generateNumericSensor(s)).join('\n')}
 # ==============================================================================
 `;
 
-  return header + substitutions + boilerplate + lvglConfig + binarySensorConfig + lightConfig + numericSensorConfig;
+  return (
+    header +
+    substitutions +
+    boilerplate +
+    lvglConfig +
+    binarySensorConfig +
+    lightConfig +
+    numericSensorConfig
+  );
 }

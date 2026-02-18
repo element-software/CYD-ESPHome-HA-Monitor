@@ -28,7 +28,7 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Closed',
       iconOn: '\\ueffc',
       iconOff: '\\ueffc',
-      colorOn: '0xFF5252',
+      colorOn: '0xFF0000',
       colorOff: '0x32CD32',
     },
     {
@@ -55,7 +55,7 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Closed',
       iconOn: '\\ue559',
       iconOff: '\\ue559',
-      colorOn: '0xFF5252',
+      colorOn: '0xFF0000',
       colorOff: '0x32CD32',
     },
     {
@@ -67,7 +67,7 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Clear',
       iconOn: '\\ue7fd',
       iconOff: '\\ue7fd',
-      colorOn: '0xFF5252',
+      colorOn: '0xFF0000',
       colorOff: '0x32CD32',
     },
     {
@@ -79,7 +79,7 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Off',
       iconOn: '\\ue0f0',
       iconOff: '\\ue0f0',
-      colorOn: '0xFFE082',
+      colorOn: '0xFFA500',
       colorOff: '0xD5D5D5',
     },
   ],
