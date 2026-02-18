@@ -183,7 +183,10 @@ touchscreen:
   transform:
     swap_xy: false
     mirror_x: true
-    mirror_y: true
+    mirror_y: false
+  on_touch:
+    - lambda: |-
+        ESP_LOGI("touch", "Touch at LVGL (%d, %d)", touch.x, touch.y);
 
 # --- FONTS ---
 font:
@@ -226,7 +229,7 @@ time:
                 return str_sprintf("%s %02d/%02d", dias[now.day_of_week - 1], now.day_of_month, now.month);
 `;
 
-  // Generate LVGL display configuration (no LED widget; light icon uses label with smooth color fade).
+  // Generate LVGL display configuration. Uses button (like known working config) so light slots can use on_press for tap-to-toggle.
   const generateLvglWidget = (
     sensor: SensorConfig | undefined,
     row: number,
@@ -236,16 +239,29 @@ time:
 
     const xPos = col === 1 ? 2 : 121;
     const yPos = 100 + (row - 1) * 70;
+    const isLight = sensor.type === "light";
+
+    const onClickBlock = isLight
+      ? `
+            on_click:
+              - homeassistant.action:
+                  action: light.toggle
+                  data:
+                    entity_id: "${sensor.entity}"`
+      : "";
 
     return `
-        - obj:
+        - button:
             x: ${xPos}
             y: ${yPos}
+            id: button_${sensor.id}
             width: 117
             height: 68
             bg_opa: TRANSP
             border_width: 0
+            shadow_width: 0
             radius: 0
+            scrollbar_mode: "OFF"${isLight ? `\n            checkable: true` : ""}${isLight ? onClickBlock : ""}
             widgets:
               - label:
                   id: icon_${sensor.id}
@@ -254,6 +270,7 @@ time:
                   text_color: \${${sensor.id}_icon_color}
                   align: LEFT_MID
                   x: 0
+                  clickable: false
               - label:
                   text: "\${${sensor.id}_label}"
                   text_font: label_font
@@ -261,6 +278,7 @@ time:
                   align: LEFT_MID
                   x: 32
                   y: -10
+                  clickable: false
               - label:
                   id: val_${sensor.id}
                   text: "--"
@@ -268,7 +286,8 @@ time:
                   text_color: 0xFFFFFF
                   align: LEFT_MID
                   x: 32
-                  y: 10`;
+                  y: 10
+                  clickable: false`;
   };
 
   const lvglConfig = `
