@@ -79,8 +79,8 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Off',
       iconOn: '\\ue0f0',
       iconOff: '\\ue0f0',
-      colorOn: '0xFFA500',
-      colorOff: '0xD5D5D5',
+      colorOn: '0xFFFFFF',
+      colorOff: '0x000000',
     },
   ],
 };

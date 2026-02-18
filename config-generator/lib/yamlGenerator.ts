@@ -250,6 +250,12 @@ time:
                     entity_id: "${sensor.entity}"`
       : "";
 
+    const bgStyle = "bg_opa: TRANSP";
+
+    const checkedStyling = `checked:
+              bg_color: 0xFFA500
+              bg_opa: COVER`;
+
     return `
         - button:
             x: ${xPos}
@@ -257,11 +263,12 @@ time:
             id: button_${sensor.id}
             width: 117
             height: 68
-            bg_opa: TRANSP
+            ${bgStyle}
             border_width: 0
             shadow_width: 0
             radius: 0
-            scrollbar_mode: "OFF"${isLight ? `\n            checkable: true` : ""}${isLight ? onClickBlock : ""}
+            scrollbar_mode: "OFF"${isLight ? onClickBlock : ""}
+            ${isLight ? checkedStyling : ""}
             widgets:
               - label:
                   id: icon_${sensor.id}
@@ -272,6 +279,7 @@ time:
                   x: 0
                   clickable: false
               - label:
+                  id: lbl_${sensor.id}
                   text: "\${${sensor.id}_label}"
                   text_font: label_font
                   text_color: 0xAAAAAA
@@ -332,6 +340,22 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
   const generateOnOffSensor = (
     sensor: BinarySensorConfig | LightSensorConfig,
   ): string => {
+    const isLight = sensor.type === "light";
+    const iconColorOnExpr = isLight
+      ? "lv_color_hex(0x000000)"
+      : `lv_color_hex((uint32_t)\${${sensor.id}_color_on})`;
+    const iconColorOffExpr = isLight
+      ? "lv_color_hex(0xFFFFFF)"
+      : `lv_color_hex((uint32_t)\${${sensor.id}_color_off})`;
+
+    const buttonCheckedUpdate = isLight
+        ? `
+        - lvgl.widget.update:
+            id: button_${sensor.id}
+            state:
+              checked: !lambda return id(ha_${sensor.id}).state;`
+        : "";
+
     const onStateActions = `
       then:
         - lvgl.label.update:
@@ -342,8 +366,8 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
         - lvgl.widget.update:
             id: icon_${sensor.id}
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
-              return lv_color_hex((uint32_t)\${${sensor.id}_color_off});
+              if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
+              return ${iconColorOffExpr};
         - lvgl.label.update:
             id: val_${sensor.id}
             text: !lambda |-
@@ -352,8 +376,13 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
         - lvgl.widget.update:
             id: val_${sensor.id}
             text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
-              return lv_color_hex((uint32_t)\${${sensor.id}_color_off});`;
+              if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
+              return ${iconColorOffExpr};${isLight ? `
+        - lvgl.widget.update:
+            id: lbl_${sensor.id}
+            text_color: !lambda |-
+              if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
+              return ${iconColorOffExpr};` : ""}${buttonCheckedUpdate}`;
     return `
   - platform: homeassistant
     id: ha_${sensor.id}
