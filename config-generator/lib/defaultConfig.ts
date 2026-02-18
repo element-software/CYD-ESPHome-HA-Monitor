@@ -73,8 +73,8 @@ export const defaultConfig: ConfigData = {
     {
       id: 'r3c2',
       type: 'light',
-      entity: 'light.office_downlights_dimmer',
-      label: 'Office Downlights',
+      entity: 'light.kitchen_downlights',
+      label: 'Kitchen',
       stateOn: 'On',
       stateOff: 'Off',
       iconOn: '\\ue0f0',

@@ -1,4 +1,4 @@
-import { ConfigData, SensorConfig, BinarySensorConfig } from '@/types/config';
+import { ConfigData, SensorConfig, BinarySensorConfig, LightSensorConfig } from '@/types/config';
 import { iconCodeToChar, iconCodeToHexEscape } from '@/lib/icons';
 
 export function generateYaml(config: ConfigData): string {
@@ -44,8 +44,8 @@ export function generateYaml(config: ConfigData): string {
       lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
       lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
       lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_color_on: "${sensor.colorOn || '0xFFE082'}"`);
-      lines.push(`  ${sensor.id}_color_off: "${sensor.colorOff || '0x32CD32'}"`);
+      lines.push(`  ${sensor.id}_color_on: ${sensor.colorOn || '0xFFE082'}`);
+      lines.push(`  ${sensor.id}_color_off: ${sensor.colorOff || '0x32CD32'}`);
     } else {
       const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? '');
       const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? '');
@@ -55,8 +55,8 @@ export function generateYaml(config: ConfigData): string {
       lines.push(`  ${sensor.id}_state_off: "${sensor.stateOff || 'Off'}"`);
       lines.push(`  ${sensor.id}_icon_on: "${iconOnEsc}"`);
       lines.push(`  ${sensor.id}_icon_off: "${iconOffEsc}"`);
-      lines.push(`  ${sensor.id}_color_on: "${sensor.colorOn || '0xFF5252'}"`);
-      lines.push(`  ${sensor.id}_color_off: "${sensor.colorOff || '0x32CD32'}"`);
+      lines.push(`  ${sensor.id}_color_on: ${sensor.colorOn || '0xFF5252'}`);
+      lines.push(`  ${sensor.id}_color_off: ${sensor.colorOff || '0x32CD32'}`);
     }
     
     return lines.join('\n');
@@ -121,14 +121,6 @@ output:
   - platform: ledc
     pin: GPIO21
     id: backlight_pwm
-
-light:
-  - platform: monochromatic
-    output: backlight_pwm
-    name: Display Backlight
-    id: backlight
-    restore_mode: ALWAYS_ON
-    default_transition_length: 0.5s
 
 spi:
   - id: tft
@@ -214,13 +206,13 @@ time:
                 return str_sprintf("%s %02d/%02d", dias[now.day_of_week - 1], now.day_of_month, now.month);
 `;
 
-  // Generate LVGL display configuration
+  // Generate LVGL display configuration (no LED widget; light icon uses label with smooth color fade).
   const generateLvglWidget = (sensor: SensorConfig | undefined, row: number, col: number): string => {
     if (!sensor) return '';
     
     const xPos = col === 1 ? 2 : 121;
     const yPos = 100 + ((row - 1) * 70);
-    
+
     return `
         - obj:
             x: ${xPos}
@@ -272,14 +264,14 @@ lvgl:
             text_font: clock_font
             text_color: 0xFFFFFF
             align: TOP_MID
-            y: 5
+            y: 15
         - label:
             id: label_date
             text: "--- --/--"
             text_font: date_font
             text_color: 0xAAAAAA
             align: TOP_MID
-            y: 55
+            y: 65
 
         # ====== ROW 1 ======${generateLvglWidget(getSensor('r1c1'), 1, 1)}
 ${generateLvglWidget(getSensor('r1c2'), 1, 2)}
@@ -291,14 +283,9 @@ ${generateLvglWidget(getSensor('r2c2'), 2, 2)}
 ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
 `;
 
-  // Generate binary sensor configurations
-  const generateBinarySensor = (sensor: BinarySensorConfig): string => {
-    return `
-  - platform: homeassistant
-    id: ha_${sensor.id}
-    entity_id: \${${sensor.id}_entity}
-    publish_initial_state: true
-    on_state:
+  // Binary and light: on_state updates icon and val labels (text + text_color from state); same code path for both.
+  const generateOnOffSensor = (sensor: BinarySensorConfig | LightSensorConfig): string => {
+    const onStateActions = `
       then:
         - lvgl.label.update:
             id: icon_${sensor.id}
@@ -316,15 +303,37 @@ ${generateLvglWidget(getSensor('r3c2'), 3, 2)}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return lv_color_hex(\${${sensor.id}_color_on});
               return lv_color_hex(\${${sensor.id}_color_off});`;
+    return `
+  - platform: homeassistant
+    id: ha_${sensor.id}
+    entity_id: \${${sensor.id}_entity}
+    trigger_on_initial_state: true
+    on_state:${onStateActions}`;
   };
 
-  const binarySensors = sensors.filter(s => s.type === 'binary');
-  const binarySensorConfig = binarySensors.length > 0 
+  const binarySensors = sensors.filter((s): s is BinarySensorConfig => s.type === 'binary');
+  const lightSensors = sensors.filter((s): s is LightSensorConfig => s.type === 'light');
+  const allOnOffSensors = [...binarySensors, ...lightSensors];
+  const binarySensorConfig = allOnOffSensors.length > 0
     ? `
-# --- BINARY SENSOR CONFIG ---
-binary_sensor:${binarySensors.map((s) => generateBinarySensor(s as BinarySensorConfig)).join('\n')}
+# --- BINARY SENSOR & LIGHT ENTITY STATE ---
+# Binary sensors and HA light entities (on/off state); icon color follows state (color_on / color_off).
+binary_sensor:${allOnOffSensors.map((s) => generateOnOffSensor(s)).join('\n')}
+
 `
     : '';
+
+  // Light config: display backlight only (no LVGL light; icon uses label with on_state color update like binary).
+  const lightConfig = `
+# --- LIGHT CONFIG (display backlight) ---
+light:
+  - platform: monochromatic
+    output: backlight_pwm
+    name: Display Backlight
+    id: backlight
+    restore_mode: ALWAYS_ON
+    default_transition_length: 0.5s
+`;
 
   // Generate numeric sensor configurations
   const generateNumericSensor = (sensor: SensorConfig): string => {
@@ -372,5 +381,5 @@ sensor:${numericSensors.map(s => generateNumericSensor(s)).join('\n')}
 # ==============================================================================
 `;
 
-  return header + substitutions + boilerplate + lvglConfig + binarySensorConfig + numericSensorConfig;
+  return header + substitutions + boilerplate + lvglConfig + binarySensorConfig + lightConfig + numericSensorConfig;
 }
