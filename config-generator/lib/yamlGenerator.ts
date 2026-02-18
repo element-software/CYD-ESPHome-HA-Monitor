@@ -307,7 +307,9 @@ ${generateLvglWidget(getSensor("r2c2"), 2, 2)}
 ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
 `;
 
-  // Binary and light: on_state updates icon and val labels (text + text_color from state); same code path for both.
+  // Generates a homeassistant binary_sensor used for both HA binary_sensor and HA light entities.
+  // For both entity types, HA sends state "on"/"off"; ESPHome parses this to boolean, so id(ha_xxx).state
+  // is always a boolean (true = on, false = off). Same on_state lambdas work for both.
   const generateOnOffSensor = (
     sensor: BinarySensorConfig | LightSensorConfig,
   ): string => {
@@ -318,6 +320,8 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
             text: !lambda |-
               if (id(ha_${sensor.id}).state) return "\${${sensor.id}_icon_on}";
               return "\${${sensor.id}_icon_off}";
+        - lvgl.widget.update:
+            id: icon_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
               return lv_color_hex((uint32_t)\${${sensor.id}_color_off});
@@ -326,6 +330,8 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
             text: !lambda |-
               if (id(ha_${sensor.id}).state) return "\${${sensor.id}_state_on}";
               return "\${${sensor.id}_state_off}";
+        - lvgl.widget.update:
+            id: val_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return lv_color_hex((uint32_t)\${${sensor.id}_color_on});
               return lv_color_hex((uint32_t)\${${sensor.id}_color_off});`;
