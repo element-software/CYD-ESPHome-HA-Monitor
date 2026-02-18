@@ -72,7 +72,9 @@ export default function IconPicker({
                 {iconCodeToLigature(value)}
               </span>
           ) : (
-            'Select Icon'
+            <span className="material-icons text-2xl" style={{ color: iconCssColor }}>
+              edit
+            </span>
           )}
         </button>
       </div>
