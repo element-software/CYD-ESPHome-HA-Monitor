@@ -102,6 +102,52 @@ export default function SensorConfigPanel({
     onChange({ ...sensor, [field]: value } as SensorConfig);
   };
 
+  const changeType = (newType: string) => {
+    if (newType === sensor.type) return;
+    const base = { id: sensor.id, entity: sensor.entity, label: sensor.label };
+    switch (newType) {
+      case "sensor":
+        onChange({
+          ...base,
+          type: "sensor",
+          icon: "\\uea0b",
+          iconColor: "0xFFA500",
+          format: "%.0f",
+          colorThreshHigh: "5000",
+          colorThreshMid: "3000",
+          colorThreshLow: "1000",
+          colorHigh: "0xFF0000",
+          colorMid: "0xFFA500",
+          colorLow: "0x32CD32",
+        });
+        break;
+      case "binary":
+        onChange({
+          ...base,
+          type: "binary",
+          stateOn: "Open",
+          stateOff: "Closed",
+          iconOn: "\\ue838",
+          iconOff: "\\ue838",
+          colorOn: "0xFF0000",
+          colorOff: "0x32CD32",
+        });
+        break;
+      case "light":
+        onChange({
+          ...base,
+          type: "light",
+          stateOn: "On",
+          stateOff: "Off",
+          iconOn: "\\ue0f0",
+          iconOff: "\\ue0f0",
+          colorOn: "0x000000",
+          colorOff: "0xFFFFFF",
+        });
+        break;
+    }
+  };
+
   const getSensorLabel = () => {
     const row = Math.floor(index / 2) + 1;
     const col = (index % 2) + 1;
@@ -162,7 +208,7 @@ export default function SensorConfigPanel({
               </label>
               <select
                 value={sensor.type}
-                onChange={(e) => updateField("type", e.target.value)}
+                onChange={(e) => changeType(e.target.value)}
                 className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               >
                 <option value="sensor">Sensor (Numeric)</option>
