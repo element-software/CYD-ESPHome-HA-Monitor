@@ -16,6 +16,7 @@ Monitor 6 Home Assistant entities at a glance — binary sensors (doors, motion)
 
 ## ✨ Features
 
+- **YAML Generator Visual Editor:** The [YAML generator](https://element-software.github.io/CYD-ESPHome-HA-Monitor/) makes it super easy to configure your CYD, without you having to modify YAML files!
 - **Clock & Date Header:** Large time display with day and date, synced from Home Assistant.
 - **6 Customisable Sensor Slots:** 2 numeric sensors + 4 binary sensors in a compact 3×2 grid layout.
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
