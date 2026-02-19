@@ -8,7 +8,7 @@ import { iconCodeToLigature } from '@/lib/icons';
 /** Device-matching colors (dark blue/black bg, cyan labels, white values) */
 const DEVICE = {
   bg: '#0f1419',
-  label: '#7fdbda',
+  label: '#FFFFFF',
   value: '#ffffff',
 } as const;
 
@@ -106,33 +106,41 @@ function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): 
   return sensor.colorLow ?? fallback;
 }
 
-function SensorCell({ sensor }: { sensor: SensorConfig }) {
+function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: boolean; onToggle?: () => void }) {
+  const canToggle = sensor.type === 'binary' || sensor.type === 'light';
+  const isLightOn = sensor.type === 'light' && isOn;
+
   const iconCode =
     sensor.type === 'sensor'
       ? sensor.icon
-      : sensor.type === 'light'
-        ? (sensor.iconOff ?? sensor.iconOn ?? '')
+      : isOn
+        ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');
+
   const iconColorRaw =
     sensor.type === 'sensor'
       ? getThresholdColorForValue(sensor, getSampleValueFromFormat(sensor.format))
-      : sensor.type === 'light'
-        ? (sensor.colorOff ?? sensor.colorOn ?? '0x32CD32')
-        : (sensor.colorOff ?? sensor.colorOn ?? '0x888888');
-  const iconColor = cydColorToCss(iconColorRaw);
+      : isOn
+        ? (sensor.colorOn ?? '0xFF0000')
+        : (sensor.colorOff ?? '0x888888');
+  const iconColor = isLightOn ? '#000000' : cydColorToCss(iconColorRaw);
 
   const displayValue =
-    sensor.type === 'binary'
-      ? (sensor.stateOff ?? 'Closed')
-      : sensor.type === 'light'
-        ? (sensor.stateOff ?? 'Off')
-        : formatSampleFromFormat(sensor.type === 'sensor' ? sensor.format : undefined);
+    sensor.type === 'sensor'
+      ? formatSampleFromFormat(sensor.format)
+      : isOn
+        ? (sensor.type === 'light' ? (sensor.stateOn ?? 'On') : (sensor.stateOn ?? 'Open'))
+        : (sensor.type === 'light' ? (sensor.stateOff ?? 'Off') : (sensor.stateOff ?? 'Closed'));
+
+  const labelColor = isLightOn ? '#000000' : DEVICE.label;
+  const valueColor = isLightOn ? '#000000' : DEVICE.value;
 
   return (
     <div
-      className="flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]"
+      className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin] rounded-sm${canToggle ? ' cursor-pointer' : ''}`}
+      style={{ backgroundColor: isLightOn ? '#FFA500' : 'transparent' }}
+      onClick={canToggle ? onToggle : undefined}
     >
-      {/* Material Icon (icon_font size 28) */}
       <span
         className="material-icons shrink-0 inline-flex items-center justify-center opacity-90"
         style={{
@@ -146,17 +154,15 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
         {iconCodeToLigature(iconCode)}
       </span>
       <div className="flex flex-col min-w-0 flex-1">
-        {/* Label (label_font size 11) */}
         <span
           className="truncate font-normal"
-          style={{ color: DEVICE.label, fontSize: FONT.label }}
+          style={{ color: labelColor, fontSize: FONT.label }}
         >
           {sensor.label || '—'}
         </span>
-        {/* State/value (state_font size 18) */}
         <span
           className="truncate font-bold"
-          style={{ color: DEVICE.value, fontSize: FONT.state }}
+          style={{ color: valueColor, fontSize: FONT.state }}
         >
           {displayValue}
         </span>
@@ -167,6 +173,15 @@ function SensorCell({ sensor }: { sensor: SensorConfig }) {
 
 export default function CydScreenGrid({ config }: CydScreenGridProps) {
   const [now, setNow] = useState(() => new Date());
+  const [toggledOn, setToggledOn] = useState<Set<string>>(() => new Set());
+
+  const toggle = (id: string) =>
+    setToggledOn((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
@@ -203,7 +218,12 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
         style={{ padding: '2cqmin', paddingTop: '1cqmin' }}
       >
         {config.sensors.slice(0, 6).map((sensor) => (
-          <SensorCell key={sensor.id} sensor={sensor} />
+          <SensorCell
+            key={sensor.id}
+            sensor={sensor}
+            isOn={toggledOn.has(sensor.id)}
+            onToggle={() => toggle(sensor.id)}
+          />
         ))}
       </div>
     </div>

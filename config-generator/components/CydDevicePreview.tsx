@@ -21,6 +21,10 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
       <p className="text-center text-lg font-bold text-gray-700 mt-2 truncate">
         {config.friendlyName || config.deviceName} Device Preview
       </p>
+      <p className="text-sm text-center w-full text-gray-500">
+        Click on a sensor to toggle it's state so you can preview what it'll
+        look like on the CYD. It is not 100% accurate, but a close match.
+      </p>
       <div className="relative aspect-3/4 w-full overflow-hidden">
         <div
           className="absolute z-1 rounded-sm overflow-hidden"

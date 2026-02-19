@@ -282,7 +282,7 @@ time:
                   id: lbl_${sensor.id}
                   text: "\${${sensor.id}_label}"
                   text_font: label_font
-                  text_color: 0xAAAAAA
+                  text_color: 0xFFFFFF
                   align: LEFT_MID
                   x: 32
                   y: -10
