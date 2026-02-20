@@ -107,8 +107,8 @@ function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): 
 }
 
 function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: boolean; onToggle?: () => void }) {
-  const canToggle = sensor.type === 'binary' || sensor.type === 'light';
-  const isLightOn = sensor.type === 'light' && isOn;
+  const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch';
+  const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch') && isOn;
 
   const iconCode =
     sensor.type === 'sensor'
@@ -123,22 +123,22 @@ function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: bo
       : isOn
         ? (sensor.colorOn ?? '0xFF0000')
         : (sensor.colorOff ?? '0x888888');
-  const iconColor = isLightOn ? '#000000' : cydColorToCss(iconColorRaw);
+  const iconColor = isToggleableOn ? '#000000' : cydColorToCss(iconColorRaw);
 
   const displayValue =
     sensor.type === 'sensor'
       ? formatSampleFromFormat(sensor.format)
       : isOn
-        ? (sensor.type === 'light' ? (sensor.stateOn ?? 'On') : (sensor.stateOn ?? 'Open'))
-        : (sensor.type === 'light' ? (sensor.stateOff ?? 'Off') : (sensor.stateOff ?? 'Closed'));
+        ? (sensor.stateOn ?? 'On')
+        : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
 
-  const labelColor = isLightOn ? '#000000' : DEVICE.label;
-  const valueColor = isLightOn ? '#000000' : DEVICE.value;
+  const labelColor = isToggleableOn ? '#000000' : DEVICE.label;
+  const valueColor = isToggleableOn ? '#000000' : DEVICE.value;
 
   return (
     <div
       className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin] rounded-sm${canToggle ? ' cursor-pointer' : ''}`}
-      style={{ backgroundColor: isLightOn ? '#FFA500' : 'transparent' }}
+      style={{ backgroundColor: isToggleableOn ? '#FFA500' : 'transparent' }}
       onClick={canToggle ? onToggle : undefined}
     >
       <span

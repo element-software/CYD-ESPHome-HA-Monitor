@@ -3,6 +3,7 @@ import {
   SensorConfig,
   BinarySensorConfig,
   LightSensorConfig,
+  SwitchSensorConfig,
 } from "@/types/config";
 import { iconCodeToHexEscape } from "@/lib/icons";
 
@@ -11,7 +12,7 @@ export function generateYaml(config: ConfigData): string {
 
   // Get unique icon glyphs (deduplicated); binary and light use iconOn/iconOff
   const allIconCodes = sensors.flatMap((s) => {
-    if (s.type === "binary" || s.type === "light")
+    if (s.type === "binary" || s.type === "light" || s.type === "switch")
       return [s.iconOn, s.iconOff].filter(Boolean) as string[];
     return [s.icon];
   });
@@ -61,11 +62,12 @@ export function generateYaml(config: ConfigData): string {
         `  ${sensor.id}_color_low: "${sensor.colorLow || "0x32CD32"}"`,
       );
     } else {
-      // binary or light: same substitutions; only default color_on differs (amber for light, red for binary).
-      // Emit color values as numeric (no quotes) so lambdas get lv_color_hex(0xRRGGBB) not lv_color_hex("0x...") and initial widget gets integer text_color.
+      // binary, light, or switch: same substitutions; default color_on differs per type.
       const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? "");
       const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? "");
-      const defaultColorOn = sensor.type === "light" ? "0xFFA500" : "0xFF5252";
+      const defaultColorOn =
+        sensor.type === "light" ? "0xFFA500" :
+        sensor.type === "switch" ? "0x4CAF50" : "0xFF5252";
       const colorOff = sensor.colorOff || "0x32CD32";
       lines.push(`  ${sensor.id}_icon: "${iconOffEsc}"`);
       lines.push(`  ${sensor.id}_icon_color: "${colorOff}"`);
@@ -239,18 +241,17 @@ time:
 
     const xPos = col === 1 ? 2 : 121;
     const yPos = 100 + (row - 1) * 70;
-    const isLight = sensor.type === "light";
+    const isToggleable = sensor.type === "light" || sensor.type === "switch";
+    const toggleAction = sensor.type === "light" ? "light.toggle" : "switch.toggle";
 
-    const onClickBlock = isLight
+    const onClickBlock = isToggleable
       ? `
             on_click:
               - homeassistant.action:
-                  action: light.toggle
+                  action: ${toggleAction}
                   data:
                     entity_id: "${sensor.entity}"`
       : "";
-
-    const bgStyle = "bg_opa: TRANSP";
 
     const checkedStyling = `checked:
               bg_color: 0xFFA500
@@ -263,12 +264,12 @@ time:
             id: button_${sensor.id}
             width: 117
             height: 68
-            ${bgStyle}
+            bg_opa: TRANSP
             border_width: 0
             shadow_width: 0
             radius: 0
-            scrollbar_mode: "OFF"${isLight ? onClickBlock : ""}
-            ${isLight ? checkedStyling : ""}
+            scrollbar_mode: "OFF"${isToggleable ? onClickBlock : ""}
+            ${isToggleable ? checkedStyling : ""}
             widgets:
               - label:
                   id: icon_${sensor.id}
@@ -338,17 +339,17 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
   // For both entity types, HA sends state "on"/"off"; ESPHome parses this to boolean, so id(ha_xxx).state
   // is always a boolean (true = on, false = off). Same on_state lambdas work for both.
   const generateOnOffSensor = (
-    sensor: BinarySensorConfig | LightSensorConfig,
+    sensor: BinarySensorConfig | LightSensorConfig | SwitchSensorConfig,
   ): string => {
-    const isLight = sensor.type === "light";
-    const iconColorOnExpr = isLight
+    const isToggleable = sensor.type === "light" || sensor.type === "switch";
+    const iconColorOnExpr = isToggleable
       ? "lv_color_hex(0x000000)"
       : `lv_color_hex((uint32_t)\${${sensor.id}_color_on})`;
-    const iconColorOffExpr = isLight
+    const iconColorOffExpr = isToggleable
       ? "lv_color_hex(0xFFFFFF)"
       : `lv_color_hex((uint32_t)\${${sensor.id}_color_off})`;
 
-    const buttonCheckedUpdate = isLight
+    const buttonCheckedUpdate = isToggleable
         ? `
         - lvgl.widget.update:
             id: button_${sensor.id}
@@ -377,17 +378,18 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
             id: val_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
-              return ${iconColorOffExpr};${isLight ? `
+              return ${iconColorOffExpr};${isToggleable ? `
         - lvgl.widget.update:
             id: lbl_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
               return ${iconColorOffExpr};` : ""}${buttonCheckedUpdate}`;
+    const triggerInitial = sensor.type === "switch" ? "" : `
+    trigger_on_initial_state: true`;
     return `
   - platform: homeassistant
     id: ha_${sensor.id}
-    entity_id: \${${sensor.id}_entity}
-    trigger_on_initial_state: true
+    entity_id: \${${sensor.id}_entity}${triggerInitial}
     on_state:${onStateActions}`;
   };
 
@@ -397,13 +399,26 @@ ${generateLvglWidget(getSensor("r3c2"), 3, 2)}
   const lightSensors = sensors.filter(
     (s): s is LightSensorConfig => s.type === "light",
   );
-  const allOnOffSensors = [...binarySensors, ...lightSensors];
+  const switchSensors = sensors.filter(
+    (s): s is SwitchSensorConfig => s.type === "switch",
+  );
+  const allBinaryOnOff = [...binarySensors, ...lightSensors];
   const binarySensorConfig =
-    allOnOffSensors.length > 0
+    allBinaryOnOff.length > 0
       ? `
 # --- BINARY SENSOR & LIGHT ENTITY STATE ---
 # Binary sensors and HA light entities (on/off state); icon color follows state (color_on / color_off).
-binary_sensor:${allOnOffSensors.map((s) => generateOnOffSensor(s)).join("\n")}
+binary_sensor:${allBinaryOnOff.map((s) => generateOnOffSensor(s)).join("\n")}
+
+`
+      : "";
+
+  const switchSensorConfig =
+    switchSensors.length > 0
+      ? `
+# --- SWITCH ENTITY STATE ---
+# HA switch entities (on/off state with tap-to-toggle).
+switch:${switchSensors.map((s) => generateOnOffSensor(s)).join("\n")}
 
 `
       : "";
@@ -473,6 +488,7 @@ sensor:${numericSensors.map((s) => generateNumericSensor(s)).join("\n")}
     boilerplate +
     lvglConfig +
     binarySensorConfig +
+    switchSensorConfig +
     lightConfig +
     numericSensorConfig
   );
