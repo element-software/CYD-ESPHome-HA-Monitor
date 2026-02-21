@@ -1,14 +1,24 @@
 'use client';
 
 import { ConfigData } from '@/types/config';
+import { defaultConfig } from '@/lib/defaultConfig';
 
 interface DeviceSettingsCardProps {
   config: ConfigData;
   onChange: (config: ConfigData) => void;
 }
 
+/** Default sensors for row 4 when Hide Clock is enabled (r4c1, r4c2). */
+const ROW4_DEFAULT_SENSORS = defaultConfig.sensors.slice(6, 8);
+
 export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsCardProps) {
-  const update = (field: keyof ConfigData, value: string) => {
+  const update = (field: keyof ConfigData, value: string | boolean) => {
+    if (field === 'hideClock' && value === true && config.sensors.length < 8) {
+      const extra = 8 - config.sensors.length;
+      const newSensors = [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)];
+      onChange({ ...config, hideClock: true, sensors: newSensors });
+      return;
+    }
     onChange({ ...config, [field]: value });
   };
 
@@ -41,6 +51,22 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="HAMon"
           />
+        </div>
+        <div className="flex items-center gap-3 pt-2">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={config.hideClock ?? false}
+              onChange={(e) => update('hideClock', e.target.checked)}
+              className="sr-only peer"
+              aria-label="Hide Clock"
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+          <div>
+            <span className="text-sm font-medium text-gray-700">Hide Clock</span>
+            <p className="text-xs text-gray-500">Adds an extra row for a 4x2 sensor grid</p>
+          </div>
         </div>
       </div>
     </div>

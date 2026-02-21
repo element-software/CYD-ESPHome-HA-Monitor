@@ -4,16 +4,17 @@ import { useState } from 'react';
 import { ConfigData, SensorConfig } from '@/types/config';
 import SensorConfigPanel from './SensorConfigPanel';
 
-const ROWS = 3;
-
 interface SensorListProps {
   config: ConfigData;
   onChange: (config: ConfigData) => void;
 }
 
 export default function SensorList({ config, onChange }: SensorListProps) {
+  const rows = config.hideClock ? 4 : 3;
+  const visibleSensors = config.sensors.slice(0, rows * 2);
+
   const [expandedRows, setExpandedRows] = useState<boolean[]>(
-    () => Array(ROWS).fill(false)
+    () => Array(4).fill(false)
   );
 
   const updateSensor = (index: number, sensor: SensorConfig) => {
@@ -36,7 +37,7 @@ export default function SensorList({ config, onChange }: SensorListProps) {
         Sensor Configuration
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {config.sensors.map((sensor, index) => {
+        {visibleSensors.map((sensor, index) => {
           const rowIndex = Math.floor(index / 2);
           return (
             <SensorConfigPanel

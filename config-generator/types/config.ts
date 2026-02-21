@@ -65,5 +65,6 @@ export type SensorConfigKey =
 export interface ConfigData {
   deviceName: string;
   friendlyName: string;
+  hideClock?: boolean;
   sensors: SensorConfig[];
 }

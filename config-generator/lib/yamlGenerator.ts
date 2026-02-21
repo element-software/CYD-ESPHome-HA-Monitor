@@ -8,7 +8,9 @@ import {
 import { iconCodeToHexEscape } from "@/lib/icons";
 
 export function generateYaml(config: ConfigData): string {
-  const { deviceName, friendlyName, sensors } = config;
+  const { deviceName, friendlyName, hideClock } = config;
+  const sensorCount = hideClock ? 8 : 6;
+  const sensors = config.sensors.slice(0, sensorCount);
 
   // Get unique icon glyphs (deduplicated); binary and light use iconOn/iconOff
   const allIconCodes = sensors.flatMap((s) => {
@@ -105,7 +107,11 @@ ${generateSensorSubstitutions(getSensor("r2c2"), "Row 2, Column 2")}
 ${generateSensorSubstitutions(getSensor("r3c1"), "Row 3, Column 1")}
 
 ${generateSensorSubstitutions(getSensor("r3c2"), "Row 3, Column 2")}
-`;
+${hideClock ? `
+${generateSensorSubstitutions(getSensor("r4c1"), "Row 4, Column 1")}
+
+${generateSensorSubstitutions(getSensor("r4c2"), "Row 4, Column 2")}
+` : ""}`;
 
   const boilerplate = `
 # ==============================================================================
@@ -191,7 +197,7 @@ touchscreen:
         ESP_LOGI("touch", "Touch at LVGL (%d, %d)", touch.x, touch.y);
 
 # --- FONTS ---
-font:
+font:${hideClock ? "" : `
   - file: "gfonts://Roboto"
     id: clock_font
     size: 48
@@ -199,7 +205,7 @@ font:
   - file: "gfonts://Roboto"
     id: date_font
     size: 20
-    glyphs: "0123456789/- abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    glyphs: "0123456789/- abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`}
   - file: "gfonts://Material Icons"
     id: icon_font
     size: 28
@@ -213,7 +219,7 @@ font:
     size: 11
     glyphs: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .°%-"
 
-# --- TIME ---
+${hideClock ? "" : `# --- TIME ---
 time:
   - platform: homeassistant
     id: esptime
@@ -229,7 +235,7 @@ time:
                 static const char *const dias[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
                 auto now = id(esptime).now();
                 return str_sprintf("%s %02d/%02d", dias[now.day_of_week - 1], now.day_of_month, now.month);
-`;
+`}`;
 
   // Generate LVGL display configuration. Uses button (like known working config) so light slots can use on_press for tap-to-toggle.
   const generateLvglWidget = (
@@ -240,7 +246,7 @@ time:
     if (!sensor) return "";
 
     const xPos = col === 1 ? 2 : 121;
-    const yPos = 100 + (row - 1) * 70;
+    const yPos = hideClock ? 6 + (row - 1) * 78 : 100 + (row - 1) * 70;
     const isToggleable = sensor.type === "light" || sensor.type === "switch";
     const toggleAction = sensor.type === "light" ? "light.toggle" : "switch.toggle";
 
@@ -299,17 +305,7 @@ time:
                   clickable: false`;
   };
 
-  const lvglConfig = `
-# --- DISPLAY PAGE CONFIG ---
-lvgl:
-  displays:
-    - my_display
-  touchscreens:
-    - my_touchscreen
-  pages:
-    - id: main_page
-      bg_color: 0x000000
-      widgets:
+  const clockWidgets = hideClock ? "" : `
         - label:
             id: label_clock
             text: "--:--"
@@ -324,7 +320,24 @@ lvgl:
             text_color: 0xAAAAAA
             align: TOP_MID
             y: 65
+`;
 
+  const row4Widgets = hideClock ? `
+
+        # ====== ROW 4 ======${generateLvglWidget(getSensor("r4c1"), 4, 1)}
+${generateLvglWidget(getSensor("r4c2"), 4, 2)}` : "";
+
+  const lvglConfig = `
+# --- DISPLAY PAGE CONFIG ---
+lvgl:
+  displays:
+    - my_display
+  touchscreens:
+    - my_touchscreen
+  pages:
+    - id: main_page
+      bg_color: 0x000000
+      widgets:${clockWidgets}
         # ====== ROW 1 ======${generateLvglWidget(getSensor("r1c1"), 1, 1)}
 ${generateLvglWidget(getSensor("r1c2"), 1, 2)}
 
@@ -332,7 +345,7 @@ ${generateLvglWidget(getSensor("r1c2"), 1, 2)}
 ${generateLvglWidget(getSensor("r2c2"), 2, 2)}
 
         # ====== ROW 3 ======${generateLvglWidget(getSensor("r3c1"), 3, 1)}
-${generateLvglWidget(getSensor("r3c2"), 3, 2)}
+${generateLvglWidget(getSensor("r3c2"), 3, 2)}${row4Widgets}
 `;
 
   // Generates a homeassistant binary_sensor used for both HA binary_sensor and HA light entities.

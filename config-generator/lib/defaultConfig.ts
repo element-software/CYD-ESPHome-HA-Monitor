@@ -3,6 +3,7 @@ import { ConfigData } from '@/types/config';
 export const defaultConfig: ConfigData = {
   deviceName: 'hamon',
   friendlyName: 'HAMon',
+  hideClock: false,
   sensors: [
     {
       id: 'r1c1',
@@ -81,6 +82,33 @@ export const defaultConfig: ConfigData = {
       iconOff: '\\ue0f0',
       colorOn: '0x000000',
       colorOff: '0xFFFFFF',
+    },
+    {
+      id: 'r4c1',
+      type: 'sensor',
+      entity: 'sensor.downstairs_hallway_humidity',
+      label: 'Humidity',
+      icon: '\\ueb3e',
+      iconColor: '0x00BFFF',
+      format: '%.0f%%',
+      colorThreshHigh: '80',
+      colorThreshMid: '60',
+      colorThreshLow: '30',
+      colorHigh: '0xFF0000',
+      colorMid: '0xFFA500',
+      colorLow: '0x32CD32',
+    },
+    {
+      id: 'r4c2',
+      type: 'binary',
+      entity: 'binary_sensor.kitchen_entrance_motion_occupancy',
+      label: 'Kitchen',
+      stateOn: 'Detected',
+      stateOff: 'Clear',
+      iconOn: '\\uec10',
+      iconOff: '\\uec10',
+      colorOn: '0xFF0000',
+      colorOff: '0x32CD32',
     },
   ],
 };

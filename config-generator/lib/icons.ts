@@ -107,6 +107,7 @@ const ICON_HEX_TO_NAME: Record<string, string> = {
   e53a: 'hotel',
   e91d: 'pets',
   e56a: 'child_friendly',
+  ec10: 'sensor_occupied',
   // Appliances
   eb47: 'kitchen',
   f07e: 'local_laundry_service',
@@ -244,6 +245,7 @@ export const commonIcons = [
   { name: 'Hidden', code: '\\ue8d1', ligature: 'visibility_off', category: 'Security' },
   { name: 'Emergency', code: '\\uf050', ligature: 'emergency', category: 'Security' },
   { name: 'Motion', code: '\\ue3f7', ligature: 'motion_photos_on', category: 'Security' },
+  { name: 'Motion Occupied', code: '\\uec10', ligature: 'sensor_occupied', category: 'Security' },
   // People & Presence
   { name: 'Person', code: '\\ue7fd', ligature: 'person', category: 'People' },
   { name: 'Group', code: '\\ue7ef', ligature: 'group', category: 'People' },

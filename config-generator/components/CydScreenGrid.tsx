@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ConfigData, SensorConfig, NumericSensorConfig } from '@/types/config';
 import { cydColorToCss } from '@/lib/colorUtils';
 import { iconCodeToLigature } from '@/lib/icons';
+import CydClock from './CydClock';
 
 /** Device-matching colors (dark blue/black bg, cyan labels, white values) */
 const DEVICE = {
@@ -12,30 +13,17 @@ const DEVICE = {
   value: '#ffffff',
 } as const;
 
-/** ESPHome font sizes: clock 48, date 20, icon 28, state 18, label 11. Scale in cqmin. */
-const ESPHOME = { clock: 48, date: 20, icon: 28, state: 18, label: 11 } as const;
-const CLOCK_CQMIN = 16
+/** ESPHome font sizes: icon 28, state 18, label 11. Scale in cqmin. */
+const ESPHOME = { clock: 48, icon: 28, state: 18, label: 11 } as const;
+const CLOCK_CQMIN = 16;
 const FONT = {
-  clock: `${CLOCK_CQMIN}cqmin`,
-  date: `${(CLOCK_CQMIN * ESPHOME.date / ESPHOME.clock).toFixed(2)}cqmin`,
-  icon: `${(CLOCK_CQMIN * ESPHOME.icon / ESPHOME.clock).toFixed(2)}cqmin`,
-  state: `${(CLOCK_CQMIN * ESPHOME.state / ESPHOME.clock).toFixed(2)}cqmin`,
-  label: `${(CLOCK_CQMIN * ESPHOME.label / ESPHOME.clock).toFixed(2)}cqmin`,
+  icon: `${((CLOCK_CQMIN * ESPHOME.icon) / ESPHOME.clock).toFixed(2)}cqmin`,
+  state: `${((CLOCK_CQMIN * ESPHOME.state) / ESPHOME.clock).toFixed(2)}cqmin`,
+  label: `${((CLOCK_CQMIN * ESPHOME.label) / ESPHOME.clock).toFixed(2)}cqmin`,
 };
 
 interface CydScreenGridProps {
   config: ConfigData;
-}
-
-function formatTime(date: Date) {
-  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-}
-
-function formatDate(date: Date) {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  return `${days[date.getDay()]} ${d.toString().padStart(2, '0')}/${m.toString().padStart(2, '0')}`;
 }
 
 /** Sample values per unit type for preview (format suffix hint). */
@@ -132,8 +120,15 @@ function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: bo
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
 
-  const labelColor = isToggleableOn ? '#000000' : DEVICE.label;
-  const valueColor = isToggleableOn ? '#000000' : DEVICE.value;
+  const labelColor = DEVICE.label;
+  const valueColor =
+    sensor.type === 'sensor'
+      ? DEVICE.value
+      : isToggleableOn
+        ? '#000000'
+        : sensor.type === 'binary'
+          ? iconColor
+          : DEVICE.value;
 
   return (
     <div
@@ -172,7 +167,6 @@ function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: bo
 }
 
 export default function CydScreenGrid({ config }: CydScreenGridProps) {
-  const [now, setNow] = useState(() => new Date());
   const [toggledOn, setToggledOn] = useState<Set<string>>(() => new Set());
 
   const toggle = (id: string) =>
@@ -183,41 +177,21 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
       return next;
     });
 
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
+  const rows = config.hideClock ? 4 : 3;
+  const visibleSensors = config.sensors.slice(0, rows * 2);
 
   return (
     <div
       className="flex flex-col h-full w-full overflow-hidden"
       style={{ backgroundColor: DEVICE.bg }}
     >
-      {/* Time (clock_font 48) and date (date_font 20) */}
-      <div
-        className="shrink-0 flex flex-col items-center justify-center pt-[3cqmin] pb-[2.5cqmin]"
-        style={{ paddingLeft: '2cqmin', paddingRight: '2cqmin' }}
-      >
-        <div
-          className="font-bold tracking-tight"
-          style={{ color: DEVICE.value, fontSize: FONT.clock }}
-        >
-          {formatTime(now)}
-        </div>
-        <div
-          className="font-normal -mt-3"
-          style={{ color: DEVICE.value, fontSize: FONT.date, opacity: 0.95 }}
-        >
-          {formatDate(now)}
-        </div>
-      </div>
+      {!config.hideClock && <CydClock />}
 
-      {/* 3×2 status grid */}
       <div
-        className="grid grid-cols-2 grid-rows-3 flex-1 min-h-0 w-full gap-[1.2cqmin]"
-        style={{ padding: '2cqmin', paddingTop: '1cqmin' }}
+        className={`grid grid-cols-2 ${config.hideClock ? 'grid-rows-4' : 'grid-rows-3'} flex-1 min-h-0 w-full gap-[1.2cqmin]`}
+        style={{ padding: '2cqmin', paddingTop: config.hideClock ? '2cqmin' : '1cqmin' }}
       >
-        {config.sensors.slice(0, 6).map((sensor) => (
+        {visibleSensors.map((sensor) => (
           <SensorCell
             key={sensor.id}
             sensor={sensor}
