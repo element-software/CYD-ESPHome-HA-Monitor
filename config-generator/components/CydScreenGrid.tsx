@@ -120,7 +120,12 @@ function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: bo
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
 
-  const labelColor = DEVICE.label;
+  const labelColor =
+    sensor.type === 'light' || sensor.type === 'switch'
+      ? isToggleableOn
+        ? '#000000'
+        : DEVICE.label
+      : DEVICE.label;
   const valueColor =
     sensor.type === 'sensor'
       ? DEVICE.value
