@@ -66,5 +66,6 @@ export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  backlightPin?: string;
   sensors: SensorConfig[];
 }
