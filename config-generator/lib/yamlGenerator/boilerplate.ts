@@ -37,7 +37,7 @@ captive_portal:
 
 output:
   - platform: ledc
-    pin: GPIO21
+    pin: ${config.backlightPin ?? 'GPIO21'}
     id: backlight_pwm
 
 spi:

@@ -2,6 +2,7 @@
 
 import { ConfigData } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
+import BacklightPinSelect from './BacklightPinSelect';
 
 interface DeviceSettingsCardProps {
   config: ConfigData;
@@ -68,6 +69,10 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             <p className="text-xs text-gray-500">Adds an extra row for a 4x2 sensor grid</p>
           </div>
         </div>
+        <BacklightPinSelect
+          value={config.backlightPin ?? 'GPIO21'}
+          onChange={(pin) => update('backlightPin', pin)}
+        />
       </div>
     </div>
   );
