@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { ConfigData, SensorConfig, NumericSensorConfig } from '@/types/config';
+import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
 import { cydColorToCss } from '@/lib/colorUtils';
-import { iconCodeToLigature } from '@/lib/icons';
+import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
 import CydClock from './CydClock';
 
 /** Device-matching colors (dark blue/black bg, cyan labels, white values) */
@@ -94,7 +94,17 @@ function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): 
   return sensor.colorLow ?? fallback;
 }
 
-function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: boolean; onToggle?: () => void }) {
+function SensorCell({
+  sensor,
+  isOn,
+  onToggle,
+  iconSet,
+}: {
+  sensor: SensorConfig;
+  isOn: boolean;
+  onToggle?: () => void;
+  iconSet?: IconSet;
+}) {
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch';
   const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch') && isOn;
 
@@ -142,7 +152,7 @@ function SensorCell({ sensor, isOn, onToggle }: { sensor: SensorConfig; isOn: bo
       onClick={canToggle ? onToggle : undefined}
     >
       <span
-        className="material-icons shrink-0 inline-flex items-center justify-center opacity-90"
+        className={`${getIconFontClass(iconSet)} shrink-0 inline-flex items-center justify-center opacity-90`}
         style={{
           color: iconColor,
           fontSize: FONT.icon,
@@ -202,6 +212,7 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
             sensor={sensor}
             isOn={toggledOn.has(sensor.id)}
             onToggle={() => toggle(sensor.id)}
+            iconSet={config.iconSet}
           />
         ))}
       </div>

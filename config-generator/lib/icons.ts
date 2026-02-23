@@ -1,3 +1,12 @@
+import type { IconSet } from '@/types/config';
+
+/**
+ * CSS class for the icon font in the UI (material-icons vs material-symbols).
+ */
+export function getIconFontClass(iconSet: IconSet | undefined): string {
+  return iconSet === 'material_symbols' ? 'material-symbols' : 'material-icons';
+}
+
 /**
  * Normalize stored icon code to hex string (e.g. '\\uea0b' or character -> 'ea0b').
  */

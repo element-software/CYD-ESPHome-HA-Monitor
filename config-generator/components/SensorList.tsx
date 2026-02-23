@@ -47,6 +47,7 @@ export default function SensorList({ config, onChange }: SensorListProps) {
               isExpanded={expandedRows[rowIndex]}
               onToggle={() => toggleRow(rowIndex)}
               onChange={(updatedSensor) => updateSensor(index, updatedSensor)}
+              iconSet={config.iconSet}
             />
           );
         })}

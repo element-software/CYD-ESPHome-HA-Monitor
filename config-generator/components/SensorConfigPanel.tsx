@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SensorConfig, SensorConfigKey } from "@/types/config";
+import { IconSet, SensorConfig, SensorConfigKey } from "@/types/config";
 import IconPicker from "@/components/IconPicker";
 import { cydColorToCss, cssToCydColor } from "@/lib/colorUtils";
 
@@ -81,6 +81,7 @@ interface SensorConfigPanelProps {
   isExpanded: boolean;
   onToggle: () => void;
   onChange: (sensor: SensorConfig) => void;
+  iconSet?: IconSet;
 }
 
 export default function SensorConfigPanel({
@@ -89,6 +90,7 @@ export default function SensorConfigPanel({
   isExpanded,
   onToggle,
   onChange,
+  iconSet,
 }: SensorConfigPanelProps) {
   const [formatUnitForceCustom, setFormatUnitForceCustom] = useState(false);
 
@@ -268,6 +270,7 @@ export default function SensorConfigPanel({
                       onChange={(code) => updateField("icon", code)}
                       iconColor={sensor.iconColor}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      iconSet={iconSet}
                     />
                   </div>
                   <div className="shrink-0">
@@ -485,6 +488,7 @@ export default function SensorConfigPanel({
                       onChange={(code) => updateField("iconOn", code)}
                       iconColor={sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252")}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      iconSet={iconSet}
                     />
                   </div>
                 </div>
@@ -503,6 +507,7 @@ export default function SensorConfigPanel({
                       onChange={(code) => updateField("iconOff", code)}
                       iconColor={sensor.colorOff ?? "0x32CD32"}
                       buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      iconSet={iconSet}
                     />
                   </div>
                 </div>

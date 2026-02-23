@@ -96,7 +96,7 @@ font:${hideClock ? "" : `
     id: date_font
     size: 20
     glyphs: "0123456789/- abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`}
-  - file: "gfonts://Material Icons"
+  - file: "gfonts://${config.iconSet === 'material_symbols' ? 'Material Symbols' : 'Material Icons'}"
     id: icon_font
     size: 28
     glyphs: "\${icon_glyphs}"

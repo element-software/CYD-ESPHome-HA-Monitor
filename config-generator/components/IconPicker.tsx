@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { commonIcons, findIconByCode, iconCodeToLigature } from '@/lib/icons';
+import { commonIcons, findIconByCode, getIconFontClass, iconCodeToLigature } from '@/lib/icons';
 import { cydColorToCss } from '@/lib/colorUtils';
+import type { IconSet } from '@/types/config';
 
 interface IconPickerProps {
   value: string;
@@ -11,6 +12,8 @@ interface IconPickerProps {
   label?: string;
   /** Optional class for the trigger button (e.g. w-11 h-11 for square). */
   buttonClassName?: string;
+  /** Icon set for display (Material Design Icons vs Material Symbols). */
+  iconSet?: IconSet;
 }
 
 export default function IconPicker({
@@ -19,6 +22,7 @@ export default function IconPicker({
   label = 'Icon',
   iconColor = '0x888888',
   buttonClassName,
+  iconSet,
 }: IconPickerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -68,13 +72,13 @@ export default function IconPicker({
         >
           {selectedIcon ? (
               <span
-                className="material-icons text-2xl"
+                className={`${getIconFontClass(iconSet)} text-2xl`}
                 style={{ color: iconCssColor }}
               >
                 {iconCodeToLigature(value)}
               </span>
           ) : (
-            <span className="material-icons text-2xl" style={{ color: iconCssColor }}>
+            <span className={`${getIconFontClass(iconSet)} text-2xl`} style={{ color: iconCssColor }}>
               edit
             </span>
           )}
@@ -132,7 +136,7 @@ export default function IconPicker({
                             }`}
                             title={icon.name}
                           >
-                            <span className="material-icons text-2xl mb-0.5">{icon.ligature}</span>
+                            <span className={`${getIconFontClass(iconSet)} text-2xl mb-0.5`}>{icon.ligature}</span>
                             <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
                               {icon.name}
                             </span>

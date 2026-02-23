@@ -62,10 +62,15 @@ export type SensorConfigKey =
   | keyof LightSensorConfig
   | keyof SwitchSensorConfig;
 
+/** Icon font used in the UI and in generated ESPHome YAML. */
+export type IconSet = 'material_design_icons' | 'material_symbols';
+
 export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
   backlightPin?: string;
+  /** Icon set: Material Design Icons (legacy) or Material Symbols (Google Fonts). */
+  iconSet?: IconSet;
   sensors: SensorConfig[];
 }

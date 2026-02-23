@@ -1,6 +1,6 @@
 'use client';
 
-import { ConfigData } from '@/types/config';
+import { ConfigData, IconSet } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
 import BacklightPinSelect from './BacklightPinSelect';
 
@@ -12,8 +12,13 @@ interface DeviceSettingsCardProps {
 /** Default sensors for row 4 when Hide Clock is enabled (r4c1, r4c2). */
 const ROW4_DEFAULT_SENSORS = defaultConfig.sensors.slice(6, 8);
 
+const ICON_SET_OPTIONS: { value: IconSet; label: string; description: string }[] = [
+  { value: 'material_design_icons', label: 'Material Design Icons', description: 'Classic icon set (current)' },
+  { value: 'material_symbols', label: 'Material Symbols', description: 'Google Fonts icons (fonts.google.com/icons)' },
+];
+
 export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsCardProps) {
-  const update = (field: keyof ConfigData, value: string | boolean) => {
+  const update = (field: keyof ConfigData, value: string | boolean | IconSet) => {
     if (field === 'hideClock' && value === true && config.sensors.length < 8) {
       const extra = 8 - config.sensors.length;
       const newSensors = [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)];
@@ -73,6 +78,35 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
           value={config.backlightPin ?? 'GPIO21'}
           onChange={(pin) => update('backlightPin', pin)}
         />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Icon set
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            Icons shown in the preview and used in generated YAML.
+          </p>
+          <div className="flex flex-col gap-2">
+            {ICON_SET_OPTIONS.map((opt) => (
+              <label
+                key={opt.value}
+                className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50"
+              >
+                <input
+                  type="radio"
+                  name="iconSet"
+                  value={opt.value}
+                  checked={(config.iconSet ?? 'material_design_icons') === opt.value}
+                  onChange={() => update('iconSet', opt.value)}
+                  className="mt-1 text-blue-600 focus:ring-blue-500"
+                />
+                <div>
+                  <span className="text-sm font-medium text-gray-800">{opt.label}</span>
+                  <p className="text-xs text-gray-500">{opt.description}</p>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
