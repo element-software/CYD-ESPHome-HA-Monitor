@@ -78,14 +78,16 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
           value={config.backlightPin ?? 'GPIO21'}
           onChange={(pin) => update('backlightPin', pin)}
         />
-        <div>
+        <div className='flex flex-row gap-4 items-center'>
+          <div className='flex flex-col gap-2'>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Icon set
           </label>
           <p className="text-xs text-gray-500 mb-2">
             Icons shown in the preview and used in generated YAML.
           </p>
-          <div className="flex flex-col gap-2">
+          </div>
+          <div className="grid grid-cols-2 gap-2">
             {ICON_SET_OPTIONS.map((opt) => (
               <label
                 key={opt.value}
