@@ -88,7 +88,7 @@ export const defaultConfig: ConfigData = {
       type: 'sensor',
       entity: 'sensor.downstairs_hallway_humidity',
       label: 'Humidity',
-      icon: '\\uf87e',
+      icon: '\\ueb58',
       iconColor: '0x00BFFF',
       format: '%.0f%%',
       colorThreshHigh: '80',

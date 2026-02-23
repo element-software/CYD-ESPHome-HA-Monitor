@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { commonIcons, findIconByCode, getCodeForIconSet, getIconFontClass, getIconFontClassForIcon, iconCodeToLigature } from '@/lib/icons';
+import { findIconByCode, getCodeForIconSet, getIconFontClass, getIconsForSet, iconCodeToLigature } from '@/lib/icons';
 import { cydColorToCss } from '@/lib/colorUtils';
 import type { IconSet } from '@/types/config';
 
@@ -40,7 +40,8 @@ export default function IconPicker({
     setIsOpen(false);
   };
 
-  const handleSelect = (icon: (typeof commonIcons)[number]) => {
+  const iconsForSet = getIconsForSet(iconSet);
+  const handleSelect = (icon: (typeof iconsForSet)[number]) => {
     onChange(getCodeForIconSet(icon, iconSet));
     close();
   };
@@ -111,7 +112,7 @@ export default function IconPicker({
             <div className="p-4 overflow-y-auto flex-1 min-h-0">
               {(() => {
                 const query = search.toLowerCase();
-                const filtered = commonIcons.filter(
+                const filtered = iconsForSet.filter(
                   (i) => i.name.toLowerCase().includes(query) || i.category.toLowerCase().includes(query)
                 );
                 const categories = Array.from(new Set(filtered.map((i) => i.category)));
@@ -136,7 +137,7 @@ export default function IconPicker({
                             }`}
                             title={icon.name}
                           >
-                            <span className={`${getIconFontClassForIcon(icon, iconSet)} text-2xl mb-0.5`}>{icon.ligature}</span>
+                            <span className={`${getIconFontClass(iconSet)} text-2xl mb-0.5`}>{icon.ligature}</span>
                             <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
                               {icon.name}
                             </span>

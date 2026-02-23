@@ -97,3 +97,11 @@ export function getIconFontClassForIcon(
 
 /** All icons from both Material Design Icons and Material Symbols (generated). */
 export const commonIcons: GeneratedIcon[] = COMMON_ICONS;
+
+/** Icons that exist in the given set only (for picker filtering). */
+export function getIconsForSet(iconSet: IconSet | undefined): GeneratedIcon[] {
+  if (iconSet === 'material_symbols') {
+    return COMMON_ICONS.filter((i) => i.codeSymbols && iconCodeToHex(i.codeSymbols) !== '');
+  }
+  return COMMON_ICONS.filter((i) => i.codeMdi && iconCodeToHex(i.codeMdi) !== '');
+}
