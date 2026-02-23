@@ -65,12 +65,39 @@ export type SensorConfigKey =
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';
 
+/** Board/variant: SPI touch (XPT2046), I2C touch (CST816), or custom pins. */
+export type DeviceVariant = 'spi_touch' | 'i2c_touch' | 'custom';
+
+/** All GPIO pin mappings for display, touch, and I2C (when used). */
+export interface DevicePins {
+  backlightPin: string;
+  tftClk: string;
+  tftMosi: string;
+  tftMiso: string;
+  tftCs: string;
+  tftDc: string;
+  /** SPI touch (XPT2046) pins; set when variant is spi_touch or custom with SPI touch. */
+  touchSpiClk?: string;
+  touchSpiMosi?: string;
+  touchSpiMiso?: string;
+  touchSpiCs?: string;
+  /** I2C + CST816 pins; set when variant is i2c_touch or custom with I2C touch. */
+  i2cSda?: string;
+  i2cScl?: string;
+  touchReset?: string;
+}
+
 export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  /** @deprecated Use devicePins.backlightPin. Kept for migration. */
   backlightPin?: string;
   /** Icon set: Material Design Icons (legacy) or Material Symbols (Google Fonts). */
   iconSet?: IconSet;
+  /** Board variant; when set, devicePins should match preset or user customisation. */
+  deviceVariant?: DeviceVariant;
+  /** Full pin map; used for YAML and for custom variant. */
+  devicePins?: DevicePins;
   sensors: SensorConfig[];
 }

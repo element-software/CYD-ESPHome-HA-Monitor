@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { ConfigData, IconSet } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
-import BacklightPinSelect from './BacklightPinSelect';
+import { getEffectivePins } from '@/lib/devicePresets';
+import DeviceGpioModal from './DeviceGpioModal';
 
 interface DeviceSettingsCardProps {
   config: ConfigData;
@@ -18,6 +20,14 @@ const ICON_SET_OPTIONS: { value: IconSet; label: string; description: string }[]
 ];
 
 export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsCardProps) {
+  const [gpioModalOpen, setGpioModalOpen] = useState(false);
+  const pins = getEffectivePins(config);
+  const variantLabel = config.deviceVariant === 'i2c_touch'
+    ? 'I2C touch'
+    : config.deviceVariant === 'custom'
+      ? 'Custom'
+      : 'SPI touch';
+
   const update = (field: keyof ConfigData, value: string | boolean | IconSet) => {
     if (field === 'hideClock' && value === true && config.sensors.length < 8) {
       const extra = 8 - config.sensors.length;
@@ -74,10 +84,30 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             <p className="text-xs text-gray-500">Adds an extra row for a 4x2 sensor grid</p>
           </div>
         </div>
-        <BacklightPinSelect
-          value={config.backlightPin ?? 'GPIO21'}
-          onChange={(pin) => update('backlightPin', pin)}
-        />
+        <div className='flex flex-row gap-2'>
+          <div className='flex flex-col gap-2'>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Device GPIO config
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            Board variant and pin mappings for display and touch.
+          </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setGpioModalOpen(true)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left text-gray-700 flex items-center justify-between"
+          >
+            <span>{variantLabel} • {pins.backlightPin} backlight</span>
+            <span className="text-gray-400">Edit</span>
+          </button>
+          <DeviceGpioModal
+            config={config}
+            onChange={onChange}
+            open={gpioModalOpen}
+            onClose={() => setGpioModalOpen(false)}
+          />
+        </div>
         <div className='flex flex-row gap-4 items-center'>
           <div className='flex flex-col gap-2'>
           <label className="block text-sm font-medium text-gray-700 mb-1">

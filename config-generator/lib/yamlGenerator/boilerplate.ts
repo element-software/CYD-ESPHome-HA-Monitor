@@ -1,7 +1,65 @@
 import type { ConfigData } from "@/types/config";
+import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
 
 export function generateBoilerplate(config: ConfigData): string {
   const { deviceName, friendlyName, hideClock } = config;
+  const p = getEffectivePins(config);
+  const useSpiTouch = isSpiTouch(p);
+  const useI2cTouch = isI2cTouch(p);
+
+  const spiTouchBlock =
+    useSpiTouch
+      ? `
+  - id: touch
+    clk_pin: ${p.touchSpiClk}
+    mosi_pin: ${p.touchSpiMosi}
+    miso_pin: ${p.touchSpiMiso}`
+      : "";
+
+  const i2cBlock =
+    useI2cTouch
+      ? `
+i2c:
+  sda: ${p.i2cSda}
+  scl: ${p.i2cScl}
+  scan: true
+`
+      : "";
+
+  const touchscreenBlock = useSpiTouch
+    ? `
+touchscreen:
+  platform: xpt2046
+  id: my_touchscreen
+  spi_id: touch
+  cs_pin: ${p.touchSpiCs}
+  calibration:
+    x_min: 220
+    x_max: 3756
+    y_min: 394
+    y_max: 3749
+  transform:
+    swap_xy: false
+    mirror_x: true
+    mirror_y: false
+  on_touch:
+    - lambda: |-
+        ESP_LOGI("touch", "Touch at LVGL (%d, %d)", touch.x, touch.y);
+`
+    : useI2cTouch
+      ? `
+touchscreen:
+  platform: cst816
+  id: my_touchscreen
+  display: my_display
+  reset_pin: ${p.touchReset}
+  update_interval: 50ms
+  transform:
+    swap_xy: false
+    mirror_x: false
+    mirror_y: false
+`
+      : "";
 
   return `
 # ==============================================================================
@@ -37,26 +95,23 @@ captive_portal:
 
 output:
   - platform: ledc
-    pin: ${config.backlightPin ?? 'GPIO21'}
+    pin: ${p.backlightPin}
     id: backlight_pwm
-
+${i2cBlock}
 spi:
   - id: tft
-    clk_pin: GPIO14
-    mosi_pin: GPIO13
-    miso_pin: GPIO12
-  - id: touch
-    clk_pin: GPIO25
-    mosi_pin: GPIO32
-    miso_pin: GPIO39
+    clk_pin: ${p.tftClk}
+    mosi_pin: ${p.tftMosi}
+    miso_pin: ${p.tftMiso}
+${spiTouchBlock}
 
 display:
   - platform: ili9xxx
     id: my_display
     model: ILI9341
     spi_id: tft
-    cs_pin: GPIO15
-    dc_pin: GPIO2
+    cs_pin: ${p.tftCs}
+    dc_pin: ${p.tftDc}
     auto_clear_enabled: false
     invert_colors: false
     color_order: RGB
@@ -67,24 +122,7 @@ display:
       swap_xy: true
       mirror_y: true
       mirror_x: true
-
-touchscreen:
-  platform: xpt2046
-  id: my_touchscreen
-  spi_id: touch
-  cs_pin: GPIO33
-  calibration:
-    x_min: 220
-    x_max: 3756
-    y_min: 394
-    y_max: 3749
-  transform:
-    swap_xy: false
-    mirror_x: true
-    mirror_y: false
-  on_touch:
-    - lambda: |-
-        ESP_LOGI("touch", "Touch at LVGL (%d, %d)", touch.x, touch.y);
+${touchscreenBlock}
 
 # --- FONTS ---
 font:${hideClock ? "" : `

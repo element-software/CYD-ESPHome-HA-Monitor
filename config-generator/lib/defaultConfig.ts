@@ -1,9 +1,12 @@
 import { ConfigData } from '@/types/config';
+import { SPI_TOUCH_PINS } from './devicePresets';
 
 export const defaultConfig: ConfigData = {
   deviceName: 'hamon',
   friendlyName: 'HAMon',
   hideClock: false,
+  deviceVariant: 'spi_touch',
+  devicePins: { ...SPI_TOUCH_PINS },
   sensors: [
     {
       id: 'r1c1',
