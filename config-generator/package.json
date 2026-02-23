@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "generate:icons": "node scripts/generate-icons.mjs",
     "deploy": "npm run build && gh-pages -d .next -b gh-pages -r https://github.com/element-software/CYD-ESPHome-HA-Monitor.git"
   },
   "dependencies": {

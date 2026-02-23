@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { commonIcons, findIconByCode, getIconFontClass, iconCodeToLigature } from '@/lib/icons';
+import { commonIcons, findIconByCode, getCodeForIconSet, getIconFontClass, getIconFontClassForIcon, iconCodeToLigature } from '@/lib/icons';
 import { cydColorToCss } from '@/lib/colorUtils';
 import type { IconSet } from '@/types/config';
 
@@ -40,8 +40,8 @@ export default function IconPicker({
     setIsOpen(false);
   };
 
-  const handleSelect = (code: string) => {
-    onChange(code);
+  const handleSelect = (icon: (typeof commonIcons)[number]) => {
+    onChange(getCodeForIconSet(icon, iconSet));
     close();
   };
 
@@ -75,7 +75,7 @@ export default function IconPicker({
                 className={`${getIconFontClass(iconSet)} text-2xl`}
                 style={{ color: iconCssColor }}
               >
-                {iconCodeToLigature(value)}
+                {iconCodeToLigature(value, iconSet)}
               </span>
           ) : (
             <span className={`${getIconFontClass(iconSet)} text-2xl`} style={{ color: iconCssColor }}>
@@ -94,7 +94,7 @@ export default function IconPicker({
           }}
         >
           <div
-            className="w-[min(90vw,36rem)] max-h-[85vh] rounded-xl shadow-xl border-0 overflow-hidden bg-white flex flex-col"
+            className="w-full h-full rounded-xl shadow-xl border-0 overflow-hidden bg-white flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-gray-200 bg-gray-50 shrink-0">
@@ -121,14 +121,14 @@ export default function IconPicker({
                 return categories.map((cat) => (
                   <div key={cat} className="mb-4">
                     <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{cat}</h4>
-                    <div className="grid grid-cols-5 sm:grid-cols-6 gap-1.5">
+                    <div className="grid grid-cols-5 sm:grid-cols-8 gap-1.5">
                       {filtered.filter((i) => i.category === cat).map((icon) => {
-                        const isSelected = findIconByCode(value)?.code === icon.code;
+                        const isSelected = findIconByCode(value)?.ligature === icon.ligature;
                         return (
                           <button
-                            key={icon.code}
+                            key={icon.ligature}
                             type="button"
-                            onClick={() => handleSelect(icon.code)}
+                            onClick={() => handleSelect(icon)}
                             className={`flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-colors ${
                               isSelected
                                 ? 'border-blue-500 bg-blue-50 text-blue-700'
@@ -136,7 +136,7 @@ export default function IconPicker({
                             }`}
                             title={icon.name}
                           >
-                            <span className={`${getIconFontClass(iconSet)} text-2xl mb-0.5`}>{icon.ligature}</span>
+                            <span className={`${getIconFontClassForIcon(icon, iconSet)} text-2xl mb-0.5`}>{icon.ligature}</span>
                             <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
                               {icon.name}
                             </span>

@@ -161,7 +161,7 @@ function SensorCell({
         }}
         title={sensor.label || iconCode}
       >
-        {iconCodeToLigature(iconCode)}
+        {iconCodeToLigature(iconCode, iconSet)}
       </span>
       <div className="flex flex-col min-w-0 flex-1">
         <span
