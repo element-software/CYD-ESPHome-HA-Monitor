@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import '@material-design-icons/font/index.css'
+import CookieConsentManager from '@/components/CookieConsentManager'
 export const metadata: Metadata = {
   title: 'CYD HAMon Config Generator',
   description: 'Generate ESPHome YAML configurations for CYD Home Assistant Monitor',
@@ -19,7 +20,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <CookieConsentManager />
+      </body>
     </html>
   )
 }

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function PageFooter() {
   return (
     <footer className="mt-12 border-t border-gray-200 pt-6 pb-8">
@@ -43,6 +45,13 @@ export default function PageFooter() {
         >
           Looking for a smart home expert?
         </a>
+        <span className="hidden sm:inline text-gray-300">|</span>
+        <Link
+          href="/privacy-policy"
+          className="hover:text-gray-900 transition-colors"
+        >
+          Privacy Policy
+        </Link>
       </div>
     </footer>
   );
