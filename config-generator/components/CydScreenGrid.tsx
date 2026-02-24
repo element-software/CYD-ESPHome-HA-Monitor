@@ -99,11 +99,13 @@ function SensorCell({
   isOn,
   onToggle,
   iconSet,
+  buttonRadius = 0,
 }: {
   sensor: SensorConfig;
   isOn: boolean;
   onToggle?: () => void;
   iconSet?: IconSet;
+  buttonRadius?: number;
 }) {
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch';
   const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch') && isOn;
@@ -147,8 +149,13 @@ function SensorCell({
 
   return (
     <div
-      className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin] rounded-sm${canToggle ? ' cursor-pointer' : ''}`}
-      style={{ backgroundColor: isToggleableOn ? '#FFA500' : 'transparent' }}
+      className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]${canToggle ? ' cursor-pointer' : ''}`}
+      style={{
+        backgroundColor: isToggleableOn ? '#FFA500' : 'transparent',
+        // ESPHome radius is in px on a 240px-wide display; the clock font is 48px = 16cqmin,
+        // so 1cqmin ≈ 3 ESPHome pixels → divide px radius by 3 to get cqmin.
+        borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',
+      }}
       onClick={canToggle ? onToggle : undefined}
     >
       <span
@@ -213,6 +220,7 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
             isOn={toggledOn.has(sensor.id)}
             onToggle={() => toggle(sensor.id)}
             iconSet={config.iconSet}
+            buttonRadius={config.buttonRadius ?? 0}
           />
         ))}
       </div>

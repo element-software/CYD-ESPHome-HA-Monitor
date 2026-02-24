@@ -28,7 +28,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
       ? 'Custom'
       : 'SPI touch';
 
-  const update = (field: keyof ConfigData, value: string | boolean | IconSet) => {
+  const update = (field: keyof ConfigData, value: string | boolean | IconSet | number) => {
     if (field === 'hideClock' && value === true && config.sensors.length < 8) {
       const extra = 8 - config.sensors.length;
       const newSensors = [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)];
@@ -107,6 +107,29 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             open={gpioModalOpen}
             onClose={() => setGpioModalOpen(false)}
           />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Button Corner Radius
+          </label>
+          <p className="text-xs text-gray-500">
+            Corner radius of sensor buttons (0 = square, 34 = fully rounded). Applied in generated YAML.
+          </p>
+          <div className="flex items-center gap-3">
+            <input
+              type="range"
+              min={0}
+              max={34}
+              step={1}
+              value={config.buttonRadius ?? 0}
+              onChange={(e) => update('buttonRadius', parseInt(e.target.value, 10))}
+              className="flex-1 accent-blue-600"
+              aria-label="Button corner radius"
+            />
+            <span className="text-sm font-mono w-8 text-right text-gray-700">
+              {config.buttonRadius ?? 0}
+            </span>
+          </div>
         </div>
         <div className='flex flex-row gap-4 items-center'>
           <div className='flex flex-col gap-2'>

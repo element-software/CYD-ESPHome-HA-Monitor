@@ -5,6 +5,7 @@ export function generateLvglWidget(
   row: number,
   col: number,
   hideClock: boolean,
+  buttonRadius: number = 0,
 ): string {
   if (!sensor) return "";
 
@@ -37,7 +38,7 @@ export function generateLvglWidget(
             bg_opa: TRANSP
             border_width: 0
             shadow_width: 0
-            radius: 0
+            radius: ${buttonRadius}
             scrollbar_mode: "OFF"${isToggleable ? onClickBlock : ""}
             ${isToggleable ? checkedStyling : ""}
             widgets:
@@ -93,13 +94,14 @@ export function generateLvglConfig(
   sensors: SensorConfig[],
   getSensor: (id: string) => SensorConfig | undefined,
   hideClock: boolean,
+  buttonRadius: number = 0,
 ): string {
   const clockWidgets = getClockWidgets(hideClock);
   const row4Widgets = hideClock
     ? `
 
-        # ====== ROW 4 ======${generateLvglWidget(getSensor("r4c1"), 4, 1, hideClock)}
-${generateLvglWidget(getSensor("r4c2"), 4, 2, hideClock)}`
+        # ====== ROW 4 ======${generateLvglWidget(getSensor("r4c1"), 4, 1, hideClock, buttonRadius)}
+${generateLvglWidget(getSensor("r4c2"), 4, 2, hideClock, buttonRadius)}`
     : "";
 
   return `
@@ -113,13 +115,13 @@ lvgl:
     - id: main_page
       bg_color: 0x000000
       widgets:${clockWidgets}
-        # ====== ROW 1 ======${generateLvglWidget(getSensor("r1c1"), 1, 1, hideClock)}
-${generateLvglWidget(getSensor("r1c2"), 1, 2, hideClock)}
+        # ====== ROW 1 ======${generateLvglWidget(getSensor("r1c1"), 1, 1, hideClock, buttonRadius)}
+${generateLvglWidget(getSensor("r1c2"), 1, 2, hideClock, buttonRadius)}
 
-        # ====== ROW 2 ======${generateLvglWidget(getSensor("r2c1"), 2, 1, hideClock)}
-${generateLvglWidget(getSensor("r2c2"), 2, 2, hideClock)}
+        # ====== ROW 2 ======${generateLvglWidget(getSensor("r2c1"), 2, 1, hideClock, buttonRadius)}
+${generateLvglWidget(getSensor("r2c2"), 2, 2, hideClock, buttonRadius)}
 
-        # ====== ROW 3 ======${generateLvglWidget(getSensor("r3c1"), 3, 1, hideClock)}
-${generateLvglWidget(getSensor("r3c2"), 3, 2, hideClock)}${row4Widgets}
+        # ====== ROW 3 ======${generateLvglWidget(getSensor("r3c1"), 3, 1, hideClock, buttonRadius)}
+${generateLvglWidget(getSensor("r3c2"), 3, 2, hideClock, buttonRadius)}${row4Widgets}
 `;
 }
