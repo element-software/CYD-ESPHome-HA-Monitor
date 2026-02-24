@@ -43,7 +43,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
         {/* Device frame on top: rotated 90° so device appears in portrait */}
         {!imageError ? (
           <img
-            src="https://element-software.github.io/CYD-ESPHome-HA-Monitor/cyd-device.png"
+            src="/cyd-device.png"
             alt="CYD device preview"
             className="absolute inset-0 w-full h-full object-contain z-0 pointer-events-none -rotate-90"
             onError={() => setImageError(true)}
