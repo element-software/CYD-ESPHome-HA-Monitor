@@ -184,14 +184,12 @@ export default function PrivacyPolicy() {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">10. Contact</h2>
             <p>
               If you have any questions about this Privacy Policy or wish to exercise your data
-              rights, please contact us via{' '}
+              rights, please contact us at{' '}
               <a
-                href="https://element-software.co.uk"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:info@cheapyellowdisplay.co.uk"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
-                element-software.co.uk
+                info@cheapyellowdisplay.co.uk
               </a>
               .
             </p>
