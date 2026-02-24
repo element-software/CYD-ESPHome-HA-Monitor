@@ -47,31 +47,36 @@ export default function CookieConsentManager() {
       )}
 
       {showBanner && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-          <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <p className="text-sm text-gray-600 flex-1">
-              We use cookies to analyse site usage and improve your experience. No personal
-              information is collected.{' '}
+        <>
+          {/* Backdrop */}
+          <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" aria-hidden="true" />
+
+          {/* Banner — bottom right */}
+          <div className="fixed bottom-4 right-4 z-50 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-2">🍪 Cookie Preferences</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              We use analytics cookies to understand how the site is used and improve your
+              experience. No personal information is collected.{' '}
               <Link href="/privacy-policy" className="underline hover:text-gray-900 transition-colors">
                 Privacy Policy
               </Link>
             </p>
-            <div className="flex gap-3 shrink-0">
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={accept}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Accept cookies
+              </button>
               <button
                 onClick={decline}
-                className="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
                 Decline
               </button>
-              <button
-                onClick={accept}
-                className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
-              >
-                Accept
-              </button>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
