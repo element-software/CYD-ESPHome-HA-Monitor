@@ -22,7 +22,9 @@ Monitor 6 Home Assistant entities at a glance — binary sensors (doors, motion)
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
 - **Easy Configuration:** All entities, icons, labels, colours, and state messages are defined in the `substitutions:` block — no need to touch any code.
 - **Instant State:** Binary sensors display their current state immediately on boot using `publish_initial_state`.
-- **Google Fonts:** Uses Roboto and Material Icons, downloaded automatically.
+- **Google Fonts:** Uses Roboto and either Material Design Icons or Material Symbols, downloaded automatically.
+- **Icon Picker:** The YAML generator includes a built-in icon picker — browse and select icons visually from either **Material Design Icons** or **Material Symbols** without needing to look up any hex codes.
+- **Device GPIO Presets:** Choose from 2 built-in board presets (**SPI touch / XPT2046** and **I2C touch / CST816**), or configure every GPIO pin manually for custom hardware.
 
 ## 🛠️ Hardware
 
@@ -103,7 +105,8 @@ A web-based configuration generator is available in the `config-generator/` dire
 
 ### Features
 - Visual sensor configuration
-- Icon selection from Material Icons
+- Icon picker with support for **Material Design Icons** and **Material Symbols**
+- Device GPIO preset selection (SPI touch / I2C touch / custom)
 - Color customization
 - Real-time YAML generation
 - One-click copy to clipboard
@@ -175,13 +178,27 @@ substitutions:
 
 ## 🎨 How to Change Icons
 
-This project uses **Google Material Icons**.
+This project supports two icon sets that you can choose between in the YAML generator:
 
-1. Go to [Google Material Symbols](https://fonts.google.com/icons).
-2. Find an icon you like.
-3. Click on it and look for the **Codepoint** (e.g., `EA0B`).
-4. Convert to lowercase and prefix with `\u` in your YAML config (e.g., `\uea0b`).
-5. **Important:** Add each **unique** icon to the `icon_glyphs` substitution. If you use the same icon for multiple sensors (e.g., same door icon for front door and back door), only include it once in `icon_glyphs` to avoid "duplicate glyph" errors.
+- **Material Design Icons** — classic community icon set (default)
+- **Material Symbols** — Google's icon set ([fonts.google.com/icons](https://fonts.google.com/icons))
+
+### Using the Icon Picker (recommended)
+
+The easiest way to pick an icon is through the [YAML generator](https://element-software.github.io/CYD-ESPHome-HA-Monitor/):
+
+1. Select your preferred **Icon set** in the Device Settings panel.
+2. Click the icon button next to any sensor slot — this opens the built-in **icon picker**.
+3. Browse by category or type to search by name.
+4. Click any icon to select it — the correct code is inserted automatically.
+
+No need to look up hex codepoints manually!
+
+### Manual icon codes
+
+If you prefer to edit the YAML directly, icons are specified as Unicode escape sequences in the `substitutions:` block. The codepoint can be found on [fonts.google.com/icons](https://fonts.google.com/icons) — convert it to lowercase and prefix with `\u` (e.g., `\uea0b`).
+
+> **Important:** Add each **unique** icon to the `icon_glyphs` substitution. If you use the same icon for multiple sensors (e.g., the same door icon for front door and back door), only include it once in `icon_glyphs` to avoid "duplicate glyph" errors.
 
 **Example:**
 ```yaml
