@@ -91,6 +91,8 @@ export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  /** Corner radius for sensor buttons (px). 0 = square corners. Max useful value is 34. */
+  buttonRadius?: number;
   /** @deprecated Use devicePins.backlightPin. Kept for migration. */
   backlightPin?: string;
   /** Icon set: Material Design Icons (legacy) or Material Symbols (Google Fonts). */

@@ -37,7 +37,7 @@ export function generateYaml(config: ConfigData): string {
     generateHeader() +
     generateSubstitutions(config, sensors, getSensor) +
     generateBoilerplate(config) +
-    generateLvglConfig(sensors, getSensor, hideClock ?? false) +
+    generateLvglConfig(sensors, getSensor, hideClock ?? false, config.buttonRadius ?? 0) +
     generateBinarySensorConfig(binarySensors, lightSensors) +
     generateSwitchSensorConfig(switchSensors) +
     generateLightConfig() +
