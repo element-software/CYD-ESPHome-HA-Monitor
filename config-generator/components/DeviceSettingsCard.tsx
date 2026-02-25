@@ -1,26 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import { ConfigData, IconSet } from '@/types/config';
-import { defaultConfig } from '@/lib/defaultConfig';
+import { ConfigData } from '@/types/config';
 import { getEffectivePins } from '@/lib/devicePresets';
 import DeviceGpioModal from './DeviceGpioModal';
+import DisplaySettingsModal from './DisplaySettingsModal';
 
 interface DeviceSettingsCardProps {
   config: ConfigData;
   onChange: (config: ConfigData) => void;
 }
 
-/** Default sensors for row 4 when Hide Clock is enabled (r4c1, r4c2). */
-const ROW4_DEFAULT_SENSORS = defaultConfig.sensors.slice(6, 8);
-
-const ICON_SET_OPTIONS: { value: IconSet; label: string; description: string }[] = [
-  { value: 'material_design_icons', label: 'Material Design Icons', description: 'Classic icon set (current)' },
-  { value: 'material_symbols', label: 'Material Symbols', description: 'Google Fonts icons (fonts.google.com/icons)' },
-];
+function ChevronRight() {
+  return (
+    <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
 
 export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsCardProps) {
   const [gpioModalOpen, setGpioModalOpen] = useState(false);
+  const [displayModalOpen, setDisplayModalOpen] = useState(false);
+
   const pins = getEffectivePins(config);
   const variantLabel = config.deviceVariant === 'i2c_touch'
     ? 'I2C touch'
@@ -28,141 +30,82 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
       ? 'Custom'
       : 'SPI touch';
 
-  const update = (field: keyof ConfigData, value: string | boolean | IconSet | number) => {
-    if (field === 'hideClock' && value === true && config.sensors.length < 8) {
-      const extra = 8 - config.sensors.length;
-      const newSensors = [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)];
-      onChange({ ...config, hideClock: true, sensors: newSensors });
-      return;
-    }
-    onChange({ ...config, [field]: value });
-  };
+  const iconSetLabel = (config.iconSet ?? 'material_design_icons') === 'material_symbols'
+    ? 'Material Symbols'
+    : 'Material Design Icons';
+
+  const displaySummary = [
+    config.hideClock ? 'No clock' : 'With clock',
+    `Radius ${config.buttonRadius ?? 0}`,
+    iconSetLabel,
+  ].join(' · ');
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-        Device Settings
-      </h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Device Settings</h2>
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Device Name
-          </label>
-          <input
-            type="text"
-            value={config.deviceName}
-            onChange={(e) => update('deviceName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="hamon"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Friendly Name
-          </label>
-          <input
-            type="text"
-            value={config.friendlyName}
-            onChange={(e) => update('friendlyName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="HAMon"
-          />
-        </div>
-        <div className="flex items-center gap-3 pt-2">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={config.hideClock ?? false}
-              onChange={(e) => update('hideClock', e.target.checked)}
-              className="sr-only peer"
-              aria-label="Hide Clock"
-            />
-            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
-          </label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <span className="text-sm font-medium text-gray-700">Hide Clock</span>
-            <p className="text-xs text-gray-500">Adds an extra row for a 4x2 sensor grid</p>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Device Name</label>
+            <input
+              type="text"
+              value={config.deviceName}
+              onChange={(e) => onChange({ ...config, deviceName: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="hamon"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Friendly Name</label>
+            <input
+              type="text"
+              value={config.friendlyName}
+              onChange={(e) => onChange({ ...config, friendlyName: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="HAMon"
+            />
           </div>
         </div>
-        <div className='flex flex-row gap-2'>
-          <div className='flex flex-col gap-2'>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Device GPIO config
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            Board variant and pin mappings for display and touch.
-          </p>
-          </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => setGpioModalOpen(true)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left text-gray-700 flex items-center justify-between"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left flex items-center justify-between gap-2 transition-colors"
           >
-            <span>{variantLabel} • {pins.backlightPin} backlight</span>
-            <span className="text-gray-400">Edit</span>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-700">GPIO Config</p>
+              <p className="text-xs text-gray-500 truncate">{variantLabel} · {pins.backlightPin} backlight</p>
+            </div>
+            <ChevronRight />
           </button>
-          <DeviceGpioModal
-            config={config}
-            onChange={onChange}
-            open={gpioModalOpen}
-            onClose={() => setGpioModalOpen(false)}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Button Corner Radius
-          </label>
-          <p className="text-xs text-gray-500">
-            Corner radius of sensor buttons (0 = square, 34 = fully rounded). Applied in generated YAML.
-          </p>
-          <div className="flex items-center gap-3">
-            <input
-              type="range"
-              min={0}
-              max={34}
-              step={1}
-              value={config.buttonRadius ?? 0}
-              onChange={(e) => update('buttonRadius', parseInt(e.target.value, 10))}
-              className="flex-1 accent-blue-600"
-              aria-label="Button corner radius"
-            />
-            <span className="text-sm font-mono w-8 text-right text-gray-700">
-              {config.buttonRadius ?? 0}
-            </span>
-          </div>
-        </div>
-        <div className='flex flex-row gap-4 items-center'>
-          <div className='flex flex-col gap-2'>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Icon set
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            Icons shown in the preview and used in generated YAML.
-          </p>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {ICON_SET_OPTIONS.map((opt) => (
-              <label
-                key={opt.value}
-                className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50"
-              >
-                <input
-                  type="radio"
-                  name="iconSet"
-                  value={opt.value}
-                  checked={(config.iconSet ?? 'material_design_icons') === opt.value}
-                  onChange={() => update('iconSet', opt.value)}
-                  className="mt-1 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-medium text-gray-800">{opt.label}</span>
-                  <p className="text-xs text-gray-500">{opt.description}</p>
-                </div>
-              </label>
-            ))}
-          </div>
+
+          <button
+            type="button"
+            onClick={() => setDisplayModalOpen(true)}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left flex items-center justify-between gap-2 transition-colors"
+          >
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-700">Display Settings</p>
+              <p className="text-xs text-gray-500 truncate">{displaySummary}</p>
+            </div>
+            <ChevronRight />
+          </button>
         </div>
       </div>
+
+      <DeviceGpioModal
+        config={config}
+        onChange={onChange}
+        open={gpioModalOpen}
+        onClose={() => setGpioModalOpen(false)}
+      />
+      <DisplaySettingsModal
+        config={config}
+        onChange={onChange}
+        open={displayModalOpen}
+        onClose={() => setDisplayModalOpen(false)}
+      />
     </div>
   );
 }
