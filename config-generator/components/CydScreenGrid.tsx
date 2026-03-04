@@ -82,16 +82,36 @@ function formatSampleFromFormat(format: string | undefined): string {
   return numStr + suffixDisplay;
 }
 
-/** Return threshold-based color for a numeric sensor value (high > mid > low). */
+/** Return threshold-based color for a numeric sensor value. */
 function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): string {
+  const fallback = sensor.iconColor ?? '0x32CD32';
+  if (sensor.thresholds && sensor.thresholds.length > 0) {
+    for (const t of sensor.thresholds) {
+      const tv = parseFloat(t.value);
+      if (Number.isFinite(tv) && value > tv) return t.color ?? fallback;
+    }
+    return sensor.thresholds[sensor.thresholds.length - 1].color ?? fallback;
+  }
+  // Legacy fallback
   const high = parseFloat(sensor.colorThreshHigh ?? '');
   const mid = parseFloat(sensor.colorThreshMid ?? '');
   const low = parseFloat(sensor.colorThreshLow ?? '');
-  const fallback = sensor.iconColor ?? '0x32CD32';
   if (Number.isFinite(high) && value > high) return sensor.colorHigh ?? fallback;
   if (Number.isFinite(mid) && value > mid) return sensor.colorMid ?? fallback;
   if (Number.isFinite(low) && value > low) return sensor.colorLow ?? fallback;
   return sensor.colorLow ?? fallback;
+}
+
+/** Return threshold-based icon code for a numeric sensor value. */
+function getThresholdIconForValue(sensor: NumericSensorConfig, value: number): string {
+  if (sensor.thresholds && sensor.thresholds.length > 0) {
+    for (const t of sensor.thresholds) {
+      const tv = parseFloat(t.value);
+      if (Number.isFinite(tv) && value > tv) return t.icon ?? sensor.icon;
+    }
+    return sensor.thresholds[sensor.thresholds.length - 1].icon ?? sensor.icon;
+  }
+  return sensor.icon;
 }
 
 function SensorCell({
@@ -112,7 +132,7 @@ function SensorCell({
 
   const iconCode =
     sensor.type === 'sensor'
-      ? sensor.icon
+      ? getThresholdIconForValue(sensor, getSampleValueFromFormat(sensor.format))
       : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');

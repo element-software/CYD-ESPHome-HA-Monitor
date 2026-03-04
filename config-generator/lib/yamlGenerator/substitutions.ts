@@ -5,7 +5,11 @@ export function collectUniqueIconGlyphs(sensors: SensorConfig[]): string {
   const allIconCodes = sensors.flatMap((s) => {
     if (s.type === "binary" || s.type === "light" || s.type === "switch")
       return [s.iconOn, s.iconOff].filter(Boolean) as string[];
-    return [s.icon];
+    const icons: string[] = [s.icon];
+    s.thresholds?.forEach((t) => {
+      if (t.icon) icons.push(t.icon);
+    });
+    return icons;
   });
   return Array.from(
     new Set(
@@ -30,24 +34,37 @@ export function generateSensorSubstitutions(
     lines.push(`  ${sensor.id}_icon: "${iconCodeToHexEscape(sensor.icon)}"`);
     lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
     lines.push(`  ${sensor.id}_format: '${sensor.format || "%.0f"}'`);
-    lines.push(
-      `  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || "100"}"`,
-    );
-    lines.push(
-      `  ${sensor.id}_color_thresh_mid: "${sensor.colorThreshMid || "50"}"`,
-    );
-    lines.push(
-      `  ${sensor.id}_color_thresh_low: "${sensor.colorThreshLow || "0"}"`,
-    );
-    lines.push(
-      `  ${sensor.id}_color_high: "${sensor.colorHigh || "0xFF0000"}"`,
-    );
-    lines.push(
-      `  ${sensor.id}_color_mid: "${sensor.colorMid || "0xFFA500"}"`,
-    );
-    lines.push(
-      `  ${sensor.id}_color_low: "${sensor.colorLow || "0x32CD32"}"`,
-    );
+
+    if (sensor.thresholds && sensor.thresholds.length > 0) {
+      const hasIcons = sensor.thresholds.some((t) => t.icon);
+      sensor.thresholds.forEach((t, i) => {
+        lines.push(`  ${sensor.id}_thresh_${i}: "${t.value}"`);
+        lines.push(`  ${sensor.id}_thresh_${i}_color: "${t.color}"`);
+        if (hasIcons) {
+          const iconHex = iconCodeToHexEscape(t.icon ?? sensor.icon);
+          lines.push(`  ${sensor.id}_thresh_${i}_icon: "${iconHex}"`);
+        }
+      });
+    } else {
+      lines.push(
+        `  ${sensor.id}_color_thresh_high: "${sensor.colorThreshHigh || "100"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_thresh_mid: "${sensor.colorThreshMid || "50"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_thresh_low: "${sensor.colorThreshLow || "0"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_high: "${sensor.colorHigh || "0xFF0000"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_mid: "${sensor.colorMid || "0xFFA500"}"`,
+      );
+      lines.push(
+        `  ${sensor.id}_color_low: "${sensor.colorLow || "0x32CD32"}"`,
+      );
+    }
   } else {
     const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? "");
     const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? "");

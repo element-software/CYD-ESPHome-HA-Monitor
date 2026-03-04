@@ -1,6 +1,46 @@
-import type { SensorConfig } from "@/types/config";
+import type { NumericSensorConfig, SensorConfig } from "@/types/config";
+
+function generateColorLambda(sensor: NumericSensorConfig): string {
+  if (sensor.thresholds && sensor.thresholds.length > 0) {
+    const lines = sensor.thresholds.map(
+      (_, i) =>
+        `              if (x > \${${sensor.id}_thresh_${i}}) return lv_color_hex(\${${sensor.id}_thresh_${i}_color});`,
+    );
+    const lastIdx = sensor.thresholds.length - 1;
+    lines.push(
+      `              return lv_color_hex(\${${sensor.id}_thresh_${lastIdx}_color});`,
+    );
+    return lines.join("\n");
+  }
+  // Legacy fixed thresholds
+  return [
+    `              if (x > \${${sensor.id}_color_thresh_high}) return lv_color_hex(\${${sensor.id}_color_high});`,
+    `              if (x > \${${sensor.id}_color_thresh_mid}) return lv_color_hex(\${${sensor.id}_color_mid});`,
+    `              if (x > \${${sensor.id}_color_thresh_low}) return lv_color_hex(\${${sensor.id}_color_low});`,
+    `              return lv_color_hex(\${${sensor.id}_color_low});`,
+  ].join("\n");
+}
+
+function generateIconLambda(sensor: NumericSensorConfig): string {
+  if (!sensor.thresholds || sensor.thresholds.length === 0) return "";
+  if (!sensor.thresholds.some((t) => t.icon)) return "";
+
+  const lines = sensor.thresholds.map(
+    (_, i) =>
+      `              if (x > \${${sensor.id}_thresh_${i}}) return std::string("\${${sensor.id}_thresh_${i}_icon}");`,
+  );
+  lines.push(`              return std::string("\${${sensor.id}_icon}");`);
+  return `
+        - lvgl.label.update:
+            id: icon_${sensor.id}
+            text: !lambda |-
+${lines.join("\n")}`;
+}
 
 export function generateNumericSensor(sensor: SensorConfig): string {
+  if (sensor.type !== "sensor") return "";
+  const colorLambda = generateColorLambda(sensor);
+  const iconLambda = generateIconLambda(sensor);
   return `
   - platform: homeassistant
     id: ha_${sensor.id}
@@ -14,10 +54,7 @@ export function generateNumericSensor(sensor: SensorConfig): string {
         - lvgl.label.update:
             id: icon_${sensor.id}
             text_color: !lambda |-
-              if (x > \${${sensor.id}_color_thresh_high}) return lv_color_hex(\${${sensor.id}_color_high});
-              if (x > \${${sensor.id}_color_thresh_mid}) return lv_color_hex(\${${sensor.id}_color_mid});
-              if (x > \${${sensor.id}_color_thresh_low}) return lv_color_hex(\${${sensor.id}_color_low});
-              return lv_color_hex(\${${sensor.id}_color_low});`;
+${colorLambda}${iconLambda}`;
 }
 
 export function generateNumericSensorConfig(
