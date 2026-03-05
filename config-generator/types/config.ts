@@ -65,6 +65,26 @@ export type SensorConfigKey =
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';
 
+/** Config preset: HA monitor (default) or standalone prayer times display. */
+export type ConfigPreset = 'ha_monitor' | 'prayer_times';
+
+/** School of jurisprudence for prayer time calculation. */
+export type PrayerSchool = 'hanafi' | 'shafi';
+
+/** Prayer times preset configuration (prayertimes.dev API). */
+export interface PrayerTimesConfig {
+  /** City name for the API (e.g. 'London'). */
+  city: string;
+  /** Optional latitude override (used instead of city when both lat+lng set). */
+  lat?: string;
+  /** Optional longitude override. */
+  lng?: string;
+  /** School of jurisprudence. */
+  school: PrayerSchool;
+  /** How often to re-fetch prayer times, in minutes. */
+  refreshMinutes: number;
+}
+
 /** Board/variant: SPI touch (XPT2046), I2C touch (CST816), or custom pins. */
 export type DeviceVariant = 'spi_touch' | 'i2c_touch' | 'custom';
 
@@ -102,4 +122,8 @@ export interface ConfigData {
   /** Full pin map; used for YAML and for custom variant. */
   devicePins?: DevicePins;
   sensors: SensorConfig[];
+  /** Active preset; undefined or 'ha_monitor' = default HA monitor. */
+  preset?: ConfigPreset;
+  /** Prayer times settings; used when preset is 'prayer_times'. */
+  prayerTimes?: PrayerTimesConfig;
 }

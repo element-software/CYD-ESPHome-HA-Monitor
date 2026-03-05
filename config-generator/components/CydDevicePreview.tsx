@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ConfigData } from "@/types/config";
 import CydScreenGrid from "./CydScreenGrid";
+import CydPrayerTimesPreview from "./CydPrayerTimesPreview";
 
 interface CydDevicePreviewProps {
   config: ConfigData;
@@ -38,7 +39,10 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           }}
           aria-hidden
         >
-          <CydScreenGrid config={config} />
+          {config.preset === 'prayer_times'
+            ? <CydPrayerTimesPreview config={config} />
+            : <CydScreenGrid config={config} />
+          }
         </div>
         {/* Device frame on top: rotated 90° so device appears in portrait */}
         {!imageError ? (

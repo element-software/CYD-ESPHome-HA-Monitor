@@ -15,8 +15,12 @@ import {
 } from "./onOffSensors";
 import { generateNumericSensorConfig } from "./numericSensors";
 import { generateLightConfig } from "./light";
+import { generatePrayerTimesYaml } from "./prayerTimes";
 
 export function generateYaml(config: ConfigData): string {
+  if (config.preset === "prayer_times") {
+    return generatePrayerTimesYaml(config);
+  }
   const { hideClock } = config;
   const sensorCount = hideClock ? 8 : 6;
   const sensors = config.sensors.slice(0, sensorCount);

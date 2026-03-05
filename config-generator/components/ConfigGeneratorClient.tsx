@@ -4,15 +4,28 @@ import { useState } from 'react';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
-import { ConfigData } from '@/types/config';
-import { defaultConfig } from '@/lib/defaultConfig';
+import PresetSelector from '@/components/PresetSelector';
+import { ConfigData, ConfigPreset } from '@/types/config';
+import { defaultConfig, prayerTimesDefaultConfig } from '@/lib/defaultConfig';
 
 export default function ConfigGeneratorClient() {
   const [config, setConfig] = useState<ConfigData>(defaultConfig);
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
 
+  const handlePresetChange = (preset: ConfigPreset) => {
+    if (preset === 'prayer_times') {
+      setConfig({ ...prayerTimesDefaultConfig, deviceVariant: config.deviceVariant, devicePins: config.devicePins });
+    } else {
+      setConfig({ ...defaultConfig, deviceVariant: config.deviceVariant, devicePins: config.devicePins });
+    }
+  };
+
   return (
     <>
+      <PresetSelector
+        preset={config.preset ?? 'ha_monitor'}
+        onChange={handlePresetChange}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="space-y-6 min-w-0 col-span-2">
           <ConfigForm config={config} onChange={setConfig} />
