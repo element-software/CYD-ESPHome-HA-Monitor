@@ -31,7 +31,10 @@ function generateIconLambda(sensor: NumericSensorConfig): string {
     (_, i) =>
       `              if (x > \${${sensor.id}_thresh_${i}}) return std::string("\${${sensor.id}_thresh_${i}_icon}");`,
   );
-  lines.push(`              return std::string("\${${sensor.id}_icon}");`);
+  const lastIdx = sensor.thresholds.length - 1;
+  lines.push(
+    `              return std::string("\${${sensor.id}_thresh_${lastIdx}_icon}");`,
+  );
   return `
         - lvgl.label.update:
             id: icon_${sensor.id}
