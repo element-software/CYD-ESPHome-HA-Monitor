@@ -2,7 +2,9 @@ import type { NumericSensorConfig, SensorConfig } from "@/types/config";
 
 function generateColorLambda(sensor: NumericSensorConfig): string {
   if (sensor.thresholds && sensor.thresholds.length > 0) {
-    const lines = sensor.thresholds.map(
+    // All thresholds except the last become `if (x > thresh_N)` guards.
+    // The last threshold color is always the fallback (covers values ≤ all thresholds).
+    const lines = sensor.thresholds.slice(0, -1).map(
       (_, i) =>
         `              if (x > \${${sensor.id}_thresh_${i}}) return lv_color_hex(\${${sensor.id}_thresh_${i}_color});`,
     );

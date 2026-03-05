@@ -106,7 +106,8 @@ describe("numeric sensor YAML generation", () => {
     const result = generateNumericSensor(sensor);
     expect(result).toContain("if (x > ${r1c1_thresh_0}) return lv_color_hex(${r1c1_thresh_0_color});");
     expect(result).toContain("if (x > ${r1c1_thresh_1}) return lv_color_hex(${r1c1_thresh_1_color});");
-    expect(result).toContain("if (x > ${r1c1_thresh_2}) return lv_color_hex(${r1c1_thresh_2_color});");
+    // Last threshold becomes the fallback `return` (no redundant `if` check)
+    expect(result).not.toContain("if (x > ${r1c1_thresh_2}) return lv_color_hex(${r1c1_thresh_2_color});");
     expect(result).toContain("return lv_color_hex(${r1c1_thresh_2_color});");
     // No icon text lambda when no icons
     expect(result).not.toContain("std::string");

@@ -128,7 +128,10 @@ export default function SensorConfigPanel({
   const updateThreshold = (i: number, field: keyof ThresholdConfig, value: string) => {
     if (sensor.type !== "sensor") return;
     const next = [...thresholds];
-    next[i] = { ...next[i], [field]: value || undefined } as ThresholdConfig;
+    // Only coerce to undefined for the optional `icon` field; keep value/color as strings
+    // to avoid generating "undefined" in the YAML output.
+    const newVal = field === "icon" ? (value || undefined) : value;
+    next[i] = { ...next[i], [field]: newVal } as ThresholdConfig;
     onChange({ ...sensor, thresholds: next } as SensorConfig);
   };
 
@@ -136,7 +139,16 @@ export default function SensorConfigPanel({
     if (sensor.type !== "sensor") return;
     const last = thresholds[thresholds.length - 1];
     const lastVal = parseFloat(last?.value ?? "0");
-    const newVal = Number.isFinite(lastVal) ? String(lastVal - 500) : "0";
+    // Derive a sensible step: use existing spacing between the last two thresholds,
+    // fall back to 20% of the last value, or 1 at minimum.
+    let step = 500;
+    if (thresholds.length >= 2) {
+      const prevVal = parseFloat(thresholds[thresholds.length - 2]?.value ?? "0");
+      step = Math.abs(prevVal - lastVal);
+    } else if (Number.isFinite(lastVal) && lastVal > 0) {
+      step = Math.max(1, Math.round(lastVal * 0.2));
+    }
+    const newVal = Number.isFinite(lastVal) ? String(Math.max(0, lastVal - step)) : "0";
     const next = [...thresholds, { value: newVal, color: "0x32CD32" }];
     onChange({ ...sensor, thresholds: next } as SensorConfig);
   };
@@ -433,9 +445,12 @@ export default function SensorConfigPanel({
           {sensor.type === "sensor" ? (
             <>
               <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-600 font-medium">
-                  Thresholds &amp; colours
-                </p>
+                <div>
+                  <p className="text-xs text-gray-600 font-medium">
+                    Thresholds &amp; colours
+                  </p>
+                  <p className="text-xs text-gray-400">Highest value first</p>
+                </div>
                 <button
                   type="button"
                   onClick={addThreshold}
