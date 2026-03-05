@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ConfigData } from "@/types/config";
 import CydScreenGrid from "./CydScreenGrid";
+import CydPrayerTimesPreview from "./CydPrayerTimesPreview";
 
 interface CydDevicePreviewProps {
   config: ConfigData;
@@ -43,11 +44,16 @@ export default function CydDevicePreview({
           }}
           aria-hidden
         >
-          <CydScreenGrid
-            config={config}
-            activeScreenIndex={activeScreenIndex}
-            onNavigateScreen={onNavigateScreen}
-          />
+          {config.preset === 'prayer_times'
+            ? <CydPrayerTimesPreview config={config} />
+            : (
+              <CydScreenGrid
+                config={config}
+                activeScreenIndex={activeScreenIndex}
+                onNavigateScreen={onNavigateScreen}
+              />
+            )
+          }
         </div>
         {/* Portrait rotates the landscape device photo 90°. Landscape uses the photo as-is. */}
         {!imageError ? (

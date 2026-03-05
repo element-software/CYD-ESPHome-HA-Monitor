@@ -18,6 +18,7 @@ import {
 import { generateNumericSensorConfig, generateTextValueSensorConfig } from "./numericSensors";
 import { generateLightConfig } from "./light";
 import { generateAudioConfig } from "./audio";
+import { generatePrayerTimesYaml } from "./prayerTimes";
 import { migrateConfig } from "@/lib/migrateConfig";
 
 function generateImageConfig(config: ConfigData): string {
@@ -46,6 +47,9 @@ function generateImageConfig(config: ConfigData): string {
 }
 
 export function generateYaml(config: ConfigData): string {
+  if (config.preset === "prayer_times") {
+    return generatePrayerTimesYaml(config);
+  }
   const migrated = migrateConfig(config);
   const { hideClock } = migrated;
   const allSensors = getAllPrefixedSensors(migrated);

@@ -8,7 +8,9 @@ import YamlModal from '@/components/YamlModal';
 import ImportConfigModal from '@/components/ImportConfigModal';
 import WhatsNewModal from '@/components/WhatsNewModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
-import { ConfigData } from '@/types/config';
+import PresetSelector from '@/components/PresetSelector';
+import { ConfigData, ConfigPreset } from '@/types/config';
+import { defaultConfig, prayerTimesDefaultConfig } from '@/lib/defaultConfig';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
 import { isValidConfig } from '@/lib/configValidation';
 import { jsonExportFilename } from '@/lib/exportFilename';
@@ -97,9 +99,21 @@ export default function ConfigGeneratorClient() {
     setPendingConfig(null);
   }
 
+  const handlePresetChange = (preset: ConfigPreset) => {
+    if (preset === 'prayer_times') {
+      setConfig({ ...prayerTimesDefaultConfig, deviceVariant: config.deviceVariant, devicePins: config.devicePins });
+    } else {
+      setConfig({ ...defaultConfig, deviceVariant: config.deviceVariant, devicePins: config.devicePins });
+    }
+  };
+
   return (
     <>
       <PageHeader name={config.friendlyName?.trim() || config.deviceName} />
+      <PresetSelector
+        preset={config.preset ?? 'ha_monitor'}
+        onChange={handlePresetChange}
+      />
       <div
         className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed dark:border-blue-700 dark:bg-blue-950 dark:text-slate-100"
         role="note"

@@ -6,6 +6,19 @@ export const DEFAULT_SCREEN_FG = '#ffffff';
 
 export const MAX_SCREENS = 6;
 
+/** Supported cities for the prayertimes.dev API. */
+export const PRAYER_TIMES_CITIES = [
+  'London',
+  'Birmingham',
+  'Manchester',
+  'Leicester',
+  'Bradford',
+  'Glasgow',
+  'Leeds',
+  'Liverpool',
+  'Sheffield',
+] as const;
+
 export function cloneSampleSensors(): SensorConfig[] {
   return JSON.parse(JSON.stringify(defaultSensors)) as SensorConfig[];
 }
@@ -125,6 +138,20 @@ const defaultSensors: SensorConfig[] = [
     colorOff: '0x32CD32',
   },
 ];
+
+export const prayerTimesDefaultConfig: ConfigData = {
+  deviceName: 'prayer-display',
+  friendlyName: 'Prayer Times',
+  preset: 'prayer_times',
+  deviceVariant: 'spi_touch',
+  devicePins: { ...SPI_TOUCH_PINS },
+  sensors: [],
+  prayerTimes: {
+    city: 'London',
+    school: 'hanafi',
+    refreshMinutes: 60,
+  },
+};
 
 export const defaultConfig: ConfigData = {
   deviceName: 'hamon',
