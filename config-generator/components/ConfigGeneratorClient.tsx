@@ -17,7 +17,7 @@ export default function ConfigGeneratorClient() {
         <div className="space-y-6 min-w-0 col-span-2">
           <ConfigForm config={config} onChange={setConfig} />
         </div>
-        <div className="lg:sticky lg:top-8 w-full min-w-0 col-span-1 flex flex-col gap-4 p-4 border border-gray-200 rounded-lg bg-white">
+        <div className="lg:sticky lg:top-8 w-full min-w-0 col-span-2 lg:col-span-1 flex flex-col gap-4 p-4 border border-gray-200 rounded-lg bg-white">
           <CydDevicePreview config={config} />
           <button
             type="button"

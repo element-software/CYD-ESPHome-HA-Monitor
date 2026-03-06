@@ -1,6 +1,6 @@
 export default function PageHeader() {
   return (
-    <header className="mb-8 flex flex-col md:flex-row gap-4 justify-between">
+    <header className="mb-8 flex flex-col lg:flex-row gap-4 justify-between">
       <div className="flex flex-col §items-center gap-2">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           CYD HAMon Config Generator

@@ -9,7 +9,13 @@ const GITHUB_REPO = 'element-software/CYD-ESPHome-HA-Monitor';
 const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
 const GITHUB_STARS_BADGE = `https://img.shields.io/github/stars/${GITHUB_REPO}?style=social`;
 
-const NAV_LINKS = [
+type NavLink = {
+  href: string;
+  label: string;
+  external?: boolean;
+};
+
+const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/config-generator', label: 'Config Generator' },
 ];

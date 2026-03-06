@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
 
-const FOOTER_LINKS = [
+const FOOTER_LINKS: FooterLink[] = [
   { href: '/', label: 'Home' },
   { href: '/config-generator', label: 'Config Generator' },
   { href: BUY_NOW_URL, label: 'Buy now (Amazon)', external: true },
@@ -11,6 +11,12 @@ const FOOTER_LINKS = [
   { href: 'https://element-software.co.uk', label: 'Software development', external: true },
   { href: 'https://element-connect.co.uk', label: 'Smart home expert', external: true },
 ];
+
+type FooterLink = {
+  href: string;
+  label: string;
+  external?: boolean;
+};
 
 export default function SiteFooter() {
   return (
