@@ -47,8 +47,29 @@ function generatePrayerTimesSubstitutions(config: ConfigData): string {
 function generatePrayerTimesBoilerplate(config: ConfigData): string {
   const { deviceName } = config;
   const p = getEffectivePins(config);
+  const pt = config.prayerTimes;
   const useSpiTouch = isSpiTouch(p);
   const useI2cTouch = isI2cTouch(p);
+  // CYD onboard RGB LED: GPIO 4 (R), 16 (G), 17 (B) — active low (inverted)
+  const ledEnabled = !!pt?.prayerLedEnabled;
+  const ledR = pt?.prayerLedR ?? "GPIO4";
+  const ledG = pt?.prayerLedG ?? "GPIO16";
+  const ledB = pt?.prayerLedB ?? "GPIO17";
+  const ledOutputBlock = ledEnabled
+    ? `
+  - platform: ledc
+    pin: ${ledR}
+    id: prayer_led_r
+    inverted: true
+  - platform: ledc
+    pin: ${ledG}
+    id: prayer_led_g
+    inverted: true
+  - platform: ledc
+    pin: ${ledB}
+    id: prayer_led_b
+    inverted: true`
+    : "";
 
   const spiTouchBlock = useSpiTouch
     ? `
@@ -145,6 +166,7 @@ output:
   - platform: ledc
     pin: ${p.backlightPin}
     id: backlight_pwm
+${ledOutputBlock}
 ${i2cBlock}
 spi:
   - id: tft
@@ -205,7 +227,7 @@ font:
 `;
 }
 
-function generatePrayerTimesGlobals(): string {
+function generatePrayerTimesGlobals(config: ConfigData): string {
   const lines = PRAYERS.map(
     (p) => `  - id: prayer_${p.key}
     type: std::string
@@ -214,13 +236,21 @@ function generatePrayerTimesGlobals(): string {
   );
 
   return `
-# --- GLOBALS (prayer time storage) ---
+# --- GLOBALS (prayer time storage + LED debounce) ---
 globals:
 ${lines.join("\n")}
   - id: last_fetch_ok
     type: bool
     restore_value: false
     initial_value: "false"
+  - id: last_prayer_triggered
+    type: std::string
+    restore_value: false
+    initial_value: '""'
+  - id: last_prayer_trigger_date
+    type: int
+    restore_value: false
+    initial_value: "0"
 `;
 }
 
@@ -310,7 +340,29 @@ ${prayerWidgets}
 `;
 }
 
-function generatePrayerTimesTimeConfig(): string {
+function generatePrayerTimesTimeConfig(config: ConfigData): string {
+  const pt = config.prayerTimes;
+  const ledEnabled = !!pt?.prayerLedEnabled;
+  // Build lambda: compare current HH:MM to each prayer; debounce; optionally execute prayer_led_flash.
+  const triggerLine = ledEnabled ? "id(prayer_led_flash).execute();" : "";
+  const prayerChecks = PRAYERS.map(
+    (p, i) => {
+      const suffix = i < PRAYERS.length - 1 ? "} else " : "}";
+      return `if (id(prayer_${p.key}) == current_str && id(prayer_${p.key}) != "--:--" && (id(last_prayer_triggered) != "${p.key}" || id(last_prayer_trigger_date) != today)) {
+                id(last_prayer_triggered) = "${p.key}";
+                id(last_prayer_trigger_date) = today;
+                ${triggerLine}
+              ${suffix}`;
+    },
+  ).join("");
+  const lambdaBody = `auto now = id(esptime).now();
+              if (!now.is_valid()) return;
+              char buf[6];
+              sprintf(buf, "%02d:%02d", now.hour, now.minute);
+              std::string current_str(buf);
+              int today = now.day_of_year;
+              ${prayerChecks}`;
+
   return `
 # --- TIME (SNTP – no Home Assistant needed) ---
 time:
@@ -329,6 +381,12 @@ time:
                 static const char *const dias[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
                 auto now = id(esptime).now();
                 return str_sprintf("%s %02d/%02d", dias[now.day_of_week - 1], now.day_of_month, now.month);
+      # Every minute: check if current time matches a prayer (for LED alert)
+      - seconds: 0
+        minutes: '*'
+        then:
+          - lambda: |-
+              ${lambdaBody}
       # Daily fetch at 12:01am (prayer times don't change until next day)
       - seconds: 0
         minutes: 1
@@ -339,7 +397,88 @@ time:
 `;
 }
 
-function generateFetchScript(): string {
+function generatePrayerLedLightEntry(config: ConfigData): string {
+  const pt = config.prayerTimes;
+  if (!pt?.prayerLedEnabled) return "";
+  return `
+  - platform: rgb
+    id: prayer_led
+    red: prayer_led_r
+    green: prayer_led_g
+    blue: prayer_led_b`;
+}
+
+function generateFetchFeedbackActions(config: ConfigData): string {
+  const pt = config.prayerTimes;
+  if (!pt?.prayerLedEnabled) return "";
+  return `
+              - if:
+                  condition:
+                    lambda: "return id(last_fetch_ok);"
+                  then:
+                    - script.execute: prayer_led_flash_blue_5
+                  else:
+                    - script.execute: prayer_led_flash_red_5`;
+}
+
+function generatePrayerLedScript(config: ConfigData): string {
+  const pt = config.prayerTimes;
+  if (!pt?.prayerLedEnabled) return "";
+  const greenFlash = `
+  - id: prayer_led_flash
+    mode: single
+    then:
+      - repeat:
+          count: 10
+          then:
+            - light.turn_on:
+                id: prayer_led
+                brightness: 100%
+                red: 0%
+                green: 100%
+                blue: 0%
+            - delay: 250ms
+            - light.turn_off:
+                id: prayer_led
+            - delay: 250ms`;
+  const blueFlash = `
+  - id: prayer_led_flash_blue_5
+    mode: single
+    then:
+      - repeat:
+          count: 5
+          then:
+            - light.turn_on:
+                id: prayer_led
+                brightness: 100%
+                red: 0%
+                green: 0%
+                blue: 100%
+            - delay: 250ms
+            - light.turn_off:
+                id: prayer_led
+            - delay: 250ms`;
+  const redFlash = `
+  - id: prayer_led_flash_red_5
+    mode: single
+    then:
+      - repeat:
+          count: 5
+          then:
+            - light.turn_on:
+                id: prayer_led
+                brightness: 100%
+                red: 100%
+                green: 0%
+                blue: 0%
+            - delay: 250ms
+            - light.turn_off:
+                id: prayer_led
+            - delay: 250ms`;
+  return `${greenFlash}${blueFlash}${redFlash}`;
+}
+
+function generateFetchScript(config: ConfigData): string {
   // Build lambda that parses JSON and updates each prayer time label
   const parseLines = PRAYERS.map(
     (p) =>
@@ -367,6 +506,7 @@ script:
           on_response:
             then:
               - lambda: |-
+                  id(last_fetch_ok) = false;
                   ESP_LOGI("prayer", "Response status=%d size=%zu", response->status_code, body.size());
                   if (response->status_code == 200) {
                     bool ok = json::parse_json(body, [](JsonObject root) -> bool {
@@ -384,6 +524,8 @@ ${parseLines}
                   }
 ${updateLabels}
               - logger.log: "Prayer times display labels updated"
+${generateFetchFeedbackActions(config)}
+${generatePrayerLedScript(config)}
 `;
 }
 
@@ -393,10 +535,11 @@ export function generatePrayerTimesYaml(config: ConfigData): string {
     generatePrayerTimesSubstitutions(config) +
     generatePrayerTimesBoilerplate(config) +
     generatePrayerTimesFonts() +
-    generatePrayerTimesGlobals() +
-    generatePrayerTimesTimeConfig() +
+    generatePrayerTimesGlobals(config) +
+    generatePrayerTimesTimeConfig(config) +
     generatePrayerTimesLvgl() +
     generateLightConfig() +
-    generateFetchScript()
+    generatePrayerLedLightEntry(config) +
+    generateFetchScript(config)
   );
 }
