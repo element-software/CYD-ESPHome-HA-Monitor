@@ -109,7 +109,9 @@ esphome:
   on_boot:
     priority: -100
     then:
-      - delay: 5s
+      - logger.log: "Boot complete, initial prayer fetch will run when WiFi connects"
+      - delay: 30s
+      - logger.log: "Boot fallback: fetching prayer times..."
       - script.execute: fetch_prayer_times
 
 esp32:
@@ -136,6 +138,9 @@ wifi:
   ap:
     ssid: "\${friendly_name} Fallback"
     password: !secret ${deviceName}_ap_password
+  on_connect:
+    - logger.log: "WiFi connected, fetching prayer times..."
+    - script.execute: fetch_prayer_times
 
 captive_portal:
 
@@ -239,7 +244,7 @@ function generatePrayerTimesLvgl(): string {
 
   const prayerWidgets = PRAYERS.map((p, i) => {
     const y = ROW_START + i * ROW_HEIGHT;
-    // Alternate row backgrounds for readability
+    // Alternating row backgrounds: black (page bg) and dark gray
     const bgWidget =
       i % 2 === 1
         ? `
@@ -248,7 +253,7 @@ function generatePrayerTimesLvgl(): string {
             y: ${y}
             width: 320
             height: ${ROW_HEIGHT}
-            bg_color: 0x1a2332
+            bg_color: 0x1a1a1a
             bg_opa: COVER
             border_width: 0
             radius: 0
@@ -293,7 +298,7 @@ lvgl:
     - my_touchscreen
   pages:
     - id: main_page
-      bg_color: 0x0f1419
+      bg_color: 0x000000
       widgets:
         # ====== HEADER ======
         - label:
@@ -307,7 +312,7 @@ lvgl:
             id: label_date
             text: "--- --/--"
             text_font: date_font
-            text_color: 0xAAAAAA
+            text_color: 0xFFFFFF
             align: TOP_MID
             y: 40
 
@@ -317,7 +322,7 @@ lvgl:
             y: 58
             width: 304
             height: 1
-            bg_color: 0x334455
+            bg_color: 0x333333
             bg_opa: COVER
             border_width: 0
             radius: 0
@@ -378,23 +383,30 @@ script:
     mode: single
     then:
       - logger.log: "Fetching prayer times from API..."
+      - logger.log: "URL: \${prayer_api_url}"
       - http_request.get:
           url: \${prayer_api_url}
           capture_response: true
           on_response:
             then:
               - lambda: |-
+                  ESP_LOGI("prayer", "Response status=%d size=%zu", response->status_code, body.size());
                   if (response->status_code == 200) {
-                    json::parse_json(body, [](JsonObject root) -> bool {
+                    bool ok = json::parse_json(body, [](JsonObject root) -> bool {
 ${parseLines}
                       id(last_fetch_ok) = true;
-                      ESP_LOGI("prayer", "Prayer times updated successfully");
+                      ESP_LOGI("prayer", "Prayer times parsed: fajr=%s zuhr=%s maghrib=%s",
+                          id(prayer_fajr).c_str(), id(prayer_zuhr).c_str(), id(prayer_maghrib).c_str());
                       return true;
                     });
+                    if (!ok) {
+                      ESP_LOGE("prayer", "JSON parse failed, body size=%zu", body.size());
+                    }
                   } else {
-                    ESP_LOGW("prayer", "HTTP error: %d", response->status_code);
+                    ESP_LOGW("prayer", "HTTP error %d", response->status_code);
                   }
 ${updateLabels}
+              - logger.log: "Prayer times display labels updated"
 
 # --- PERIODIC REFRESH ---
 interval:

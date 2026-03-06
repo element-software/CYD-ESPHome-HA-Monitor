@@ -22,7 +22,7 @@ export default function CydPrayerTimesPreview({ config }: CydPrayerTimesPreviewP
   return (
     <div
       className="flex flex-col h-full w-full overflow-hidden"
-      style={{ backgroundColor: '#0f1419', containerType: 'size' }}
+      style={{ backgroundColor: '#000000', containerType: 'size' }}
     >
       {/* Header: clock + date */}
       <div className="flex flex-col items-center pt-[2cqmin]">
@@ -33,8 +33,8 @@ export default function CydPrayerTimesPreview({ config }: CydPrayerTimesPreviewP
           12:21
         </span>
         <span
-          className="text-gray-400"
-          style={{ fontSize: '6cqmin', lineHeight: 1.3 }}
+          className="text-white"
+          style={{ fontSize: '6cqmin', lineHeight: 1.3, opacity: 0.9 }}
         >
           Thu 05/03 &middot; {city}
         </span>
@@ -43,10 +43,10 @@ export default function CydPrayerTimesPreview({ config }: CydPrayerTimesPreviewP
       {/* Divider */}
       <div
         className="mx-[3cqmin] my-[1.5cqmin]"
-        style={{ height: '1px', backgroundColor: '#334455' }}
+        style={{ height: '1px', backgroundColor: '#333333' }}
       />
 
-      {/* Prayer rows */}
+      {/* Prayer rows: alternating black / dark gray */}
       <div className="flex flex-col flex-1 min-h-0 px-[3cqmin]">
         {PRAYERS.map((p, i) => (
           <div
@@ -55,7 +55,7 @@ export default function CydPrayerTimesPreview({ config }: CydPrayerTimesPreviewP
             style={{
               flex: 1,
               minHeight: 0,
-              backgroundColor: i % 2 === 1 ? '#1a2332' : 'transparent',
+              backgroundColor: i % 2 === 1 ? '#1a1a1a' : '#000000',
               borderRadius: '2px',
             }}
           >
