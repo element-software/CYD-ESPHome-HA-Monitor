@@ -4,10 +4,17 @@ import '@material-design-icons/font/index.css'
 import CookieConsentManager from '@/components/CookieConsentManager'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import { buildPageMetadata, METADATA_BASE } from '@/lib/metadata'
 
 export const metadata: Metadata = {
-  title: 'Cheap Yellow Display (CYD) – Config & Info',
-  description: 'Information about the ESP32 CYD (Cheap Yellow Display) and the Config Generator to build ESPHome YAML for the Home Assistant monitor',
+  ...buildPageMetadata({
+    title: 'Cheap Yellow Display (CYD) – Config & Info',
+    description:
+      'Information about the ESP32 CYD (Cheap Yellow Display) and the Config Generator to build ESPHome YAML for the Home Assistant monitor',
+    imagePath: '/og/home.png',
+    imageAlt: 'Cheap Yellow Display (CYD) – Config & Info',
+  }),
+  metadataBase: METADATA_BASE,
 }
 
 export default function RootLayout({

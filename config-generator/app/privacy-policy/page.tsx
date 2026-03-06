@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Privacy Policy — CYD HAMon Config Generator',
   description: 'Privacy policy for the CYD HAMon Config Generator.',
-};
+  imagePath: '/og/privacy-policy.png',
+  imageAlt: 'Privacy Policy — CYD HAMon Config Generator',
+});
 
 export default function PrivacyPolicy() {
   return (
