@@ -4,6 +4,7 @@ const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
 
 const FOOTER_LINKS: FooterLink[] = [
   { href: '/', label: 'Home' },
+  { href: '/about-cyd', label: 'About CYD' },
   { href: '/config-generator', label: 'Config Generator' },
   { href: BUY_NOW_URL, label: 'Buy now (Amazon)', external: true },
   { href: 'https://github.com/element-software/CYD-ESPHome-HA-Monitor', label: 'GitHub', external: true },

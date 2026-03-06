@@ -17,6 +17,7 @@ type NavLink = {
 
 const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Home' },
+  { href: '/about-cyd', label: 'About CYD' },
   { href: '/config-generator', label: 'Config Generator' },
 ];
 
