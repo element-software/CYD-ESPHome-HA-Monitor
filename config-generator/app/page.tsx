@@ -3,17 +3,32 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-10 max-w-3xl">
-        {/* Hero */}
-        <header className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+      {/* Hero banner: 90vh with CYD background */}
+      <header
+        className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 text-center overflow-hidden"
+        aria-label="Hero"
+      >
+        <div className="absolute inset-0 z-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/cyd.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-contain"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-black/70 z-[1]" aria-hidden />
+        </div>
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 drop-shadow-lg">
             Cheap Yellow Display (CYD)
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl md:text-2xl text-amber-100/95 drop-shadow-md">
             Configuration tools and information for the ESP32-2432S028
           </p>
-        </header>
+        </div>
+      </header>
 
+      <div className="container mx-auto px-4 py-10 max-w-3xl">
         {/* What is a CYD */}
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-900 mb-3">What is a CYD?</h2>
