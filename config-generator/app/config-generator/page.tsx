@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/components/PageHeader';
 import ConfigGeneratorClient from '@/components/ConfigGeneratorClient';
+import { buildPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Config Generator | CYD',
   description: 'Generate ESPHome YAML for CYD Home Assistant Monitor',
-};
+  imagePath: '/og/config-generator.png',
+  imageAlt: 'Config Generator | CYD',
+});
 
 export default function ConfigGeneratorPage() {
   return (
