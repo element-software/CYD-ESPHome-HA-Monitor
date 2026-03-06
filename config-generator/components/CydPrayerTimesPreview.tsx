@@ -40,12 +40,6 @@ export default function CydPrayerTimesPreview({ config }: CydPrayerTimesPreviewP
         </span>
       </div>
 
-      {/* Divider */}
-      <div
-        className="mx-[3cqmin] my-[1.5cqmin]"
-        style={{ height: '1px', backgroundColor: '#333333' }}
-      />
-
       {/* Prayer rows: alternating black / dark gray */}
       <div className="flex flex-col flex-1 min-h-0 px-[3cqmin]">
         {PRAYERS.map((p, i) => (
