@@ -2,9 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 import '@material-design-icons/font/index.css'
 import CookieConsentManager from '@/components/CookieConsentManager'
+import SiteHeader from '@/components/SiteHeader'
+import SiteFooter from '@/components/SiteFooter'
+
 export const metadata: Metadata = {
-  title: 'CYD HAMon Config Generator',
-  description: 'Generate ESPHome YAML configurations for CYD Home Assistant Monitor',
+  title: 'Cheap Yellow Display (CYD) – Config & Info',
+  description: 'Information about the ESP32 CYD (Cheap Yellow Display) and the Config Generator to build ESPHome YAML for the Home Assistant monitor',
 }
 
 export default function RootLayout({
@@ -20,8 +23,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
-        {children}
+      <body className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <div className="flex-1 flex flex-col">
+          {children}
+        </div>
+        <SiteFooter />
         <CookieConsentManager />
       </body>
     </html>

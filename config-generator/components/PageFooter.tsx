@@ -4,6 +4,20 @@ export default function PageFooter() {
   return (
     <footer className="mt-12 border-t border-gray-200 pt-6 pb-8">
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-600">
+        <Link
+          href="/"
+          className="hover:text-gray-900 transition-colors"
+        >
+          Home
+        </Link>
+        <span className="hidden sm:inline text-gray-300">|</span>
+        <Link
+          href="/config-generator"
+          className="hover:text-gray-900 transition-colors"
+        >
+          Config Generator
+        </Link>
+        <span className="hidden sm:inline text-gray-300">|</span>
         <a
           href="https://github.com/element-software/CYD-ESPHome-HA-Monitor"
           target="_blank"
