@@ -6,7 +6,7 @@ const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
 export const metadata: Metadata = {
   title: 'About the CYD (Cheap Yellow Display) — Full Guide',
   description:
-    'Complete guide to the CYD (ESP32-2432S028): hardware, pinout, diagrams, ESPHome, and Home Assistant integration with reference links.',
+    'Complete guide to the CYD (Cheap Yellow Display): variations, hardware, pinout, diagrams, ESPHome, and Home Assistant integration with reference links.',
 };
 
 function CydLink({ children }: { children: React.ReactNode }) {
@@ -39,7 +39,7 @@ export default function AboutCydPage() {
           About the <CydLink>CYD</CydLink> (Cheap Yellow Display)
         </h1>
         <p className="text-gray-600 mb-8">
-          A complete guide to the ESP32-2432S028 — hardware, pinout, software stack, and references.
+          A complete guide to the CYD family — variations, hardware, pinout, software stack, and references.
         </p>
 
         <div className="prose prose-gray max-w-none space-y-10 text-gray-700">
@@ -48,18 +48,82 @@ export default function AboutCydPage() {
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">What is a CYD?</h2>
             <p className="leading-relaxed">
               The <strong>Cheap Yellow Display</strong> (<CydLink>CYD</CydLink>) is the popular
-              community name for the <strong>ESP32-2432S028</strong> — an all-in-one development
-              board that combines an ESP32 microcontroller with a 2.8″ colour TFT touchscreen
-              (240×320 pixels), resistive or capacitive touch, and useful extras like an onboard
-              RGB LED, microSD slot, and light-dependent resistor (LDR). It has become a favourite
-              in the maker and smart-home community for building compact dashboards, status
-              displays, and control panels without wiring a separate screen.
+              community name for ESP32-based boards that combine a microcontroller with a colour
+              TFT touchscreen in one unit. The best-known model is the <strong>ESP32-2432S028</strong> (2.8″
+              screen, 240×320), but <strong>several variations exist</strong> — different screen
+              sizes, touch technologies, and connectors. They share the same appeal: build
+              dashboards, status displays, and control panels without wiring a separate screen.
             </p>
             <p className="leading-relaxed mt-3">
               Because the display and ESP32 are on one board, you can build a full GUI device (e.g.
               a Home Assistant monitor) by flashing firmware and connecting to Wi‑Fi — no soldering
               or complex wiring required. You can <CydLink>buy a CYD on Amazon</CydLink> and be up
               and running the same day.
+            </p>
+          </section>
+
+          {/* CYD variations */}
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">CYD variations</h2>
+            <p className="leading-relaxed mb-4">
+              Not all “CYD-style” boards are identical. When buying or configuring a <CydLink>CYD</CydLink>,
+              check these aspects — they affect compatibility with cases, cables, and firmware (including
+              this site’s config generator).
+            </p>
+
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-2">Screen size and resolution</h3>
+            <p className="leading-relaxed mb-2">
+              Boards are sold in different physical sizes and resolutions. Model numbers often encode
+              size (e.g. <strong>S028</strong> ≈ 2.8″, <strong>S035</strong> ≈ 3.5″). Common variants:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 mb-4">
+              <li><strong>2.4″</strong> — Smaller, often 240×320; some use ILI9341 or ST7789.</li>
+              <li><strong>2.8″ (e.g. ESP32-2432S028)</strong> — The most common “CYD”: 240×320, usually ILI9341. This project’s config generator and HAMon are designed for this size and resolution.</li>
+              <li><strong>3.2″ / 3.5″</strong> — Larger panels (e.g. 320×480); may use ILI9486, ILI9488, or other drivers. Pinouts and ESPHome config differ from the 2.8″ boards.</li>
+            </ul>
+            <p className="leading-relaxed text-sm text-gray-600">
+              If you have a different size or resolution, you may need to adjust display dimensions and
+              driver in ESPHome; the pinout and touch type still matter (see below).
+            </p>
+
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-2">Touch screen type</h3>
+            <p className="leading-relaxed mb-2">
+              Touch is either <strong>resistive</strong> (SPI) or <strong>capacitive</strong> (I2C).
+              The driver and GPIOs are different, so firmware must match your board:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 mb-2">
+              <li><strong>XPT2046</strong> — Resistive touch over SPI. Shares the display’s SPI bus with a separate chip-select (e.g. GPIO 33). Backlight is often on <strong>GPIO 21</strong>. This is the “SPI touch” preset in our config generator.</li>
+              <li><strong>CST816</strong> — Capacitive touch over I2C (e.g. SDA 33, SCL 32). Newer/revision boards often use this. Backlight is often on <strong>GPIO 27</strong>. This is the “I2C touch” preset in our config generator.</li>
+              <li>Some boards use other controllers (e.g. GT911). You’ll need the correct ESPHome touch component and pinout for your specific module.</li>
+            </ul>
+            <p className="leading-relaxed text-sm text-gray-600">
+              If touch or backlight behaves oddly, confirm whether you have the SPI (XPT2046) or I2C (CST816) variant and select the matching preset or custom pins.
+            </p>
+
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-2">Display controller</h3>
+            <p className="leading-relaxed mb-4">
+              Most 2.8″ CYD boards use the <strong>ILI9341</strong> TFT controller. Other sizes may use
+              <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong>, or similar. In ESPHome you
+              choose the matching display platform (e.g. <code className="bg-gray-100 px-1 rounded text-sm">ili9xxx</code> with
+              <code className="bg-gray-100 px-1 rounded text-sm">model: ili9341</code>). Our generator assumes ILI9341 for the 2.8″ 240×320 layout.
+            </p>
+
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-2">USB connector</h3>
+            <p className="leading-relaxed mb-4">
+              Boards are sold with <strong>Micro-USB</strong> or <strong>USB-C</strong>. USB-C is
+              preferred for new purchases: easier cabling and many 3D-printed cases (e.g. the Aura
+              Smart Display case) are designed for the USB-C port. Adapters (e.g. 90° USB-C) help with
+              cable routing. Our <CydLink>Amazon link</CydLink> points to the USB-C version.
+            </p>
+
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-2">What this site targets</h3>
+            <p className="leading-relaxed">
+              The <strong>Config Generator</strong> and <strong>HAMon</strong> firmware on this site
+              are aimed at <strong>2.8″ 240×320 ILI9341</strong> boards with either
+              <strong>XPT2046 (SPI touch)</strong> or <strong>CST816 (I2C touch)</strong>. If you have
+              a different size or display driver, you can still use the generator as a starting point
+              and adjust the generated YAML (display model, dimensions, touch component, and pins) to match
+              your hardware.
             </p>
           </section>
 
