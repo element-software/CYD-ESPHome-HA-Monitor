@@ -107,6 +107,7 @@ A web-based configuration generator is available in the `config-generator/` dire
 - Visual sensor configuration
 - Icon picker with support for **Material Design Icons** and **Material Symbols**
 - Device GPIO preset selection (SPI touch / I2C touch / custom)
+- **Prayer times preset**: standalone screen with prayertimes.dev API; optional **RGB LED alert** using the CYD onboard LED (Red GPIO 4, Green 16, Blue 17, active low) — flashes green 10× when a prayer time is reached, blue 5× on fetch success, red 5× on fetch failure (on-device logic, no HA needed).
 - Color customization
 - Real-time YAML generation
 - One-click copy to clipboard

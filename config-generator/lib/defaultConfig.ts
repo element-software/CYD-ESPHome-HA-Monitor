@@ -25,6 +25,7 @@ export const prayerTimesDefaultConfig: ConfigData = {
     city: 'London',
     school: 'hanafi',
     refreshMinutes: 60,
+    prayerLedEnabled: false,
   },
 };
 

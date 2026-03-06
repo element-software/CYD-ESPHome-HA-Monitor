@@ -107,6 +107,24 @@ export default function PrayerTimesSettingsCard({ config, onChange }: PrayerTime
             ))}
           </div>
         </div>
+
+        {/* Prayer alert LED (CYD onboard RGB: GPIO 4, 16, 17, active low) */}
+        <div className="pt-2 border-t border-gray-200">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!!pt.prayerLedEnabled}
+              onChange={(e) => update({ prayerLedEnabled: e.target.checked })}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <span className="text-sm font-medium text-gray-700">Flash RGB LED when prayer time is reached</span>
+          </label>
+          {pt.prayerLedEnabled && (
+            <p className="text-xs text-gray-500 mt-2 ml-6">
+              Uses CYD onboard RGB LED: Red GPIO 4, Green GPIO 16, Blue GPIO 17 (active low).
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

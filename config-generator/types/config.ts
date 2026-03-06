@@ -83,6 +83,16 @@ export interface PrayerTimesConfig {
   school: PrayerSchool;
   /** How often to re-fetch prayer times, in minutes. */
   refreshMinutes: number;
+  /** If true, flash RGB LED when a prayer time is reached (CYD onboard: GPIO 4, 16, 17). */
+  prayerLedEnabled?: boolean;
+  /** @deprecated Use prayerLedR/G/B. Kept for migration. */
+  prayerLedPin?: string;
+  /** Red channel GPIO (CYD onboard: 4). */
+  prayerLedR?: string;
+  /** Green channel GPIO (CYD onboard: 16). */
+  prayerLedG?: string;
+  /** Blue channel GPIO (CYD onboard: 17). */
+  prayerLedB?: string;
 }
 
 /** Board/variant: SPI touch (XPT2046), I2C touch (CST816), or custom pins. */
