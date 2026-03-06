@@ -31,7 +31,6 @@ function generatePrayerTimesSubstitutions(config: ConfigData): string {
   const pt = config.prayerTimes;
   const city = pt?.city ?? "London";
   const school = pt?.school ?? "hanafi";
-  const refreshMin = pt?.refreshMinutes ?? 60;
 
   return `substitutions:
   # --- Device ---
@@ -42,7 +41,6 @@ function generatePrayerTimesSubstitutions(config: ConfigData): string {
   prayer_api_url: "${buildApiUrl(config)}"
   prayer_city: "${city}"
   prayer_school: "${school}"
-  prayer_refresh_seconds: "${refreshMin * 60}"
 `;
 }
 
@@ -106,13 +104,6 @@ touchscreen:
 esphome:
   name: \${device_name}
   friendly_name: \${friendly_name}
-  on_boot:
-    priority: -100
-    then:
-      - logger.log: "Boot complete, initial prayer fetch will run when WiFi connects"
-      - delay: 30s
-      - logger.log: "Boot fallback: fetching prayer times..."
-      - script.execute: fetch_prayer_times
 
 esp32:
   board: esp32dev
@@ -234,26 +225,24 @@ ${lines.join("\n")}
 }
 
 function generatePrayerTimesLvgl(): string {
-  // CYD landscape: 320 x 240. Layout:
-  // Top: clock (y=8) + date/city (y=42)
-  // Divider line at y=58
-  // Prayer rows: 6 rows starting at y=62, each 30px tall
-  // Each row: icon (x=8), prayer name (x=38), time (right-aligned x=305)
-  const ROW_START = 62;
-  const ROW_HEIGHT = 30;
+  // Match HAMon display: swap_xy true → logical size 320 (W) x 240 (H). All layout fits within that.
+  // HAMon uses: clock y:5, date y:55; we use same header style. Divider at 58, rows from 60.
+  // 6 rows × 30px = 180px; 60 + 180 = 240 exactly (no vertical overflow).
+  const SCREEN_W = 240;
+  const ROW_START = 80;
+  const ROW_HEIGHT = 40;
 
   const prayerWidgets = PRAYERS.map((p, i) => {
     const y = ROW_START + i * ROW_HEIGHT;
-    // Alternating row backgrounds: black (page bg) and dark gray
     const bgWidget =
       i % 2 === 1
         ? `
         - obj:
             x: 0
             y: ${y}
-            width: 320
+            width: ${SCREEN_W}
             height: ${ROW_HEIGHT}
-            bg_color: 0x1a1a1a
+            bg_color: 0x141414
             bg_opa: COVER
             border_width: 0
             radius: 0
@@ -268,7 +257,7 @@ function generatePrayerTimesLvgl(): string {
             text_font: icon_font
             text_color: ${p.key === "fajr" || p.key === "isha" ? "0x7B68EE" : p.key === "sunrise" ? "0xFFA500" : p.key === "maghrib" ? "0xFF6347" : "0xFFD700"}
             x: 10
-            y: ${y + 4}
+            y: ${y + 6}
             clickable: false
         - label:
             id: name_${p.key}
@@ -276,7 +265,7 @@ function generatePrayerTimesLvgl(): string {
             text_font: prayer_name_font
             text_color: 0xDDDDDD
             x: 40
-            y: ${y + 6}
+            y: ${y + 10}
             clickable: false
         - label:
             id: time_${p.key}
@@ -285,12 +274,12 @@ function generatePrayerTimesLvgl(): string {
             text_color: 0xFFFFFF
             align: TOP_RIGHT
             x: -12
-            y: ${y + 4}
+            y: ${y + 6}
             clickable: false`;
   }).join("\n");
 
   return `
-# --- DISPLAY PAGE CONFIG ---
+# --- DISPLAY PAGE CONFIG (same as HAMon: 320x240 logical) ---
 lvgl:
   displays:
     - my_display
@@ -300,34 +289,21 @@ lvgl:
     - id: main_page
       bg_color: 0x000000
       widgets:
-        # ====== HEADER ======
+        # ====== HEADER (match HAMon: clock y:5, date y:55) ======
         - label:
             id: label_clock
             text: "--:--"
             text_font: clock_font
             text_color: 0xFFFFFF
             align: TOP_MID
-            y: 4
+            y: 5
         - label:
             id: label_date
             text: "--- --/--"
             text_font: date_font
             text_color: 0xFFFFFF
             align: TOP_MID
-            y: 40
-
-        # ====== DIVIDER ======
-        - obj:
-            x: 8
-            y: 58
-            width: 304
-            height: 1
-            bg_color: 0x333333
-            bg_opa: COVER
-            border_width: 0
-            radius: 0
-            scrollbar_mode: "OFF"
-            clickable: false
+            y: 55
 
         # ====== PRAYER TIME ROWS ======
 ${prayerWidgets}
@@ -353,11 +329,12 @@ time:
                 static const char *const dias[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
                 auto now = id(esptime).now();
                 return str_sprintf("%s %02d/%02d", dias[now.day_of_week - 1], now.day_of_month, now.month);
-      # Re-fetch prayer times at midnight
+      # Daily fetch at 12:01am (prayer times don't change until next day)
       - seconds: 0
         minutes: 1
         hours: 0
         then:
+          - logger.log: "Daily 12:01am: fetching prayer times..."
           - script.execute: fetch_prayer_times
 `;
 }
@@ -407,12 +384,6 @@ ${parseLines}
                   }
 ${updateLabels}
               - logger.log: "Prayer times display labels updated"
-
-# --- PERIODIC REFRESH ---
-interval:
-  - interval: \${prayer_refresh_seconds}s
-    then:
-      - script.execute: fetch_prayer_times
 `;
 }
 
