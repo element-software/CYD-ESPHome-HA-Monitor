@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate:icons": "node scripts/generate-icons.mjs",
+    "generate:og": "node scripts/generate-og-images.mjs",
     "deploy": "npm run build && gh-pages -d .next -b gh-pages -r https://github.com/element-software/CYD-ESPHome-HA-Monitor.git"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "eslint": "^10",
     "eslint-config-next": "^16",
     "postcss": "^8",
+    "sharp": "^0.33.5",
     "tailwindcss": "^4.1",
     "typescript": "^5"
   }

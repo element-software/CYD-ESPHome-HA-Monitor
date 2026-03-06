@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/metadata';
 
 const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'About the CYD (Cheap Yellow Display) — Full Guide',
   description:
     'Complete guide to the CYD (Cheap Yellow Display): variations, hardware, pinout, diagrams, ESPHome, and Home Assistant integration with reference links.',
-};
+  imagePath: '/og/about-cyd.png',
+  imageAlt: 'About the CYD (Cheap Yellow Display) — Full Guide',
+});
 
 function CydLink({ children }: { children: React.ReactNode }) {
   return (
