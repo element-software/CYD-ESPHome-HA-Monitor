@@ -25,17 +25,32 @@ export interface SwitchSensorConfig extends BaseSensorConfig {
   colorOff?: string;
 }
 
+/** A single threshold entry: if sensor value exceeds `value`, use `color` (and optionally `icon`). */
+export interface ThresholdConfig {
+  value: string;
+  color: string;
+  /** Optional icon codepoint override (e.g. \\uf578). Falls back to the sensor base icon. */
+  icon?: string;
+}
+
 export interface NumericSensorConfig extends BaseSensorConfig {
   type: "sensor";
   icon: string;
   iconColor: string;
   format?: string;
+  /** Dynamic ordered thresholds (highest value first). Replaces legacy colorThresh* fields. */
+  thresholds?: ThresholdConfig[];
+  /** @deprecated Use thresholds array. Kept for backward compatibility with saved configs. */
   colorThreshHigh?: string;
+  /** @deprecated Use thresholds array. */
   colorThreshMid?: string;
+  /** @deprecated Use thresholds array. */
   colorThreshLow?: string;
-  /** Colors for each threshold band (value above high = colorHigh, etc.) */
+  /** @deprecated Use thresholds array. */
   colorHigh?: string;
+  /** @deprecated Use thresholds array. */
   colorMid?: string;
+  /** @deprecated Use thresholds array. */
   colorLow?: string;
 }
 
