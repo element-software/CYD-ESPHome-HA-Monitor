@@ -1,6 +1,7 @@
 import type { ConfigData, SensorConfig } from "@/types/config";
 import { iconCodeToHexEscape } from "@/lib/icons";
 import { sortThresholdsDesc } from "@/lib/yamlGenerator/numericSensors";
+import { cydReadableColor } from "@/lib/colorUtils";
 
 export function collectUniqueIconGlyphs(sensors: SensorConfig[]): string {
   const allIconCodes = sensors.flatMap((s) => {
@@ -88,6 +89,8 @@ export function generateSensorSubstitutions(
       `  ${sensor.id}_color_on: "${sensor.colorOn || defaultColorOn}"`,
     );
     lines.push(`  ${sensor.id}_color_off: "${colorOff}"`);
+    const colorOnFinal = sensor.colorOn || defaultColorOn;
+    lines.push(`  ${sensor.id}_color_on_text: "${cydReadableColor(colorOnFinal)}"`);
   }
 
   return lines.join("\n");

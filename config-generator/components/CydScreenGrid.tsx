@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
-import { cydColorToCss } from '@/lib/colorUtils';
+import { cydColorToCss, readableColor } from '@/lib/colorUtils';
 import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
 import CydClock from './CydClock';
 
@@ -152,7 +152,12 @@ function SensorCell({
       : isOn
         ? (sensor.colorOn ?? '0xFF0000')
         : (sensor.colorOff ?? '0x888888');
-  const iconColor = isToggleableOn ? '#000000' : cydColorToCss(iconColorRaw);
+
+  const onBgCss = isToggleableOn
+    ? cydColorToCss((sensor as { colorOn?: string }).colorOn ?? '0xFFA500')
+    : 'transparent';
+  const onFgCss = isToggleableOn ? readableColor(onBgCss) : cydColorToCss(iconColorRaw);
+  const iconColor = onFgCss;
 
   const displayValue =
     sensor.type === 'sensor'
@@ -163,24 +168,22 @@ function SensorCell({
 
   const labelColor =
     sensor.type === 'light' || sensor.type === 'switch'
-      ? isToggleableOn
-        ? '#000000'
-        : DEVICE.label
+      ? isToggleableOn ? onFgCss : DEVICE.label
       : DEVICE.label;
   const valueColor =
     sensor.type === 'sensor'
       ? DEVICE.value
       : isToggleableOn
-        ? '#000000'
+        ? onFgCss
         : sensor.type === 'binary'
           ? iconColor
-          : DEVICE.value;
+          : onFgCss;
 
   return (
     <div
       className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]${canToggle ? ' cursor-pointer' : ''}`}
       style={{
-        backgroundColor: isToggleableOn ? '#FFA500' : 'transparent',
+        backgroundColor: onBgCss,
         // ESPHome radius is in px on a 240px-wide display; the clock font is 48px = 16cqmin,
         // so 1cqmin ≈ 3 ESPHome pixels → divide px radius by 3 to get cqmin.
         borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',

@@ -197,8 +197,8 @@ export default function SensorConfigPanel({
           stateOff: "Off",
           iconOn: "\\ue0f0",
           iconOff: "\\ue0f0",
-          colorOn: "0x000000",
-          colorOff: "0xFFFFFF",
+          colorOn: "0xFFE082",
+          colorOff: "0x888888",
         });
         break;
       case "switch":
@@ -210,7 +210,7 @@ export default function SensorConfigPanel({
           iconOn: "\\ue8ac",
           iconOff: "\\ue8ac",
           colorOn: "0x4CAF50",
-          colorOff: "0xFFFFFF",
+          colorOff: "0x888888",
         });
         break;
     }

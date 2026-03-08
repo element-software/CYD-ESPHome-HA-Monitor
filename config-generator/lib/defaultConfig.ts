@@ -58,7 +58,7 @@ export const defaultConfig: ConfigData = {
       iconOn: '\\ue8ac',
       iconOff: '\\ue8ac',
       colorOn: '0x4CAF50',
-      colorOff: '0xFFFFFF',
+      colorOff: '0x888888',
     },
     {
       id: 'r3c1',
@@ -81,8 +81,8 @@ export const defaultConfig: ConfigData = {
       stateOff: 'Off',
       iconOn: '\\ue0f0',
       iconOff: '\\ue0f0',
-      colorOn: '0x000000',
-      colorOff: '0xFFFFFF',
+      colorOn: '0xFFE082',
+      colorOff: '0x888888',
     },
     {
       id: 'r4c1',
