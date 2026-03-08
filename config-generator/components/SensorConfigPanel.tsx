@@ -504,11 +504,18 @@ export default function SensorConfigPanel({
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       placeholder={sensor.type === "binary" ? "Open" : "On"}
                     />
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252"))}
+                      onChange={(e) => updateField("colorOn", cssToCydColor(e.target.value))}
+                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title="ON state colour"
+                    />
                     <IconPicker
                       value={sensor.iconOn ?? sensor.iconOff ?? ""}
                       onChange={(code) => updateField("iconOn", code)}
                       iconColor={sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252")}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      buttonClassName="w-8 h-8 shrink-0 p-0.5"
                       iconSet={iconSet}
                     />
                   </div>
@@ -523,11 +530,18 @@ export default function SensorConfigPanel({
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       placeholder={sensor.type === "binary" ? "Closed" : "Off"}
                     />
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.colorOff ?? "0x32CD32")}
+                      onChange={(e) => updateField("colorOff", cssToCydColor(e.target.value))}
+                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title="OFF state colour"
+                    />
                     <IconPicker
                       value={sensor.iconOff ?? sensor.iconOn ?? ""}
                       onChange={(code) => updateField("iconOff", code)}
                       iconColor={sensor.colorOff ?? "0x32CD32"}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      buttonClassName="w-8 h-8 shrink-0 p-0.5"
                       iconSet={iconSet}
                     />
                   </div>
