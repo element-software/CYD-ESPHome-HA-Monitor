@@ -316,33 +316,7 @@ export default function SensorConfigPanel({
 
           <div>
             <div className="flex gap-2 flex-wrap justify-start items-center">
-              {sensor.type === "sensor" && (
-                <>
-                  <div className="shrink-0">
-                    <IconPicker
-                      value={sensor.icon}
-                      onChange={(code) => updateField("icon", code)}
-                      iconColor={sensor.iconColor}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
-                      iconSet={iconSet}
-                    />
-                  </div>
-                  <div className="shrink-0">
-                    <label className="block text-xs text-gray-600 mb-0.5">
-                      Color
-                    </label>
-                    <input
-                      type="color"
-                      value={cydColorToCss(sensor.iconColor)}
-                      onChange={(e) =>
-                        updateField("iconColor", cssToCydColor(e.target.value))
-                      }
-                      className="h-9 w-9 cursor-pointer rounded border border-gray-300 bg-transparent p-0.5 focus:ring-2 focus:ring-blue-500 block"
-                      title="Pick icon color"
-                    />
-                  </div>
-                </>
-              )}
+
               {(sensor.type === "light" || sensor.type === "switch") && null}
               {sensor.type === "sensor" &&
                 (() => {
@@ -471,7 +445,7 @@ export default function SensorConfigPanel({
                         Threshold {i + 1}
                         {i === 0 ? " (highest)" : i === thresholds.length - 1 ? " (lowest)" : ""}
                       </span>
-                      {thresholds.length > 1 && (
+                      {thresholds.length > 2 && (
                         <button
                           type="button"
                           onClick={() => removeThreshold(i)}
