@@ -1,3 +1,5 @@
+const withRspack = require('next-rspack');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
@@ -6,4 +8,4 @@ const nextConfig = {
   assetPrefix: process.env.PAGES_BASE_PATH || '',
 };
 
-module.exports = nextConfig;
+module.exports = withRspack(nextConfig);
