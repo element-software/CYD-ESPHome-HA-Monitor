@@ -39,7 +39,7 @@ export default function CydPrayerTimesDevicePreview() {
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="absolute inset-0 z-[2] rounded-lg border-4 border-amber-400/60 bg-amber-50/50 pointer-events-none rotate-90" />
+          <div className="absolute inset-0 z-[2] rounded-lg border-4 border-amber-400/60 bg-amber-50/50 pointer-events-none -rotate-90" />
         )}
       </div>
     </div>
