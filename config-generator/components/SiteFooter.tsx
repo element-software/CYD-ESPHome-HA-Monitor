@@ -13,6 +13,7 @@ export default function SiteFooter() {
     { href: '/', labelKey: 'home', external: false },
     { href: '/about-cyd', labelKey: 'aboutCyd', external: false },
     { href: '/config-generator', labelKey: 'configGenerator', external: false },
+    { href: '/prayertimes', labelKey: 'prayerTimes', external: false },
     { href: BUY_NOW_URL, labelKey: 'buyNow', external: true },
     { href: 'https://github.com/element-software/CYD-ESPHome-HA-Monitor', labelKey: 'github', external: true },
     { href: '/privacy-policy', labelKey: 'privacyPolicy', external: false },

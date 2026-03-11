@@ -13,7 +13,7 @@ const GITHUB_STARS_BADGE = `https://img.shields.io/github/stars/${GITHUB_REPO}?s
 
 type NavLink = {
   href: string;
-  labelKey: 'home' | 'aboutCyd' | 'configGenerator';
+  labelKey: 'home' | 'aboutCyd' | 'configGenerator' | 'prayerTimes';
   external?: boolean;
 };
 
@@ -21,6 +21,7 @@ const NAV_LINK_DEFS: NavLink[] = [
   { href: '/', labelKey: 'home' },
   { href: '/about-cyd', labelKey: 'aboutCyd' },
   { href: '/config-generator', labelKey: 'configGenerator' },
+  { href: '/prayertimes', labelKey: 'prayerTimes' },
 ];
 
 function NavLink({
