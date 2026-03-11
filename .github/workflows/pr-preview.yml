@@ -4,6 +4,12 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to post the artifact comment on (optional)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -32,7 +38,7 @@ jobs:
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pr-preview-${{ github.event.pull_request.number }}
+          name: pr-preview-${{ github.event.pull_request.number || inputs.pr_number || github.run_number }}
           path: config-generator/out
           retention-days: 7
 
@@ -41,11 +47,17 @@ jobs:
         with:
           script: |
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const body = `### 🔍 PR Preview Build\n\nThe static export has been built and uploaded as a workflow artifact.\n\n**[Download preview artifact](${runUrl})** — expand *Artifacts* at the bottom of the run page to download \`pr-preview-${{ github.event.pull_request.number }}\`.\n\n> The artifact is a complete static export of the site. Extract it and open \`index.html\` locally to preview your changes.`;
+            const prNumber = context.issue.number || parseInt('${{ inputs.pr_number }}') || null;
+            if (!prNumber) {
+              core.info('No PR number available — skipping PR comment.');
+              return;
+            }
+            const artifactLabel = `pr-preview-${prNumber}`;
+            const body = `### 🔍 PR Preview Build\n\nThe static export has been built and uploaded as a workflow artifact.\n\n**[Download preview artifact](${runUrl})** — expand *Artifacts* at the bottom of the run page to download \`${artifactLabel}\`.\n\n> The artifact is a complete static export of the site. Extract it and open \`index.html\` locally to preview your changes.`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: prNumber,
             });
             const existing = comments.find(c => c.user.login === 'github-actions[bot]' && c.body.includes('PR Preview Build'));
             if (existing) {
@@ -59,7 +71,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: prNumber,
                 body,
               });
             }
