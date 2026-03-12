@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { buildPageMetadata } from '@/lib/metadata';
-import CydPrayerTimesDevicePreview from '@/components/CydPrayerTimesDevicePreview';
+import CydPrayerTimesPreview from '@/components/CydPrayerTimesPreview';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Prayer Times Display for CYD — prayertimes.dev',
@@ -92,7 +92,7 @@ export default function PrayerTimesPage() {
           {/* Device preview */}
           <div className="flex flex-col items-center">
             <p className="text-sm text-center text-gray-500 mb-2">Live screen preview</p>
-            <CydPrayerTimesDevicePreview />
+            <CydPrayerTimesPreview showDeviceFrame />
           </div>
         </div>
 

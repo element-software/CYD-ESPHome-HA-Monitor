@@ -31,7 +31,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: "size",
-            backgroundColor: "#0f1419",
+            backgroundColor: config.preset === "prayer_times" ? "#0c0c0c" : "#0f1419",
             top: "22%",
             right: "24%",
             bottom: "27%",
