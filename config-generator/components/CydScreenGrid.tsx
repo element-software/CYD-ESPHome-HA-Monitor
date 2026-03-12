@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
-import { cydColorToCss } from '@/lib/colorUtils';
+import { cydColorToCss, readableColor } from '@/lib/colorUtils';
 import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
 import CydClock from './CydClock';
 
@@ -82,16 +82,45 @@ function formatSampleFromFormat(format: string | undefined): string {
   return numStr + suffixDisplay;
 }
 
-/** Return threshold-based color for a numeric sensor value (high > mid > low). */
+/** Return threshold-based color for a numeric sensor value. */
 function getThresholdColorForValue(sensor: NumericSensorConfig, value: number): string {
+  const fallback = sensor.iconColor ?? '0x32CD32';
+  if (sensor.thresholds && sensor.thresholds.length > 0) {
+    // Sort descending so the first match is always the highest-applicable threshold,
+    // matching the lambda order in YAML generation.
+    const sorted = [...sensor.thresholds].sort(
+      (a, b) => (parseFloat(b.value) || -Infinity) - (parseFloat(a.value) || -Infinity),
+    );
+    for (const t of sorted) {
+      const tv = parseFloat(t.value);
+      if (Number.isFinite(tv) && value > tv) return t.color ?? fallback;
+    }
+    return sorted[sorted.length - 1].color ?? fallback;
+  }
+  // Legacy fallback
   const high = parseFloat(sensor.colorThreshHigh ?? '');
   const mid = parseFloat(sensor.colorThreshMid ?? '');
   const low = parseFloat(sensor.colorThreshLow ?? '');
-  const fallback = sensor.iconColor ?? '0x32CD32';
   if (Number.isFinite(high) && value > high) return sensor.colorHigh ?? fallback;
   if (Number.isFinite(mid) && value > mid) return sensor.colorMid ?? fallback;
   if (Number.isFinite(low) && value > low) return sensor.colorLow ?? fallback;
   return sensor.colorLow ?? fallback;
+}
+
+/** Return threshold-based icon code for a numeric sensor value. */
+function getThresholdIconForValue(sensor: NumericSensorConfig, value: number): string {
+  if (sensor.thresholds && sensor.thresholds.length > 0) {
+    // Sort descending so the first match is always the highest-applicable threshold.
+    const sorted = [...sensor.thresholds].sort(
+      (a, b) => (parseFloat(b.value) || -Infinity) - (parseFloat(a.value) || -Infinity),
+    );
+    for (const t of sorted) {
+      const tv = parseFloat(t.value);
+      if (Number.isFinite(tv) && value > tv) return t.icon ?? sensor.icon;
+    }
+    return sorted[sorted.length - 1].icon ?? sensor.icon;
+  }
+  return sensor.icon;
 }
 
 function SensorCell({
@@ -112,7 +141,7 @@ function SensorCell({
 
   const iconCode =
     sensor.type === 'sensor'
-      ? sensor.icon
+      ? getThresholdIconForValue(sensor, getSampleValueFromFormat(sensor.format))
       : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');
@@ -123,7 +152,12 @@ function SensorCell({
       : isOn
         ? (sensor.colorOn ?? '0xFF0000')
         : (sensor.colorOff ?? '0x888888');
-  const iconColor = isToggleableOn ? '#000000' : cydColorToCss(iconColorRaw);
+
+  const onBgCss = isToggleableOn
+    ? cydColorToCss((sensor as { colorOn?: string }).colorOn ?? '0xFFA500')
+    : 'transparent';
+  const onFgCss = isToggleableOn ? readableColor(onBgCss) : cydColorToCss(iconColorRaw);
+  const iconColor = onFgCss;
 
   const displayValue =
     sensor.type === 'sensor'
@@ -134,24 +168,22 @@ function SensorCell({
 
   const labelColor =
     sensor.type === 'light' || sensor.type === 'switch'
-      ? isToggleableOn
-        ? '#000000'
-        : DEVICE.label
+      ? isToggleableOn ? onFgCss : DEVICE.label
       : DEVICE.label;
   const valueColor =
     sensor.type === 'sensor'
       ? DEVICE.value
       : isToggleableOn
-        ? '#000000'
+        ? onFgCss
         : sensor.type === 'binary'
           ? iconColor
-          : DEVICE.value;
+          : onFgCss;
 
   return (
     <div
       className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]${canToggle ? ' cursor-pointer' : ''}`}
       style={{
-        backgroundColor: isToggleableOn ? '#FFA500' : 'transparent',
+        backgroundColor: onBgCss,
         // ESPHome radius is in px on a 240px-wide display; the clock font is 48px = 16cqmin,
         // so 1cqmin ≈ 3 ESPHome pixels → divide px radius by 3 to get cqmin.
         borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',

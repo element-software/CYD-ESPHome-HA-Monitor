@@ -9,18 +9,24 @@ export function generateOnOffSensor(
 ): string {
   const isToggleable = sensor.type === "light" || sensor.type === "switch";
   const iconColorOnExpr = isToggleable
-    ? "lv_color_hex(0x000000)"
+    ? `lv_color_hex((uint32_t)\${${sensor.id}_color_on_text})`
     : `lv_color_hex((uint32_t)\${${sensor.id}_color_on})`;
-  const iconColorOffExpr = isToggleable
-    ? "lv_color_hex(0xFFFFFF)"
-    : `lv_color_hex((uint32_t)\${${sensor.id}_color_off})`;
+  const iconColorOffExpr = `lv_color_hex((uint32_t)\${${sensor.id}_color_off})`;
 
-  const buttonCheckedUpdate = isToggleable
+  const buttonBgUpdate = isToggleable
     ? `
-        - lvgl.widget.update:
-            id: button_${sensor.id}
-            state:
-              checked: !lambda return id(ha_${sensor.id}).state;`
+        - if:
+            condition:
+              lambda: return id(ha_${sensor.id}).state;
+            then:
+              - lvgl.widget.update:
+                  id: button_${sensor.id}
+                  bg_color: \${${sensor.id}_color_on}
+                  bg_opa: COVER
+            else:
+              - lvgl.widget.update:
+                  id: button_${sensor.id}
+                  bg_opa: TRANSP`
     : "";
 
   const onStateActions = `
@@ -44,12 +50,7 @@ export function generateOnOffSensor(
             id: val_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
-              return ${iconColorOffExpr};${isToggleable ? `
-        - lvgl.widget.update:
-            id: lbl_${sensor.id}
-            text_color: !lambda |-
-              if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
-              return ${iconColorOffExpr};` : ""}${buttonCheckedUpdate}`;
+              return ${iconColorOffExpr};${buttonBgUpdate}`;
 
   const triggerInitial =
     sensor.type === "switch"

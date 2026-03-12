@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { IconSet, SensorConfig, SensorConfigKey } from "@/types/config";
+import { IconSet, NumericSensorConfig, SensorConfig, SensorConfigKey, ThresholdConfig } from "@/types/config";
 import IconPicker from "@/components/IconPicker";
 import { cydColorToCss, cssToCydColor } from "@/lib/colorUtils";
 
@@ -75,6 +75,25 @@ function parseFormatToPresets(
   return unitOption ? { accuracy, unit: unitOption.value } : null;
 }
 
+/** Derive the effective thresholds, migrating legacy colorThresh* fields if needed. */
+function getEffectiveThresholds(sensor: NumericSensorConfig): ThresholdConfig[] {
+  if (sensor.thresholds && sensor.thresholds.length > 0) return sensor.thresholds;
+  // Migrate from legacy fields
+  const ts: ThresholdConfig[] = [];
+  if (sensor.colorThreshHigh)
+    ts.push({ value: sensor.colorThreshHigh, color: sensor.colorHigh ?? "0xFF0000" });
+  if (sensor.colorThreshMid)
+    ts.push({ value: sensor.colorThreshMid, color: sensor.colorMid ?? "0xFFA500" });
+  if (sensor.colorThreshLow)
+    ts.push({ value: sensor.colorThreshLow, color: sensor.colorLow ?? "0x32CD32" });
+  if (ts.length > 0) return ts;
+  return [
+    { value: "5000", color: "0xFF0000" },
+    { value: "3000", color: "0xFFA500" },
+    { value: "1000", color: "0x32CD32" },
+  ];
+}
+
 interface SensorConfigPanelProps {
   sensor: SensorConfig;
   index: number;
@@ -104,6 +123,42 @@ export default function SensorConfigPanel({
     onChange({ ...sensor, [field]: value } as SensorConfig);
   };
 
+  const thresholds = sensor.type === "sensor" ? getEffectiveThresholds(sensor) : [];
+
+  const updateThreshold = (i: number, field: keyof ThresholdConfig, value: string) => {
+    if (sensor.type !== "sensor") return;
+    const next = [...thresholds];
+    // Only coerce to undefined for the optional `icon` field; keep value/color as strings
+    // to avoid generating "undefined" in the YAML output.
+    const newVal = field === "icon" ? (value || undefined) : value;
+    next[i] = { ...next[i], [field]: newVal } as ThresholdConfig;
+    onChange({ ...sensor, thresholds: next } as SensorConfig);
+  };
+
+  const addThreshold = () => {
+    if (sensor.type !== "sensor") return;
+    const last = thresholds[thresholds.length - 1];
+    const lastVal = parseFloat(last?.value ?? "0");
+    // Derive a sensible step: use existing spacing between the last two thresholds,
+    // fall back to 20% of the last value, or 1 at minimum.
+    let step = 500;
+    if (thresholds.length >= 2) {
+      const prevVal = parseFloat(thresholds[thresholds.length - 2]?.value ?? "0");
+      step = Math.abs(prevVal - lastVal);
+    } else if (Number.isFinite(lastVal) && lastVal > 0) {
+      step = Math.max(1, Math.round(lastVal * 0.2));
+    }
+    const newVal = Number.isFinite(lastVal) ? String(Math.max(0, lastVal - step)) : "0";
+    const next = [...thresholds, { value: newVal, color: "0x32CD32" }];
+    onChange({ ...sensor, thresholds: next } as SensorConfig);
+  };
+
+  const removeThreshold = (i: number) => {
+    if (sensor.type !== "sensor") return;
+    const next = thresholds.filter((_, idx) => idx !== i);
+    onChange({ ...sensor, thresholds: next } as SensorConfig);
+  };
+
   const changeType = (newType: string) => {
     if (newType === sensor.type) return;
     const base = { id: sensor.id, entity: sensor.entity, label: sensor.label };
@@ -115,12 +170,11 @@ export default function SensorConfigPanel({
           icon: "\\uea0b",
           iconColor: "0xFFA500",
           format: "%.0f",
-          colorThreshHigh: "5000",
-          colorThreshMid: "3000",
-          colorThreshLow: "1000",
-          colorHigh: "0xFF0000",
-          colorMid: "0xFFA500",
-          colorLow: "0x32CD32",
+          thresholds: [
+            { value: "5000", color: "0xFF0000" },
+            { value: "3000", color: "0xFFA500" },
+            { value: "1000", color: "0x32CD32" },
+          ],
         });
         break;
       case "binary":
@@ -143,8 +197,8 @@ export default function SensorConfigPanel({
           stateOff: "Off",
           iconOn: "\\ue0f0",
           iconOff: "\\ue0f0",
-          colorOn: "0x000000",
-          colorOff: "0xFFFFFF",
+          colorOn: "0xFFE082",
+          colorOff: "0x888888",
         });
         break;
       case "switch":
@@ -156,7 +210,7 @@ export default function SensorConfigPanel({
           iconOn: "\\ue8ac",
           iconOff: "\\ue8ac",
           colorOn: "0x4CAF50",
-          colorOff: "0xFFFFFF",
+          colorOff: "0x888888",
         });
         break;
     }
@@ -262,33 +316,7 @@ export default function SensorConfigPanel({
 
           <div>
             <div className="flex gap-2 flex-wrap justify-start items-center">
-              {sensor.type === "sensor" && (
-                <>
-                  <div className="shrink-0">
-                    <IconPicker
-                      value={sensor.icon}
-                      onChange={(code) => updateField("icon", code)}
-                      iconColor={sensor.iconColor}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
-                      iconSet={iconSet}
-                    />
-                  </div>
-                  <div className="shrink-0">
-                    <label className="block text-xs text-gray-600 mb-0.5">
-                      Color
-                    </label>
-                    <input
-                      type="color"
-                      value={cydColorToCss(sensor.iconColor)}
-                      onChange={(e) =>
-                        updateField("iconColor", cssToCydColor(e.target.value))
-                      }
-                      className="h-9 w-9 cursor-pointer rounded border border-gray-300 bg-transparent p-0.5 focus:ring-2 focus:ring-blue-500 block"
-                      title="Pick icon color"
-                    />
-                  </div>
-                </>
-              )}
+
               {(sensor.type === "light" || sensor.type === "switch") && null}
               {sensor.type === "sensor" &&
                 (() => {
@@ -390,84 +418,77 @@ export default function SensorConfigPanel({
 
           {sensor.type === "sensor" ? (
             <>
-              <p className="text-xs text-gray-600 font-medium">
-                Thresholds & colours
-              </p>
-              <div className="grid grid-cols-3 gap-2">
-                <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
-                  <span className="text-xs font-medium text-gray-700">
-                    High
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      step="any"
-                      value={sensor.colorThreshHigh ?? ""}
-                      onChange={(e) =>
-                        updateField("colorThreshHigh", e.target.value)
-                      }
-                      className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder="5000"
-                    />
-                    <input
-                      type="color"
-                      value={cydColorToCss(sensor.colorHigh || "0xFF0000")}
-                      onChange={(e) =>
-                        updateField("colorHigh", cssToCydColor(e.target.value))
-                      }
-                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                    />
-                  </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-600 font-medium">
+                    Thresholds &amp; colours
+                  </p>
+                  <p className="text-xs text-gray-400">Highest value first</p>
                 </div>
-                <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
-                  <span className="text-xs font-medium text-gray-700">Mid</span>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      step="any"
-                      value={sensor.colorThreshMid ?? ""}
-                      onChange={(e) =>
-                        updateField("colorThreshMid", e.target.value)
-                      }
-                      className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder="3000"
-                    />
-                    <input
-                      type="color"
-                      value={cydColorToCss(sensor.colorMid || "0xFFA500")}
-                      onChange={(e) =>
-                        updateField("colorMid", cssToCydColor(e.target.value))
-                      }
-                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                    />
+                <button
+                  type="button"
+                  onClick={addThreshold}
+                  className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                  title="Add threshold"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add
+                </button>
+              </div>
+              <div className="space-y-2">
+                {thresholds.map((threshold, i) => (
+                  <div key={i} className="rounded border border-gray-300 p-2 flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-gray-700">
+                        Threshold {i + 1}
+                        {i === 0 ? " (highest)" : i === thresholds.length - 1 ? " (lowest)" : ""}
+                      </span>
+                      {thresholds.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() => removeThreshold(i)}
+                          className="text-gray-400 hover:text-red-500 transition-colors p-0.5 rounded"
+                          title="Remove threshold"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        step="any"
+                        value={threshold.value}
+                        onChange={(e) => updateThreshold(i, "value", e.target.value)}
+                        className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                        placeholder="1000"
+                      />
+                      <input
+                        type="color"
+                        value={cydColorToCss(threshold.color || "0x32CD32")}
+                        onChange={(e) =>
+                          updateThreshold(i, "color", cssToCydColor(e.target.value))
+                        }
+                        className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                        title="Threshold colour"
+                      />
+                      <IconPicker
+                        value={threshold.icon ?? sensor.icon}
+                        onChange={(code) =>
+                          updateThreshold(i, "icon", code === sensor.icon ? "" : code)
+                        }
+                        iconColor={threshold.color || sensor.iconColor}
+                        buttonClassName="w-8 h-8 shrink-0 p-0.5"
+                        iconSet={iconSet}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
-                  <span className="text-xs font-medium text-gray-700">Low</span>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      step="any"
-                      value={sensor.colorThreshLow ?? ""}
-                      onChange={(e) =>
-                        updateField("colorThreshLow", e.target.value)
-                      }
-                      className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder="1000"
-                    />
-                    <input
-                      type="color"
-                      value={cydColorToCss(sensor.colorLow || "0x32CD32")}
-                      onChange={(e) =>
-                        updateField("colorLow", cssToCydColor(e.target.value))
-                      }
-                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                    />
-                  </div>
-                </div>
+                ))}
               </div>
             </>
           ) : sensor.type === "binary" || sensor.type === "light" || sensor.type === "switch" ? (
@@ -483,11 +504,18 @@ export default function SensorConfigPanel({
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       placeholder={sensor.type === "binary" ? "Open" : "On"}
                     />
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252"))}
+                      onChange={(e) => updateField("colorOn", cssToCydColor(e.target.value))}
+                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title="ON state colour"
+                    />
                     <IconPicker
                       value={sensor.iconOn ?? sensor.iconOff ?? ""}
                       onChange={(code) => updateField("iconOn", code)}
                       iconColor={sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252")}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      buttonClassName="w-8 h-8 shrink-0 p-0.5"
                       iconSet={iconSet}
                     />
                   </div>
@@ -502,11 +530,18 @@ export default function SensorConfigPanel({
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       placeholder={sensor.type === "binary" ? "Closed" : "Off"}
                     />
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.colorOff ?? "0x32CD32")}
+                      onChange={(e) => updateField("colorOff", cssToCydColor(e.target.value))}
+                      className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title="OFF state colour"
+                    />
                     <IconPicker
                       value={sensor.iconOff ?? sensor.iconOn ?? ""}
                       onChange={(code) => updateField("iconOff", code)}
                       iconColor={sensor.colorOff ?? "0x32CD32"}
-                      buttonClassName="w-9 h-9 shrink-0 p-0.5"
+                      buttonClassName="w-8 h-8 shrink-0 p-0.5"
                       iconSet={iconSet}
                     />
                   </div>

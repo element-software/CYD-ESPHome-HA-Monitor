@@ -24,10 +24,6 @@ export function generateLvglWidget(
                     entity_id: "${sensor.entity}"`
     : "";
 
-  const checkedStyling = `checked:
-              bg_color: 0xFFA500
-              bg_opa: COVER`;
-
   return `
         - button:
             x: ${xPos}
@@ -40,7 +36,6 @@ export function generateLvglWidget(
             shadow_width: 0
             radius: ${buttonRadius}
             scrollbar_mode: "OFF"${isToggleable ? onClickBlock : ""}
-            ${isToggleable ? checkedStyling : ""}
             widgets:
               - label:
                   id: icon_${sensor.id}
