@@ -37,7 +37,9 @@ export default function CydDevicePreview({
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: "size",
-            backgroundColor: config.screens?.[activeScreenIndex]?.backgroundColor || "#0f1419",
+            backgroundColor: config.preset === "prayer_times"
+              ? "#0c0c0c"
+              : (config.screens?.[activeScreenIndex]?.backgroundColor || "#0f1419"),
             ...(isLandscape
               ? { top: "5.5%", right: "13.6%", bottom: "7.6%", left: "19.6%" }
               : { top: "22%", right: "24%", bottom: "27%", left: "24%" }),
