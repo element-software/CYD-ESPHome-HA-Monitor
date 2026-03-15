@@ -4,6 +4,7 @@ import '@material-design-icons/font/index.css'
 import CookieConsentManager from '@/components/CookieConsentManager'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import LocaleProvider from '@/components/LocaleProvider'
 import { buildPageMetadata, METADATA_BASE } from '@/lib/metadata'
 
 export const metadata: Metadata = {
@@ -31,12 +32,14 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <div className="flex-1 flex flex-col">
-          {children}
-        </div>
-        <SiteFooter />
-        <CookieConsentManager />
+        <LocaleProvider>
+          <SiteHeader />
+          <div className="flex-1 flex flex-col">
+            {children}
+          </div>
+          <SiteFooter />
+          <CookieConsentManager />
+        </LocaleProvider>
       </body>
     </html>
   )

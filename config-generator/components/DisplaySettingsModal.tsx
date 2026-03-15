@@ -1,16 +1,14 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ConfigData, IconSet } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
 
 /** Default sensors for row 4 when Hide Clock is enabled (r4c1, r4c2). */
 const ROW4_DEFAULT_SENSORS = defaultConfig.sensors.slice(6, 8);
 
-const ICON_SET_OPTIONS: { value: IconSet; label: string; description: string }[] = [
-  { value: 'material_design_icons', label: 'Material Design Icons', description: 'Classic icon set (community)' },
-  { value: 'material_symbols', label: 'Material Symbols', description: 'Google Fonts icons (fonts.google.com/icons)' },
-];
+const ICON_SET_VALUES: IconSet[] = ['material_design_icons', 'material_symbols'];
 
 interface DisplaySettingsModalProps {
   config: ConfigData;
@@ -20,6 +18,8 @@ interface DisplaySettingsModalProps {
 }
 
 export default function DisplaySettingsModal({ config, onChange, open, onClose }: DisplaySettingsModalProps) {
+  const t = useTranslations('displayModal');
+  const tCommon = useTranslations('common');
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -58,14 +58,14 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
     >
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">Display Settings</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Visual and layout options for the device display.</p>
+          <h3 className="text-lg font-semibold text-gray-800">{t('title')}</h3>
+          <p className="text-xs text-gray-500 mt-0.5">{t('subtitle')}</p>
         </div>
         <button
           type="button"
           onClick={onClose}
           className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
-          aria-label="Close"
+          aria-label={tCommon('close')}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -77,8 +77,8 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
         {/* Hide Clock */}
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Hide Clock</p>
-            <p className="text-xs text-gray-500 mt-0.5">Adds an extra row for a 4×2 sensor grid.</p>
+            <p className="text-sm font-medium text-gray-700">{t('hideClock.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('hideClock.description')}</p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer shrink-0">
             <input
@@ -86,7 +86,7 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
               checked={config.hideClock ?? false}
               onChange={(e) => update('hideClock', e.target.checked)}
               className="sr-only peer"
-              aria-label="Hide Clock"
+              aria-label={t('hideClock.label')}
             />
             <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
           </label>
@@ -97,7 +97,7 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
         {/* Button Corner Radius */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-gray-700">Button Corner Radius</label>
+            <label className="text-sm font-medium text-gray-700">{t('buttonRadius.label')}</label>
             <span className="text-sm font-mono text-gray-500">{config.buttonRadius ?? 0}px</span>
           </div>
           <input
@@ -108,37 +108,40 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
             value={config.buttonRadius ?? 0}
             onChange={(e) => update('buttonRadius', parseInt(e.target.value, 10))}
             className="w-full accent-blue-600"
-            aria-label="Button corner radius"
+            aria-label={t('buttonRadius.label')}
           />
-          <p className="text-xs text-gray-500">0 = square corners, 34 = fully rounded.</p>
+          <p className="text-xs text-gray-500">{t('buttonRadius.help')}</p>
         </div>
 
         <hr className="border-gray-100" />
 
         {/* Icon Set */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700">Icon Set</p>
-          <p className="text-xs text-gray-500">Icons used in the preview and generated YAML.</p>
+          <p className="text-sm font-medium text-gray-700">{t('iconSet.label')}</p>
+          <p className="text-xs text-gray-500">{t('iconSet.description')}</p>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {ICON_SET_OPTIONS.map((opt) => (
-              <label
-                key={opt.value}
-                className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50"
-              >
-                <input
-                  type="radio"
-                  name="displaySettingsIconSet"
-                  value={opt.value}
-                  checked={(config.iconSet ?? 'material_design_icons') === opt.value}
-                  onChange={() => update('iconSet', opt.value)}
-                  className="mt-1 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-medium text-gray-800">{opt.label}</span>
-                  <p className="text-xs text-gray-500">{opt.description}</p>
-                </div>
-              </label>
-            ))}
+            {ICON_SET_VALUES.map((val) => {
+              const labelKey = val === 'material_symbols' ? 'materialSymbols' : 'materialDesign';
+              return (
+                <label
+                  key={val}
+                  className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50"
+                >
+                  <input
+                    type="radio"
+                    name="displaySettingsIconSet"
+                    value={val}
+                    checked={(config.iconSet ?? 'material_design_icons') === val}
+                    onChange={() => update('iconSet', val)}
+                    className="mt-1 text-blue-600 focus:ring-blue-500"
+                  />
+                  <div>
+                    <span className="text-sm font-medium text-gray-800">{t(`iconSet.${labelKey}.label`)}</span>
+                    <p className="text-xs text-gray-500">{t(`iconSet.${labelKey}.description`)}</p>
+                  </div>
+                </label>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -149,7 +152,7 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
           onClick={onClose}
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
         >
-          Done
+          {tCommon('done')}
         </button>
       </div>
     </dialog>

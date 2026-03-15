@@ -1,12 +1,17 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function PageHeader() {
+  const t = useTranslations('pageHeader');
   return (
     <header className="mb-8 flex flex-col lg:flex-row gap-4 justify-between">
       <div className="flex flex-col §items-center gap-2">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
-          CYD HAMon Config Generator
+          {t('title')}
         </h1>
         <p className="text-gray-600">
-          Configure your Cheap Yellow Display Home Assistant Monitor
+          {t('subtitle')}
         </p>
       </div>
       <div className="flex items-center gap-2">

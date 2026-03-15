@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ConfigData, DevicePins, DeviceVariant } from '@/types/config';
 import {
   DEVICE_VARIANT_OPTIONS,
@@ -51,6 +52,8 @@ function PinRow({
 }
 
 export default function DeviceGpioModal({ config, onChange, open, onClose }: DeviceGpioModalProps) {
+  const t = useTranslations('gpioModal');
+  const tCommon = useTranslations('common');
   const dialogRef = useRef<HTMLDialogElement>(null);
   const effective = getEffectivePins(config);
   const [variant, setVariant] = useState<DeviceVariant>(config.deviceVariant ?? 'spi_touch');
@@ -105,57 +108,57 @@ export default function DeviceGpioModal({ config, onChange, open, onClose }: Dev
       onCancel={onClose}
     >
       <div className="p-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">Device GPIO config</h3>
-        <p className="text-xs text-gray-500 mt-1">Choose a board variant or set pins manually.</p>
+        <h3 className="text-lg font-semibold text-gray-800">{t('title')}</h3>
+        <p className="text-xs text-gray-500 mt-1">{t('subtitle')}</p>
       </div>
       <div className="p-4 overflow-y-auto max-h-[60vh] space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Variant</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('variant')}</label>
           <select
             value={variant}
             onChange={(e) => handleVariantChange(e.target.value as DeviceVariant)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           >
             {DEVICE_VARIANT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+              <option key={opt.value} value={opt.value}>{t(`variantDescriptions.${opt.value}`).split(',')[0] || opt.label}</option>
             ))}
           </select>
           <p className="text-xs text-gray-500 mt-1">
-            {DEVICE_VARIANT_OPTIONS.find((o) => o.value === variant)?.description}
+            {t(`variantDescriptions.${variant}`)}
           </p>
         </div>
 
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-gray-700">Display &amp; backlight</h4>
+          <h4 className="text-sm font-medium text-gray-700">{t('displayBacklight')}</h4>
           <div className="grid gap-2 pl-2">
-            <PinRow label="Backlight PWM" value={pins.backlightPin} onChange={(v) => updatePin('backlightPin', v)} disabled={!isCustom} />
-            <PinRow label="TFT CLK" value={pins.tftClk} onChange={(v) => updatePin('tftClk', v)} disabled={!isCustom} />
-            <PinRow label="TFT MOSI" value={pins.tftMosi} onChange={(v) => updatePin('tftMosi', v)} disabled={!isCustom} />
-            <PinRow label="TFT MISO" value={pins.tftMiso} onChange={(v) => updatePin('tftMiso', v)} disabled={!isCustom} />
-            <PinRow label="TFT CS" value={pins.tftCs} onChange={(v) => updatePin('tftCs', v)} disabled={!isCustom} />
-            <PinRow label="TFT DC" value={pins.tftDc} onChange={(v) => updatePin('tftDc', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.backlightPwm')} value={pins.backlightPin} onChange={(v) => updatePin('backlightPin', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.tftClk')} value={pins.tftClk} onChange={(v) => updatePin('tftClk', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.tftMosi')} value={pins.tftMosi} onChange={(v) => updatePin('tftMosi', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.tftMiso')} value={pins.tftMiso} onChange={(v) => updatePin('tftMiso', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.tftCs')} value={pins.tftCs} onChange={(v) => updatePin('tftCs', v)} disabled={!isCustom} />
+            <PinRow label={t('pins.tftDc')} value={pins.tftDc} onChange={(v) => updatePin('tftDc', v)} disabled={!isCustom} />
           </div>
         </div>
 
         {(variant === 'spi_touch' || variant === 'custom') && (
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-700">Touch (SPI – XPT2046)</h4>
+            <h4 className="text-sm font-medium text-gray-700">{t('touchSpi')}</h4>
             <div className="grid gap-2 pl-2">
-              <PinRow label="Touch CLK" value={pins.touchSpiClk ?? ''} onChange={(v) => updatePin('touchSpiClk', v)} disabled={variant !== 'custom'} />
-              <PinRow label="Touch MOSI" value={pins.touchSpiMosi ?? ''} onChange={(v) => updatePin('touchSpiMosi', v)} disabled={variant !== 'custom'} />
-              <PinRow label="Touch MISO" value={pins.touchSpiMiso ?? ''} onChange={(v) => updatePin('touchSpiMiso', v)} disabled={variant !== 'custom'} />
-              <PinRow label="Touch CS" value={pins.touchSpiCs ?? ''} onChange={(v) => updatePin('touchSpiCs', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.touchClk')} value={pins.touchSpiClk ?? ''} onChange={(v) => updatePin('touchSpiClk', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.touchMosi')} value={pins.touchSpiMosi ?? ''} onChange={(v) => updatePin('touchSpiMosi', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.touchMiso')} value={pins.touchSpiMiso ?? ''} onChange={(v) => updatePin('touchSpiMiso', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.touchCs')} value={pins.touchSpiCs ?? ''} onChange={(v) => updatePin('touchSpiCs', v)} disabled={variant !== 'custom'} />
             </div>
           </div>
         )}
 
         {(variant === 'i2c_touch' || variant === 'custom') && (
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-700">Touch (I2C – CST816)</h4>
+            <h4 className="text-sm font-medium text-gray-700">{t('touchI2c')}</h4>
             <div className="grid gap-2 pl-2">
-              <PinRow label="I2C SDA" value={pins.i2cSda ?? ''} onChange={(v) => updatePin('i2cSda', v)} disabled={variant !== 'custom'} />
-              <PinRow label="I2C SCL" value={pins.i2cScl ?? ''} onChange={(v) => updatePin('i2cScl', v)} disabled={variant !== 'custom'} />
-              <PinRow label="Touch reset" value={pins.touchReset ?? ''} onChange={(v) => updatePin('touchReset', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.i2cSda')} value={pins.i2cSda ?? ''} onChange={(v) => updatePin('i2cSda', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.i2cScl')} value={pins.i2cScl ?? ''} onChange={(v) => updatePin('i2cScl', v)} disabled={variant !== 'custom'} />
+              <PinRow label={t('pins.touchReset')} value={pins.touchReset ?? ''} onChange={(v) => updatePin('touchReset', v)} disabled={variant !== 'custom'} />
             </div>
           </div>
         )}
@@ -166,14 +169,14 @@ export default function DeviceGpioModal({ config, onChange, open, onClose }: Dev
           onClick={onClose}
           className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
         >
-          Cancel
+          {tCommon('cancel')}
         </button>
         <button
           type="button"
           onClick={handleSave}
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
         >
-          Save
+          {tCommon('save')}
         </button>
       </div>
     </dialog>

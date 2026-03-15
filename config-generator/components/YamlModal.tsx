@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { ConfigData } from '@/types/config';
 import { generateYaml } from '@/lib/yamlGenerator';
 import CopyButton from './CopyButton';
@@ -13,6 +14,8 @@ interface YamlModalProps {
 }
 
 export default function YamlModal({ config, open, onClose }: YamlModalProps) {
+  const t = useTranslations('yamlModal');
+  const tCommon = useTranslations('common');
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function YamlModal({ config, open, onClose }: YamlModalProps) {
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="flex items-center justify-between p-4 border-b border-gray-200 shrink-0">
           <h2 className="text-xl font-semibold text-gray-800">
-            Generated YAML
+            {t('title')}
           </h2>
           <div className="flex items-center gap-2">
             <CopyButton
@@ -55,7 +58,7 @@ export default function YamlModal({ config, open, onClose }: YamlModalProps) {
               type="button"
               onClick={onClose}
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-              aria-label="Close"
+              aria-label={tCommon('close')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { IconSet, NumericSensorConfig, SensorConfig, SensorConfigKey, ThresholdConfig } from "@/types/config";
 import IconPicker from "@/components/IconPicker";
 import { cydColorToCss, cssToCydColor } from "@/lib/colorUtils";
@@ -111,6 +112,7 @@ export default function SensorConfigPanel({
   onChange,
   iconSet,
 }: SensorConfigPanelProps) {
+  const t = useTranslations("sensorPanel");
   const [formatUnitForceCustom, setFormatUnitForceCustom] = useState(false);
 
   useEffect(() => {
@@ -219,7 +221,7 @@ export default function SensorConfigPanel({
   const getSensorLabel = () => {
     const row = Math.floor(index / 2) + 1;
     const col = (index % 2) + 1;
-    return `Row ${row}, Column ${col}`;
+    return `${t("row")} ${row}, ${t("col")} ${col}`;
   };
 
   return (
@@ -249,7 +251,7 @@ export default function SensorConfigPanel({
                     : "bg-amber-100 text-amber-800"
             }`}
           >
-            {sensor.type}
+            {t(`types.${sensor.type}`)}
           </span>
         </div>
         <svg
@@ -274,43 +276,43 @@ export default function SensorConfigPanel({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-0.5">
-                Type
+                {t("typeLabel")}
               </label>
               <select
                 value={sensor.type}
                 onChange={(e) => changeType(e.target.value)}
                 className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               >
-                <option value="sensor">Sensor (Numeric)</option>
-                <option value="binary">Binary Sensor</option>
-                <option value="light">Light</option>
-                <option value="switch">Switch</option>
+                <option value="sensor">{t("types.sensor")}</option>
+                <option value="binary">{t("types.binary")}</option>
+                <option value="light">{t("types.light")}</option>
+                <option value="switch">{t("types.switch")}</option>
               </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-0.5">
-                Label
+                {t("labelField")}
               </label>
               <input
                 type="text"
                 value={sensor.label}
                 onChange={(e) => updateField("label", e.target.value)}
                 className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                placeholder="Energy"
+                placeholder={t("labelPlaceholder")}
               />
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-0.5">
-              Entity ID
+              {t("entityId")}
             </label>
             <input
               type="text"
               value={sensor.entity}
               onChange={(e) => updateField("entity", e.target.value)}
               className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              placeholder="sensor.example"
+              placeholder={t("entityPlaceholder")}
             />
           </div>
 
@@ -332,7 +334,7 @@ export default function SensorConfigPanel({
                     <div className="flex-1 min-w-0 flex gap-2 items-start justify-start flex-wrap">
                       <div className="min-w-[100px]">
                         <label className="block text-xs text-gray-600 mb-0.5">
-                          Accuracy
+                          {t("accuracy")}
                         </label>
                         <select
                           value={accuracy}
@@ -361,14 +363,14 @@ export default function SensorConfigPanel({
                         >
                           {ACCURACY_OPTIONS.map((a) => (
                             <option key={a.value} value={a.value}>
-                              {a.label}
+                              {a.value === 0 ? t("accuracyWhole") : a.value === 1 ? t("accuracyOne") : t("accuracyTwo")}
                             </option>
                           ))}
                         </select>
                       </div>
                       <div className="min-w-[90px] flex-1">
                         <label className="block text-xs text-gray-600 mb-0.5">
-                          Unit
+                          {t("unit")}
                         </label>
                         <select
                           value={unit}
@@ -389,7 +391,7 @@ export default function SensorConfigPanel({
                         >
                           {UNIT_OPTIONS.map((u) => (
                             <option key={u.value || "none"} value={u.value}>
-                              {u.label}
+                              {u.value === CUSTOM_UNIT ? t("unitCustom") : u.label}
                             </option>
                           ))}
                         </select>
@@ -397,7 +399,7 @@ export default function SensorConfigPanel({
                       {isCustom && (
                         <div className="min-w-[100px] flex-1">
                           <label className="block text-xs text-gray-600 mb-0.5">
-                            Custom
+                            {t("unitCustom")}
                           </label>
                           <input
                             type="text"
@@ -406,7 +408,7 @@ export default function SensorConfigPanel({
                               updateField("format", e.target.value)
                             }
                             className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                            placeholder="%.1f°C"
+                            placeholder={t("customFormatPlaceholder")}
                           />
                         </div>
                       )}
@@ -421,20 +423,19 @@ export default function SensorConfigPanel({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 font-medium">
-                    Thresholds &amp; colours
+                    {t("thresholds")}
                   </p>
-                  <p className="text-xs text-gray-400">Highest value first</p>
+                  <p className="text-xs text-gray-400">{t("highestFirst")}</p>
                 </div>
                 <button
                   type="button"
                   onClick={addThreshold}
                   className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
-                  title="Add threshold"
+                  title={t("addThreshold")}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  Add
+                  </svg>{t("addThreshold")}
                 </button>
               </div>
               <div className="space-y-2">
@@ -442,8 +443,8 @@ export default function SensorConfigPanel({
                   <div key={i} className="rounded border border-gray-300 p-2 flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium text-gray-700">
-                        Threshold {i + 1}
-                        {i === 0 ? " (highest)" : i === thresholds.length - 1 ? " (lowest)" : ""}
+                        {t("threshold", { n: i + 1 })}
+                        {i === 0 ? " " + t("highest") : i === thresholds.length - 1 ? " " + t("lowest") : ""}
                       </span>
                       {thresholds.length > 2 && (
                         <button
@@ -466,7 +467,7 @@ export default function SensorConfigPanel({
                         value={threshold.value}
                         onChange={(e) => updateThreshold(i, "value", e.target.value)}
                         className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                        placeholder="1000"
+                        placeholder={t("thresholdValuePlaceholder")}
                       />
                       <input
                         type="color"
@@ -475,7 +476,7 @@ export default function SensorConfigPanel({
                           updateThreshold(i, "color", cssToCydColor(e.target.value))
                         }
                         className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                        title="Threshold colour"
+                        title={t("thresholdColor")}
                       />
                       <IconPicker
                         value={threshold.icon ?? sensor.icon}
@@ -495,21 +496,21 @@ export default function SensorConfigPanel({
             <>
               <div className="grid grid-cols-2 gap-2">
                 <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
-                  <span className="text-xs font-medium text-gray-700">ON</span>
+                  <span className="text-xs font-medium text-gray-700">{t("stateOn")}</span>
                   <div className="flex items-end gap-1">
                     <input
                       type="text"
                       value={sensor.stateOn ?? ""}
                       onChange={(e) => updateField("stateOn", e.target.value)}
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder={sensor.type === "binary" ? "Open" : "On"}
+                      placeholder={sensor.type === "binary" ? t("onPlaceholderBinary") : t("onPlaceholderLight")}
                     />
                     <input
                       type="color"
                       value={cydColorToCss(sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252"))}
                       onChange={(e) => updateField("colorOn", cssToCydColor(e.target.value))}
                       className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                      title="ON state colour"
+                      title={t("colorOn")}
                     />
                     <IconPicker
                       value={sensor.iconOn ?? sensor.iconOff ?? ""}
@@ -521,21 +522,21 @@ export default function SensorConfigPanel({
                   </div>
                 </div>
                 <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
-                  <span className="text-xs font-medium text-gray-700">OFF</span>
+                  <span className="text-xs font-medium text-gray-700">{t("stateOff")}</span>
                   <div className="flex items-end gap-1">
                     <input
                       type="text"
                       value={sensor.stateOff ?? ""}
                       onChange={(e) => updateField("stateOff", e.target.value)}
                       className="flex-1 min-w-0 px-1.5 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      placeholder={sensor.type === "binary" ? "Closed" : "Off"}
+                      placeholder={sensor.type === "binary" ? t("offPlaceholderBinary") : t("offPlaceholderLight")}
                     />
                     <input
                       type="color"
                       value={cydColorToCss(sensor.colorOff ?? "0x32CD32")}
                       onChange={(e) => updateField("colorOff", cssToCydColor(e.target.value))}
                       className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                      title="OFF state colour"
+                      title={t("colorOff")}
                     />
                     <IconPicker
                       value={sensor.iconOff ?? sensor.iconOn ?? ""}

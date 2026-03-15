@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
@@ -8,6 +9,7 @@ import { ConfigData } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
 
 export default function ConfigGeneratorClient() {
+  const t = useTranslations('configGeneratorPage');
   const [config, setConfig] = useState<ConfigData>(defaultConfig);
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
 
@@ -24,7 +26,7 @@ export default function ConfigGeneratorClient() {
             onClick={() => setYamlModalOpen(true)}
             className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors shadow-sm"
           >
-            Generate YAML
+            {t('generateYaml')}
           </button>
         </div>
       </div>

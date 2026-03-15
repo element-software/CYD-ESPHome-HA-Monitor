@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Script from 'next/script';
 import Link from 'next/link';
 
@@ -8,6 +9,7 @@ const GA_ID = 'G-DVR5LT27RK';
 const CONSENT_KEY = 'cookie_consent';
 
 export default function CookieConsentManager() {
+  const t = useTranslations('cookieConsent');
   const [consent, setConsent] = useState<'accepted' | 'declined' | null>(null);
   const [showBanner, setShowBanner] = useState(false);
 
@@ -53,12 +55,11 @@ export default function CookieConsentManager() {
 
           {/* Banner — bottom right */}
           <div className="fixed bottom-4 right-4 z-50 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 p-5">
-            <h2 className="text-sm font-semibold text-gray-900 mb-2">🍪 Cookie Preferences</h2>
+            <h2 className="text-sm font-semibold text-gray-900 mb-2">{t('title')}</h2>
             <p className="text-sm text-gray-600 mb-4">
-              We use analytics cookies to understand how the site is used and improve your
-              experience. No personal information is collected.{' '}
+              {t('message')}{' '}
               <Link href="/privacy-policy" className="underline hover:text-gray-900 transition-colors">
-                Privacy Policy
+                {t('privacyPolicy')}
               </Link>
             </p>
             <div className="flex flex-col gap-2">
@@ -66,13 +67,13 @@ export default function CookieConsentManager() {
                 onClick={accept}
                 className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Accept cookies
+                {t('accept')}
               </button>
               <button
                 onClick={decline}
                 className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Decline
+                {t('decline')}
               </button>
             </div>
           </div>
