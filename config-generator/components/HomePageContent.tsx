@@ -13,7 +13,7 @@ export default function HomePageContent() {
         aria-label={t('heroLabel')}
       >
         <div className="absolute inset-0 z-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- decorative hero background; native img used for fetchPriority="high" support on static export */}
           <img
             src="/cyd.jpg"
             alt=""
