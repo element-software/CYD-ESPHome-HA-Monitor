@@ -176,7 +176,7 @@
     "threshold": "Tröskel {n}",
     "highest": "(högst)",
     "lowest": "(lägst)",
-    "thresholdColor": "Tröskelffärg",
+    "thresholdColor": "Tröskelvärdsfärg",
     "stateOn": "PÅ",
     "stateOff": "AV",
     "colorOn": "Färg för tillstånd PÅ",
