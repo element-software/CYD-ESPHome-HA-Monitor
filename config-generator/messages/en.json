@@ -49,17 +49,17 @@
     "subtitle": "Configuration tools and information for the ESP32-2432S028",
     "whatIsCyd": {
       "title": "What is a CYD?",
-      "p1": "The <strong>Cheap Yellow Display</strong> (CYD) is the popular name for the <strong>ESP32-2432S028</strong> — an all-in-one development board that combines an ESP32 microcontroller with a 2.8\u2033 colour TFT touchscreen (240\u00d7320), resistive touch (XPT2046 or CST816 on some variants), and useful extras like an onboard RGB LED, microSD slot, and LDR. It's become a favourite in the maker and smart-home community for building compact dashboards, status displays, and control panels without wiring a separate screen.",
-      "p2": "Because the display and ESP32 are on one board, you can build a full GUI device (e.g. a Home Assistant monitor) by flashing firmware and connecting to Wi\u2011Fi \u2014 no soldering or complex wiring required."
+      "p1": "The <strong>Cheap Yellow Display</strong> (CYD) is the popular name for the <strong>ESP32-2432S028</strong> — an all-in-one development board that combines an ESP32 microcontroller with a 2.8″ colour TFT touchscreen (240×320), resistive touch (XPT2046 or CST816 on some variants), and useful extras like an onboard RGB LED, microSD slot, and LDR. It's become a favourite in the maker and smart-home community for building compact dashboards, status displays, and control panels without wiring a separate screen.",
+      "p2": "Because the display and ESP32 are on one board, you can build a full GUI device (e.g. a Home Assistant monitor) by flashing firmware and connecting to Wi‑Fi — no soldering or complex wiring required."
     },
     "purpose": {
       "title": "Purpose of this website",
       "p1": "This site exists to help you get the most out of your CYD when using <strong>ESPHome</strong> and (optionally) <strong>Home Assistant</strong>. Rather than editing YAML by hand, you can use the tools here to generate and customise configurations visually, then copy the result into ESPHome and flash your device.",
-      "p2": "The project supports a <strong>Home Assistant monitor</strong> (sensor dashboard with clock), tailored for the CYD\u2019s screen and GPIO layout."
+      "p2": "The project supports a <strong>Home Assistant monitor</strong> (sensor dashboard with clock), tailored for the CYD’s screen and GPIO layout."
     },
     "atAGlance": {
       "title": "CYD at a glance",
-      "board": "<strong>Board:</strong> ESP32-WROOM-32, 2.8\u2033 ILI9341 TFT (240\u00d7320), SPI touch",
+      "board": "<strong>Board:</strong> ESP32-WROOM-32, 2.8″ ILI9341 TFT (240×320), SPI touch",
       "displayPins": "<strong>Display pins:</strong> TFT on HSPI (e.g. CLK 14, MOSI 13, MISO 12, CS 15, DC 2); backlight often GPIO 21 (or 27 on I2C touch variants)",
       "rgbLed": "<strong>Onboard RGB LED:</strong> Red GPIO 4, Green GPIO 16, Blue GPIO 17 (active low)",
       "typicalUse": "<strong>Typical use:</strong> ESPHome + LVGL for dashboards, clocks, sensor tiles, and custom UIs",
@@ -76,7 +76,9 @@
     "subtitle": "Configure your Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
-    "generateYaml": "Generate YAML"
+    "generateYaml": "Generate YAML",
+    "exportJson": "Export JSON",
+    "importJson": "Import JSON"
   },
   "deviceSettings": {
     "title": "Device Settings",
@@ -102,8 +104,8 @@
     "subtitle": "Choose a board variant or set pins manually.",
     "variant": "Variant",
     "displayBacklight": "Display & backlight",
-    "touchSpi": "Touch (SPI \u2013 XPT2046)",
-    "touchI2c": "Touch (I2C \u2013 CST816)",
+    "touchSpi": "Touch (SPI – XPT2046)",
+    "touchI2c": "Touch (I2C – CST816)",
     "pins": {
       "backlightPwm": "Backlight PWM",
       "tftClk": "TFT CLK",
@@ -130,7 +132,7 @@
     "subtitle": "Visual and layout options for the device display.",
     "hideClock": {
       "label": "Hide Clock",
-      "description": "Adds an extra row for a 4\u00d72 sensor grid."
+      "description": "Adds an extra row for a 4×2 sensor grid."
     },
     "buttonRadius": {
       "label": "Button Corner Radius",
@@ -183,7 +185,7 @@
     "colorOff": "OFF state colour",
     "labelPlaceholder": "Energy",
     "entityPlaceholder": "sensor.example",
-    "customFormatPlaceholder": "%.1f\u00b0C",
+    "customFormatPlaceholder": "%.1f°C",
     "thresholdValuePlaceholder": "1000",
     "onPlaceholderBinary": "Open",
     "offPlaceholderBinary": "Closed",
@@ -201,51 +203,51 @@
     "cancel": "Cancel"
   },
   "cookieConsent": {
-    "title": "\ud83c\udf6a Cookie Preferences",
+    "title": "🍪 Cookie Preferences",
     "message": "We use analytics cookies to understand how the site is used and improve your experience. No personal information is collected.",
     "privacyPolicy": "Privacy Policy",
     "accept": "Accept cookies",
     "decline": "Decline"
   },
   "aboutCyd": {
-    "backToHome": "\u2190 Back to Home",
+    "backToHome": "← Back to Home",
     "title": "About the CYD (Cheap Yellow Display)",
-    "subtitle": "A complete guide to the CYD family \u2014 variations, hardware, pinout, software stack, and references.",
+    "subtitle": "A complete guide to the CYD family — variations, hardware, pinout, software stack, and references.",
     "whatIsCyd": {
       "title": "What is a CYD?",
-      "p1": "The <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) is the popular community name for ESP32-based boards that combine a microcontroller with a colour TFT touchscreen in one unit. The best-known model is the <strong>ESP32-2432S028</strong> (2.8\u2033 screen, 240\u00d7320), but <strong>several variations exist</strong> \u2014 different screen sizes, touch technologies, and connectors. They share the same appeal: build dashboards, status displays, and control panels without wiring a separate screen.",
-      "p2": "Because the display and ESP32 are on one board, you can build a full GUI device (e.g. a Home Assistant monitor) by flashing firmware and connecting to Wi\u2011Fi \u2014 no soldering or complex wiring required. You can <cydLink>buy a CYD on Amazon</cydLink> and be up and running the same day."
+      "p1": "The <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) is the popular community name for ESP32-based boards that combine a microcontroller with a colour TFT touchscreen in one unit. The best-known model is the <strong>ESP32-2432S028</strong> (2.8″ screen, 240×320), but <strong>several variations exist</strong> — different screen sizes, touch technologies, and connectors. They share the same appeal: build dashboards, status displays, and control panels without wiring a separate screen.",
+      "p2": "Because the display and ESP32 are on one board, you can build a full GUI device (e.g. a Home Assistant monitor) by flashing firmware and connecting to Wi‑Fi — no soldering or complex wiring required. You can <cydLink>buy a CYD on Amazon</cydLink> and be up and running the same day."
     },
     "variations": {
       "title": "CYD variations",
-      "intro": "Not all \u201cCYD-style\u201d boards are identical. When buying or configuring a <cydLink>CYD</cydLink>, check these aspects \u2014 they affect compatibility with cases, cables, and firmware (including this site\u2019s config generator).",
+      "intro": "Not all “CYD-style” boards are identical. When buying or configuring a <cydLink>CYD</cydLink>, check these aspects — they affect compatibility with cases, cables, and firmware (including this site’s config generator).",
       "screenSize": {
         "title": "Screen size and resolution",
-        "intro": "Boards are sold in different physical sizes and resolutions. Model numbers often encode size (e.g. <strong>S028</strong> \u2248 2.8\u2033, <strong>S035</strong> \u2248 3.5\u2033). Common variants:",
-        "size24": "<strong>2.4\u2033</strong> \u2014 Smaller, often 240\u00d7320; some use ILI9341 or ST7789.",
-        "size28": "<strong>2.8\u2033 (e.g. ESP32-2432S028)</strong> \u2014 The most common \u201cCYD\u201d: 240\u00d7320, usually ILI9341. This project\u2019s config generator and HAMon are designed for this size and resolution.",
-        "size32": "<strong>3.2\u2033 / 3.5\u2033</strong> \u2014 Larger panels (e.g. 320\u00d7480); may use ILI9486, ILI9488, or other drivers. Pinouts and ESPHome config differ from the 2.8\u2033 boards.",
+        "intro": "Boards are sold in different physical sizes and resolutions. Model numbers often encode size (e.g. <strong>S028</strong> ≈ 2.8″, <strong>S035</strong> ≈ 3.5″). Common variants:",
+        "size24": "<strong>2.4″</strong> — Smaller, often 240×320; some use ILI9341 or ST7789.",
+        "size28": "<strong>2.8″ (e.g. ESP32-2432S028)</strong> — The most common “CYD”: 240×320, usually ILI9341. This project’s config generator and HAMon are designed for this size and resolution.",
+        "size32": "<strong>3.2″ / 3.5″</strong> — Larger panels (e.g. 320×480); may use ILI9486, ILI9488, or other drivers. Pinouts and ESPHome config differ from the 2.8″ boards.",
         "note": "If you have a different size or resolution, you may need to adjust display dimensions and driver in ESPHome; the pinout and touch type still matter (see below)."
       },
       "touchType": {
         "title": "Touch screen type",
         "intro": "Touch is either <strong>resistive</strong> (SPI) or <strong>capacitive</strong> (I2C). The driver and GPIOs are different, so firmware must match your board:",
-        "xpt2046": "<strong>XPT2046</strong> \u2014 Resistive touch over SPI. Shares the display\u2019s SPI bus with a separate chip-select (e.g. GPIO 33). Backlight is often on <strong>GPIO 21</strong>. This is the \u201cSPI touch\u201d preset in our config generator.",
-        "cst816": "<strong>CST816</strong> \u2014 Capacitive touch over I2C (e.g. SDA 33, SCL 32). Newer/revision boards often use this. Backlight is often on <strong>GPIO 27</strong>. This is the \u201cI2C touch\u201d preset in our config generator.",
-        "other": "Some boards use other controllers (e.g. GT911). You\u2019ll need the correct ESPHome touch component and pinout for your specific module.",
+        "xpt2046": "<strong>XPT2046</strong> — Resistive touch over SPI. Shares the display’s SPI bus with a separate chip-select (e.g. GPIO 33). Backlight is often on <strong>GPIO 21</strong>. This is the “SPI touch” preset in our config generator.",
+        "cst816": "<strong>CST816</strong> — Capacitive touch over I2C (e.g. SDA 33, SCL 32). Newer/revision boards often use this. Backlight is often on <strong>GPIO 27</strong>. This is the “I2C touch” preset in our config generator.",
+        "other": "Some boards use other controllers (e.g. GT911). You’ll need the correct ESPHome touch component and pinout for your specific module.",
         "note": "If touch or backlight behaves oddly, confirm whether you have the SPI (XPT2046) or I2C (CST816) variant and select the matching preset or custom pins."
       },
       "displayController": {
         "title": "Display controller",
-        "p": "Most 2.8\u2033 CYD boards use the <strong>ILI9341</strong> TFT controller. Other sizes may use <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong>, or similar. In ESPHome you choose the matching display platform (e.g. <code>ili9xxx</code> with <code>model: ili9341</code>). Our generator assumes ILI9341 for the 2.8\u2033 240\u00d7320 layout."
+        "p": "Most 2.8″ CYD boards use the <strong>ILI9341</strong> TFT controller. Other sizes may use <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong>, or similar. In ESPHome you choose the matching display platform (e.g. <code>ili9xxx</code> with <code>model: ili9341</code>). Our generator assumes ILI9341 for the 2.8″ 240×320 layout."
       },
       "usbConnector": {
         "title": "USB connector",
-        "p": "Boards are sold with <strong>Micro-USB</strong> or <strong>USB-C</strong>. USB-C is preferred for new purchases: easier cabling and many 3D-printed cases (e.g. the Aura Smart Display case) are designed for the USB-C port. Adapters (e.g. 90\u00b0 USB-C) help with cable routing. Our <cydLink>Amazon link</cydLink> points to the USB-C version."
+        "p": "Boards are sold with <strong>Micro-USB</strong> or <strong>USB-C</strong>. USB-C is preferred for new purchases: easier cabling and many 3D-printed cases (e.g. the Aura Smart Display case) are designed for the USB-C port. Adapters (e.g. 90° USB-C) help with cable routing. Our <cydLink>Amazon link</cydLink> points to the USB-C version."
       },
       "whatSiteTargets": {
         "title": "What this site targets",
-        "p": "The <strong>Config Generator</strong> and <strong>HAMon</strong> firmware on this site are aimed at <strong>2.8\u2033 240\u00d7320 ILI9341</strong> boards with either <strong>XPT2046 (SPI touch)</strong> or <strong>CST816 (I2C touch)</strong>. If you have a different size or display driver, you can still use the generator as a starting point and adjust the generated YAML (display model, dimensions, touch component, and pins) to match your hardware."
+        "p": "The <strong>Config Generator</strong> and <strong>HAMon</strong> firmware on this site are aimed at <strong>2.8″ 240×320 ILI9341</strong> boards with either <strong>XPT2046 (SPI touch)</strong> or <strong>CST816 (I2C touch)</strong>. If you have a different size or display driver, you can still use the generator as a starting point and adjust the generated YAML (display model, dimensions, touch component, and pins) to match your hardware."
       }
     },
     "hardware": {
@@ -268,7 +270,7 @@
       },
       "display": {
         "name": "Display",
-        "details": "ILI9341 2.8\u2033 TFT, 240\u00d7320 RGB, 18-bit colour, SPI (HSPI). Backlight typically GPIO 21 or 27."
+        "details": "ILI9341 2.8″ TFT, 240×320 RGB, 18-bit colour, SPI (HSPI). Backlight typically GPIO 21 or 27."
       },
       "touch": {
         "name": "Touch",
@@ -312,45 +314,45 @@
     },
     "useCases": {
       "title": "Typical Use Cases",
-      "monitor": "<strong>Home Assistant monitor</strong> \u2014 Clock, date, and 6\u20138 entity tiles (doors, motion, energy, temperature) with colour-coded status. This site\u2019s config generator targets this layout.",
-      "controlPanel": "<strong>Smart home control panel</strong> \u2014 Buttons and switches to control lights, scenes, and automations via HA.",
-      "weather": "<strong>Weather / info dashboard</strong> \u2014 Forecast, calendar, or RSS feed displayed on the <cydLink>CYD</cydLink>.",
-      "prototyping": "<strong>Prototyping</strong> \u2014 LVGL demos, custom UIs, or learning ESP32 + display without separate wiring."
+      "monitor": "<strong>Home Assistant monitor</strong> — Clock, date, and 6–8 entity tiles (doors, motion, energy, temperature) with colour-coded status. This site’s config generator targets this layout.",
+      "controlPanel": "<strong>Smart home control panel</strong> — Buttons and switches to control lights, scenes, and automations via HA.",
+      "weather": "<strong>Weather / info dashboard</strong> — Forecast, calendar, or RSS feed displayed on the <cydLink>CYD</cydLink>.",
+      "prototyping": "<strong>Prototyping</strong> — LVGL demos, custom UIs, or learning ESP32 + display without separate wiring."
     },
     "references": {
       "title": "Reference Links",
       "intro": "Official docs, community projects, and where to <cydLink>buy the CYD</cydLink>.",
       "amazon": "Buy CYD on Amazon (affiliate)",
-      "amazonDesc": "\u2014 2.8\u2033 ILI9341 CYD board (USB-C). Affiliate link; supports this project.",
+      "amazonDesc": "— 2.8″ ILI9341 CYD board (USB-C). Affiliate link; supports this project.",
       "esphome": "ESPHome",
-      "esphomeDesc": "\u2014 Firmware and YAML-based configuration for ESP devices.",
+      "esphomeDesc": "— Firmware and YAML-based configuration for ESP devices.",
       "esphomeDisplay": "ESPHome ILI9341 display",
-      "esphomeDisplayDesc": "\u2014 Official display component docs.",
+      "esphomeDisplayDesc": "— Official display component docs.",
       "homeAssistant": "Home Assistant",
-      "homeAssistantDesc": "\u2014 Open-source home automation; entities feed the CYD dashboard.",
+      "homeAssistantDesc": "— Open-source home automation; entities feed the CYD dashboard.",
       "github": "CYD-ESPHome-HA-Monitor (GitHub)",
-      "githubDesc": "\u2014 This project: HAMon config and YAML generator.",
+      "githubDesc": "— This project: HAMon config and YAML generator.",
       "community": "CYD Smart Dashboard (drrcastro)",
-      "communityDesc": "\u2014 Community inspiration for CYD + HA dashboards.",
+      "communityDesc": "— Community inspiration for CYD + HA dashboards.",
       "esp32": "ESP32 (Espressif)",
-      "esp32Desc": "\u2014 MCU reference from Espressif.",
+      "esp32Desc": "— MCU reference from Espressif.",
       "ili9341": "ILI9341 datasheet",
-      "ili9341Desc": "\u2014 TFT controller reference (external PDF)."
+      "ili9341Desc": "— TFT controller reference (external PDF)."
     },
     "cta": {
       "title": "Ready to configure your CYD?",
-      "description": "Use the <strong>Config Generator</strong> to build your ESPHome YAML visually \u2014 no need to edit YAML by hand. Pick sensors, GPIO presets, and copy the result into ESPHome.",
+      "description": "Use the <strong>Config Generator</strong> to build your ESPHome YAML visually — no need to edit YAML by hand. Pick sensors, GPIO presets, and copy the result into ESPHome.",
       "openGenerator": "Open Config Generator",
       "buyCyd": "Buy CYD on Amazon"
     }
   },
   "privacyPolicy": {
-    "backToConfigGenerator": "\u2190 Back to Config Generator",
+    "backToConfigGenerator": "← Back to Config Generator",
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: February 2026",
     "intro": {
       "title": "1. Introduction",
-      "p1": "This Privacy Policy explains how <strong>CYD HAMon Config Generator</strong> (\u201cwe\u201d, \u201cour\u201d, or \u201cthe site\u201d), operated by Element Software, collects, uses, and protects information when you visit <strong>cheapyellowdisplay.co.uk</strong>.",
+      "p1": "This Privacy Policy explains how <strong>CYD HAMon Config Generator</strong> (“we”, “our”, or “the site”), operated by Element Software, collects, uses, and protects information when you visit <strong>cheapyellowdisplay.co.uk</strong>.",
       "p2": "We are committed to protecting your privacy and handling any information we hold about you in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018."
     },
     "infoCollect": {
@@ -368,18 +370,18 @@
     "legalBasis": {
       "title": "4. Legal Basis for Processing",
       "intro": "Under UK GDPR, we rely on the following legal bases for processing personal data:",
-      "consent": "<strong>Consent</strong> \u2014 for analytics cookies. You may withdraw consent at any time by clearing your browser\u2019s local storage or by declining cookies on your next visit.",
-      "legitimate": "<strong>Legitimate interests</strong> \u2014 for contact enquiries, to the extent necessary to respond to your message."
+      "consent": "<strong>Consent</strong> — for analytics cookies. You may withdraw consent at any time by clearing your browser’s local storage or by declining cookies on your next visit.",
+      "legitimate": "<strong>Legitimate interests</strong> — for contact enquiries, to the extent necessary to respond to your message."
     },
     "cookies": {
       "title": "5. Cookies",
-      "p1": "This site uses a single first-party cookie preference stored in your browser\u2019s local storage (<code>cookie_consent</code>) to remember your analytics preference.",
-      "p2": "If you accept analytics cookies, Google Analytics sets its own cookies (e.g. <code>_ga</code>, <code>_ga_*</code>) to distinguish users and sessions. These cookies are governed by <googlePrivacy>Google\u2019s Privacy Policy</googlePrivacy>.",
-      "p3": "You can withdraw your analytics consent at any time by clearing your browser\u2019s local storage for this site, which will cause the consent banner to reappear on your next visit."
+      "p1": "This site uses a single first-party cookie preference stored in your browser’s local storage (<code>cookie_consent</code>) to remember your analytics preference.",
+      "p2": "If you accept analytics cookies, Google Analytics sets its own cookies (e.g. <code>_ga</code>, <code>_ga_*</code>) to distinguish users and sessions. These cookies are governed by <googlePrivacy>Google’s Privacy Policy</googlePrivacy>.",
+      "p3": "You can withdraw your analytics consent at any time by clearing your browser’s local storage for this site, which will cause the consent banner to reappear on your next visit."
     },
     "dataSharing": {
       "title": "6. Data Sharing",
-      "p": "We do not sell, trade, or rent your personal information to third parties. Analytics data is processed by Google LLC under a data processing agreement. Google may transfer data outside the UK; for more information, see <googlePrivacy>Google\u2019s Privacy Policy</googlePrivacy>."
+      "p": "We do not sell, trade, or rent your personal information to third parties. Analytics data is processed by Google LLC under a data processing agreement. Google may transfer data outside the UK; for more information, see <googlePrivacy>Google’s Privacy Policy</googlePrivacy>."
     },
     "dataRetention": {
       "title": "7. Data Retention",
@@ -393,7 +395,7 @@
       "erasure": "Request erasure of your personal data",
       "restriction": "Object to or restrict processing of your personal data",
       "withdraw": "Withdraw consent at any time (where processing is based on consent)",
-      "complain": "Lodge a complaint with the Information Commissioner\u2019s Office (ICO) at <ico>ico.org.uk</ico>"
+      "complain": "Lodge a complaint with the Information Commissioner’s Office (ICO) at <ico>ico.org.uk</ico>"
     },
     "thirdParty": {
       "title": "9. Third-Party Links",
@@ -407,5 +409,15 @@
       "title": "11. Changes to This Policy",
       "p": "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically."
     }
+  },
+  "importConfigModal": {
+    "title": "Import Config",
+    "description": "The following configuration will replace your current settings:",
+    "deviceName": "Device name",
+    "friendlyName": "Friendly name",
+    "sensors": "Sensors",
+    "confirm": "Load config",
+    "invalidFile": "The selected file is not a valid HAMon config.",
+    "errorReading": "Could not read the file."
   }
 }

@@ -1,16 +1,75 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
+import ImportConfigModal from '@/components/ImportConfigModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
+import { ConfigData } from '@/types/config';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
+import { isValidConfig } from '@/lib/configValidation';
 
 export default function ConfigGeneratorClient() {
   const t = useTranslations('configGeneratorPage');
+  const tImport = useTranslations('importConfigModal');
   const [config, setConfig] = useLocalStorageConfig();
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [pendingConfig, setPendingConfig] = useState<ConfigData | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleExport() {
+    const json = JSON.stringify(config, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'hamon-config.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImportClick() {
+    setImportError(null);
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // Reset so the same file can be re-selected after a cancel
+    e.target.value = '';
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const parsed: unknown = JSON.parse(ev.target?.result as string);
+        if (!isValidConfig(parsed)) {
+          setImportError(tImport('invalidFile'));
+          return;
+        }
+        setPendingConfig(parsed);
+        setImportModalOpen(true);
+      } catch {
+        setImportError(tImport('errorReading'));
+      }
+    };
+    reader.onerror = () => setImportError(tImport('errorReading'));
+    reader.readAsText(file);
+  }
+
+  function handleImportConfirm(imported: ConfigData) {
+    setConfig(imported);
+    setImportModalOpen(false);
+    setPendingConfig(null);
+  }
+
+  function handleImportClose() {
+    setImportModalOpen(false);
+    setPendingConfig(null);
+  }
 
   return (
     <>
@@ -27,12 +86,44 @@ export default function ConfigGeneratorClient() {
           >
             {t('generateYaml')}
           </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleExport}
+              className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors text-sm"
+            >
+              {t('exportJson')}
+            </button>
+            <button
+              type="button"
+              onClick={handleImportClick}
+              className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors text-sm"
+            >
+              {t('importJson')}
+            </button>
+          </div>
+          {importError && (
+            <p className="text-sm text-red-600">{importError}</p>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            className="hidden"
+            onChange={handleFileChange}
+          />
         </div>
       </div>
       <YamlModal
         config={config}
         open={yamlModalOpen}
         onClose={() => setYamlModalOpen(false)}
+      />
+      <ImportConfigModal
+        pendingConfig={pendingConfig}
+        open={importModalOpen}
+        onConfirm={handleImportConfirm}
+        onClose={handleImportClose}
       />
     </>
   );

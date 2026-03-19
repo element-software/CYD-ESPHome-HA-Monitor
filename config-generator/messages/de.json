@@ -49,7 +49,7 @@
     "subtitle": "Konfigurations-Tools und Informationen für das ESP32-2432S028",
     "whatIsCyd": {
       "title": "Was ist ein CYD?",
-      "p1": "Das <strong>Cheap Yellow Display</strong> (CYD) ist der populäre Name für das <strong>ESP32-2432S028</strong> — ein All-in-One-Entwicklungsboard, das einen ESP32-Mikrocontroller mit einem 2,8\u2033-Farb-TFT-Touchscreen (240\u00d7320), resistivem Touch (XPT2046 oder CST816 bei einigen Varianten) und nützlichen Extras wie einer integrierten RGB-LED, einem microSD-Slot und einem LDR kombiniert. Es ist bei der Maker- und Smart-Home-Community beliebt für kompakte Dashboards, Statusanzeigen und Bedienfelder – ohne separate Bildschirmverkabelung.",
+      "p1": "Das <strong>Cheap Yellow Display</strong> (CYD) ist der populäre Name für das <strong>ESP32-2432S028</strong> — ein All-in-One-Entwicklungsboard, das einen ESP32-Mikrocontroller mit einem 2,8″-Farb-TFT-Touchscreen (240×320), resistivem Touch (XPT2046 oder CST816 bei einigen Varianten) und nützlichen Extras wie einer integrierten RGB-LED, einem microSD-Slot und einem LDR kombiniert. Es ist bei der Maker- und Smart-Home-Community beliebt für kompakte Dashboards, Statusanzeigen und Bedienfelder – ohne separate Bildschirmverkabelung.",
       "p2": "Da Display und ESP32 auf einem Board sind, kann man ein vollständiges GUI-Gerät (z.B. einen Home-Assistant-Monitor) durch Flashen der Firmware und WLAN-Verbindung erstellen – kein Löten oder komplexe Verkabelung erforderlich."
     },
     "purpose": {
@@ -59,7 +59,7 @@
     },
     "atAGlance": {
       "title": "CYD auf einen Blick",
-      "board": "<strong>Board:</strong> ESP32-WROOM-32, 2,8\u2033 ILI9341 TFT (240\u00d7320), SPI-Touch",
+      "board": "<strong>Board:</strong> ESP32-WROOM-32, 2,8″ ILI9341 TFT (240×320), SPI-Touch",
       "displayPins": "<strong>Display-Pins:</strong> TFT über HSPI (z.B. CLK 14, MOSI 13, MISO 12, CS 15, DC 2); Hintergrundbeleuchtung oft GPIO 21 (oder 27 bei I2C-Touch-Varianten)",
       "rgbLed": "<strong>Integrierte RGB-LED:</strong> Rot GPIO 4, Grün GPIO 16, Blau GPIO 17 (active low)",
       "typicalUse": "<strong>Typische Verwendung:</strong> ESPHome + LVGL für Dashboards, Uhren, Sensor-Kacheln und benutzerdefinierte UIs",
@@ -76,7 +76,9 @@
     "subtitle": "Konfigurieren Sie Ihren Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
-    "generateYaml": "YAML generieren"
+    "generateYaml": "YAML generieren",
+    "exportJson": "JSON exportieren",
+    "importJson": "JSON importieren"
   },
   "deviceSettings": {
     "title": "Geräteeinstellungen",
@@ -102,8 +104,8 @@
     "subtitle": "Boardvariante auswählen oder Pins manuell einstellen.",
     "variant": "Variante",
     "displayBacklight": "Display & Hintergrundbeleuchtung",
-    "touchSpi": "Touch (SPI \u2013 XPT2046)",
-    "touchI2c": "Touch (I2C \u2013 CST816)",
+    "touchSpi": "Touch (SPI – XPT2046)",
+    "touchI2c": "Touch (I2C – CST816)",
     "pins": {
       "backlightPwm": "Hintergrundbeleuchtung PWM",
       "tftClk": "TFT CLK",
@@ -130,7 +132,7 @@
     "subtitle": "Visuelle und Layout-Optionen für die Geräteanzeige.",
     "hideClock": {
       "label": "Uhr ausblenden",
-      "description": "Fügt eine zusätzliche Reihe für ein 4\u00d72-Sensor-Raster hinzu."
+      "description": "Fügt eine zusätzliche Reihe für ein 4×2-Sensor-Raster hinzu."
     },
     "buttonRadius": {
       "label": "Schaltflächen-Eckenradius",
@@ -183,7 +185,7 @@
     "colorOff": "AUS-Zustand Farbe",
     "labelPlaceholder": "Energie",
     "entityPlaceholder": "sensor.beispiel",
-    "customFormatPlaceholder": "%.1f\u00b0C",
+    "customFormatPlaceholder": "%.1f°C",
     "thresholdValuePlaceholder": "1000",
     "onPlaceholderBinary": "Offen",
     "offPlaceholderBinary": "Geschlossen",
@@ -201,43 +203,43 @@
     "cancel": "Abbrechen"
   },
   "cookieConsent": {
-    "title": "\ud83c\udf6a Cookie-Einstellungen",
+    "title": "🍪 Cookie-Einstellungen",
     "message": "Wir verwenden Analyse-Cookies, um zu verstehen, wie die Website genutzt wird, und Ihre Erfahrung zu verbessern. Es werden keine personenbezogenen Daten gesammelt.",
     "privacyPolicy": "Datenschutzerklärung",
     "accept": "Cookies akzeptieren",
     "decline": "Ablehnen"
   },
   "aboutCyd": {
-    "backToHome": "\u2190 Zurück zur Startseite",
+    "backToHome": "← Zurück zur Startseite",
     "title": "Über das CYD (Cheap Yellow Display)",
-    "subtitle": "Ein vollständiger Leitfaden zur CYD-Familie \u2014 Varianten, Hardware, Pinbelegung, Software-Stack und Referenzen.",
+    "subtitle": "Ein vollständiger Leitfaden zur CYD-Familie — Varianten, Hardware, Pinbelegung, Software-Stack und Referenzen.",
     "whatIsCyd": {
       "title": "Was ist ein CYD?",
-      "p1": "Das <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) ist der populäre Community-Name für ESP32-basierte Boards, die einen Mikrocontroller mit einem Farb-TFT-Touchscreen in einer Einheit kombinieren. Das bekannteste Modell ist das <strong>ESP32-2432S028</strong> (2,8\u2033-Bildschirm, 240\u00d7320), aber <strong>es gibt mehrere Varianten</strong> \u2014 verschiedene Bildschirmgrößen, Touch-Technologien und Anschlüsse. Sie teilen den gleichen Vorteil: Dashboards, Statusanzeigen und Bedienfelder ohne separate Bildschirmverkabelung bauen.",
+      "p1": "Das <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) ist der populäre Community-Name für ESP32-basierte Boards, die einen Mikrocontroller mit einem Farb-TFT-Touchscreen in einer Einheit kombinieren. Das bekannteste Modell ist das <strong>ESP32-2432S028</strong> (2,8″-Bildschirm, 240×320), aber <strong>es gibt mehrere Varianten</strong> — verschiedene Bildschirmgrößen, Touch-Technologien und Anschlüsse. Sie teilen den gleichen Vorteil: Dashboards, Statusanzeigen und Bedienfelder ohne separate Bildschirmverkabelung bauen.",
       "p2": "Da Display und ESP32 auf einem Board sind, kann man ein vollständiges GUI-Gerät (z.B. einen Home-Assistant-Monitor) durch Flashen der Firmware und WLAN-Verbindung erstellen – kein Löten erforderlich. Man kann <cydLink>ein CYD auf Amazon kaufen</cydLink> und noch am selben Tag loslegen."
     },
     "variations": {
       "title": "CYD-Varianten",
-      "intro": "Nicht alle \u201eCYD-Boards\u201c sind identisch. Beim Kauf oder Konfigurieren eines <cydLink>CYD</cydLink> sollte man diese Aspekte prüfen \u2014 sie beeinflussen die Kompatibilität mit Gehäusen, Kabeln und Firmware (einschließlich des Konfigurations-Generators dieser Website).",
+      "intro": "Nicht alle „CYD-Boards“ sind identisch. Beim Kauf oder Konfigurieren eines <cydLink>CYD</cydLink> sollte man diese Aspekte prüfen — sie beeinflussen die Kompatibilität mit Gehäusen, Kabeln und Firmware (einschließlich des Konfigurations-Generators dieser Website).",
       "screenSize": {
         "title": "Bildschirmgröße und Auflösung",
-        "intro": "Boards werden in verschiedenen physischen Größen und Auflösungen verkauft. Modellnummern kodieren oft die Größe (z.B. <strong>S028</strong> \u2248 2,8\u2033, <strong>S035</strong> \u2248 3,5\u2033). Gängige Varianten:",
-        "size24": "<strong>2,4\u2033</strong> \u2014 Kleiner, oft 240\u00d7320; manche verwenden ILI9341 oder ST7789.",
-        "size28": "<strong>2,8\u2033 (z.B. ESP32-2432S028)</strong> \u2014 Das häufigste \u201eCYD\u201c: 240\u00d7320, meist ILI9341. Der Konfigurations-Generator und HAMon dieses Projekts sind für diese Größe und Auflösung ausgelegt.",
-        "size32": "<strong>3,2\u2033 / 3,5\u2033</strong> \u2014 Größere Panels (z.B. 320\u00d7480); können ILI9486, ILI9488 oder andere Treiber verwenden. Pinbelegungen und ESPHome-Konfiguration unterscheiden sich von den 2,8\u2033-Boards.",
+        "intro": "Boards werden in verschiedenen physischen Größen und Auflösungen verkauft. Modellnummern kodieren oft die Größe (z.B. <strong>S028</strong> ≈ 2,8″, <strong>S035</strong> ≈ 3,5″). Gängige Varianten:",
+        "size24": "<strong>2,4″</strong> — Kleiner, oft 240×320; manche verwenden ILI9341 oder ST7789.",
+        "size28": "<strong>2,8″ (z.B. ESP32-2432S028)</strong> — Das häufigste „CYD“: 240×320, meist ILI9341. Der Konfigurations-Generator und HAMon dieses Projekts sind für diese Größe und Auflösung ausgelegt.",
+        "size32": "<strong>3,2″ / 3,5″</strong> — Größere Panels (z.B. 320×480); können ILI9486, ILI9488 oder andere Treiber verwenden. Pinbelegungen und ESPHome-Konfiguration unterscheiden sich von den 2,8″-Boards.",
         "note": "Bei einer anderen Größe oder Auflösung müssen möglicherweise die Displayabmessungen und der Treiber in ESPHome angepasst werden; Pinbelegung und Touch-Typ sind weiterhin relevant (siehe unten)."
       },
       "touchType": {
         "title": "Touchscreen-Typ",
         "intro": "Touch ist entweder <strong>resistiv</strong> (SPI) oder <strong>kapazitiv</strong> (I2C). Treiber und GPIOs sind unterschiedlich, daher muss die Firmware zum Board passen:",
-        "xpt2046": "<strong>XPT2046</strong> \u2014 Resistiver Touch über SPI. Teilt den SPI-Bus des Displays mit einem separaten Chip-Select (z.B. GPIO 33). Hintergrundbeleuchtung oft an <strong>GPIO 21</strong>. Dies ist die \u201eSPI-Touch\u201c-Voreinstellung im Konfigurations-Generator.",
-        "cst816": "<strong>CST816</strong> \u2014 Kapazitiver Touch über I2C (z.B. SDA 33, SCL 32). Neuere Boards verwenden oft diesen. Hintergrundbeleuchtung oft an <strong>GPIO 27</strong>. Dies ist die \u201eI2C-Touch\u201c-Voreinstellung im Konfigurations-Generator.",
+        "xpt2046": "<strong>XPT2046</strong> — Resistiver Touch über SPI. Teilt den SPI-Bus des Displays mit einem separaten Chip-Select (z.B. GPIO 33). Hintergrundbeleuchtung oft an <strong>GPIO 21</strong>. Dies ist die „SPI-Touch“-Voreinstellung im Konfigurations-Generator.",
+        "cst816": "<strong>CST816</strong> — Kapazitiver Touch über I2C (z.B. SDA 33, SCL 32). Neuere Boards verwenden oft diesen. Hintergrundbeleuchtung oft an <strong>GPIO 27</strong>. Dies ist die „I2C-Touch“-Voreinstellung im Konfigurations-Generator.",
         "other": "Manche Boards verwenden andere Controller (z.B. GT911). Man benötigt die korrekte ESPHome-Touch-Komponente und Pinbelegung für das spezifische Modul.",
         "note": "Wenn Touch oder Hintergrundbeleuchtung sich seltsam verhalten, prüfen ob es sich um die SPI- (XPT2046) oder I2C-Variante (CST816) handelt und die passende Voreinstellung oder benutzerdefinierte Pins auswählen."
       },
       "displayController": {
         "title": "Display-Controller",
-        "p": "Die meisten 2,8\u2033-CYD-Boards verwenden den <strong>ILI9341</strong>-TFT-Controller. Andere Größen können <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> oder ähnliche verwenden. In ESPHome wählt man die passende Display-Plattform (z.B. <code>ili9xxx</code> mit <code>model: ili9341</code>). Der Generator setzt ILI9341 für das 2,8\u2033 240\u00d7320 Layout voraus."
+        "p": "Die meisten 2,8″-CYD-Boards verwenden den <strong>ILI9341</strong>-TFT-Controller. Andere Größen können <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> oder ähnliche verwenden. In ESPHome wählt man die passende Display-Plattform (z.B. <code>ili9xxx</code> mit <code>model: ili9341</code>). Der Generator setzt ILI9341 für das 2,8″ 240×320 Layout voraus."
       },
       "usbConnector": {
         "title": "USB-Anschluss",
@@ -245,7 +247,7 @@
       },
       "whatSiteTargets": {
         "title": "Was diese Website anspricht",
-        "p": "Der <strong>Konfigurations-Generator</strong> und die <strong>HAMon</strong>-Firmware auf dieser Website richten sich an <strong>2,8\u2033 240\u00d7320 ILI9341</strong>-Boards mit entweder <strong>XPT2046 (SPI-Touch)</strong> oder <strong>CST816 (I2C-Touch)</strong>. Bei einer anderen Größe oder einem anderen Display-Treiber kann der Generator als Ausgangspunkt verwendet und das generierte YAML (Display-Modell, Abmessungen, Touch-Komponente und Pins) an die Hardware angepasst werden."
+        "p": "Der <strong>Konfigurations-Generator</strong> und die <strong>HAMon</strong>-Firmware auf dieser Website richten sich an <strong>2,8″ 240×320 ILI9341</strong>-Boards mit entweder <strong>XPT2046 (SPI-Touch)</strong> oder <strong>CST816 (I2C-Touch)</strong>. Bei einer anderen Größe oder einem anderen Display-Treiber kann der Generator als Ausgangspunkt verwendet und das generierte YAML (Display-Modell, Abmessungen, Touch-Komponente und Pins) an die Hardware angepasst werden."
       }
     },
     "hardware": {
@@ -268,7 +270,7 @@
       },
       "display": {
         "name": "Display",
-        "details": "ILI9341 2,8\u2033 TFT, 240\u00d7320 RGB, 18-bit Farbe, SPI (HSPI). Hintergrundbeleuchtung typischerweise GPIO 21 oder 27."
+        "details": "ILI9341 2,8″ TFT, 240×320 RGB, 18-bit Farbe, SPI (HSPI). Hintergrundbeleuchtung typischerweise GPIO 21 oder 27."
       },
       "touch": {
         "name": "Touch",
@@ -312,45 +314,45 @@
     },
     "useCases": {
       "title": "Typische Anwendungsfälle",
-      "monitor": "<strong>Home-Assistant-Monitor</strong> \u2014 Uhr, Datum und 6\u20138 Entitäts-Kacheln (Türen, Bewegung, Energie, Temperatur) mit farbcodierten Status. Der Konfigurations-Generator dieser Website zielt auf dieses Layout ab.",
-      "controlPanel": "<strong>Smart-Home-Bedienfeld</strong> \u2014 Schaltflächen und Schalter zur Steuerung von Lichtern, Szenen und Automatisierungen via HA.",
-      "weather": "<strong>Wetter-/Info-Dashboard</strong> \u2014 Vorhersage, Kalender oder RSS-Feed auf dem <cydLink>CYD</cydLink> angezeigt.",
-      "prototyping": "<strong>Prototyping</strong> \u2014 LVGL-Demos, benutzerdefinierte UIs oder ESP32 + Display ohne separate Verkabelung erlernen."
+      "monitor": "<strong>Home-Assistant-Monitor</strong> — Uhr, Datum und 6–8 Entitäts-Kacheln (Türen, Bewegung, Energie, Temperatur) mit farbcodierten Status. Der Konfigurations-Generator dieser Website zielt auf dieses Layout ab.",
+      "controlPanel": "<strong>Smart-Home-Bedienfeld</strong> — Schaltflächen und Schalter zur Steuerung von Lichtern, Szenen und Automatisierungen via HA.",
+      "weather": "<strong>Wetter-/Info-Dashboard</strong> — Vorhersage, Kalender oder RSS-Feed auf dem <cydLink>CYD</cydLink> angezeigt.",
+      "prototyping": "<strong>Prototyping</strong> — LVGL-Demos, benutzerdefinierte UIs oder ESP32 + Display ohne separate Verkabelung erlernen."
     },
     "references": {
       "title": "Referenz-Links",
       "intro": "Offizielle Dokumentation, Community-Projekte und wo man das <cydLink>CYD kaufen</cydLink> kann.",
       "amazon": "CYD auf Amazon kaufen (Affiliate)",
-      "amazonDesc": "\u2014 2,8\u2033 ILI9341 CYD-Board (USB-C). Affiliate-Link; unterstützt dieses Projekt.",
+      "amazonDesc": "— 2,8″ ILI9341 CYD-Board (USB-C). Affiliate-Link; unterstützt dieses Projekt.",
       "esphome": "ESPHome",
-      "esphomeDesc": "\u2014 Firmware und YAML-basierte Konfiguration für ESP-Geräte.",
+      "esphomeDesc": "— Firmware und YAML-basierte Konfiguration für ESP-Geräte.",
       "esphomeDisplay": "ESPHome ILI9341 Display",
-      "esphomeDisplayDesc": "\u2014 Offizielle Display-Komponenten-Dokumentation.",
+      "esphomeDisplayDesc": "— Offizielle Display-Komponenten-Dokumentation.",
       "homeAssistant": "Home Assistant",
-      "homeAssistantDesc": "\u2014 Open-Source-Heimautomatisierung; Entitäten speisen das CYD-Dashboard.",
+      "homeAssistantDesc": "— Open-Source-Heimautomatisierung; Entitäten speisen das CYD-Dashboard.",
       "github": "CYD-ESPHome-HA-Monitor (GitHub)",
-      "githubDesc": "\u2014 Dieses Projekt: HAMon-Konfiguration und YAML-Generator.",
+      "githubDesc": "— Dieses Projekt: HAMon-Konfiguration und YAML-Generator.",
       "community": "CYD Smart Dashboard (drrcastro)",
-      "communityDesc": "\u2014 Community-Inspiration für CYD + HA Dashboards.",
+      "communityDesc": "— Community-Inspiration für CYD + HA Dashboards.",
       "esp32": "ESP32 (Espressif)",
-      "esp32Desc": "\u2014 MCU-Referenz von Espressif.",
+      "esp32Desc": "— MCU-Referenz von Espressif.",
       "ili9341": "ILI9341-Datenblatt",
-      "ili9341Desc": "\u2014 TFT-Controller-Referenz (externe PDF)."
+      "ili9341Desc": "— TFT-Controller-Referenz (externe PDF)."
     },
     "cta": {
       "title": "Bereit, Ihr CYD zu konfigurieren?",
-      "description": "Den <strong>Konfigurations-Generator</strong> verwenden, um das ESPHome-YAML visuell zu erstellen \u2014 kein manuelles YAML-Bearbeiten nötig. Sensoren und GPIO-Voreinstellungen wählen und das Ergebnis in ESPHome einfügen.",
+      "description": "Den <strong>Konfigurations-Generator</strong> verwenden, um das ESPHome-YAML visuell zu erstellen — kein manuelles YAML-Bearbeiten nötig. Sensoren und GPIO-Voreinstellungen wählen und das Ergebnis in ESPHome einfügen.",
       "openGenerator": "Konfigurations-Generator öffnen",
       "buyCyd": "CYD auf Amazon kaufen"
     }
   },
   "privacyPolicy": {
-    "backToConfigGenerator": "\u2190 Zurück zum Konfigurations-Generator",
+    "backToConfigGenerator": "← Zurück zum Konfigurations-Generator",
     "title": "Datenschutzerklärung",
     "lastUpdated": "Zuletzt aktualisiert: Februar 2026",
     "intro": {
       "title": "1. Einleitung",
-      "p1": "Diese Datenschutzerklärung erläutert, wie der <strong>CYD HAMon Konfigurations-Generator</strong> (\u201ewir\u201c, \u201eunser\u201c oder \u201edie Website\u201c), betrieben von Element Software, Informationen sammelt, verwendet und schützt, wenn Sie <strong>cheapyellowdisplay.co.uk</strong> besuchen.",
+      "p1": "Diese Datenschutzerklärung erläutert, wie der <strong>CYD HAMon Konfigurations-Generator</strong> („wir“, „unser“ oder „die Website“), betrieben von Element Software, Informationen sammelt, verwendet und schützt, wenn Sie <strong>cheapyellowdisplay.co.uk</strong> besuchen.",
       "p2": "Wir sind dem Schutz Ihrer Privatsphäre verpflichtet und behandeln alle von uns gespeicherten Informationen über Sie gemäß der UK-Datenschutz-Grundverordnung (UK DSGVO) und dem Data Protection Act 2018."
     },
     "infoCollect": {
@@ -368,8 +370,8 @@
     "legalBasis": {
       "title": "4. Rechtsgrundlage für die Verarbeitung",
       "intro": "Gemäß UK DSGVO stützen wir uns auf folgende Rechtsgrundlagen für die Verarbeitung personenbezogener Daten:",
-      "consent": "<strong>Einwilligung</strong> \u2014 für Analyse-Cookies. Sie können die Einwilligung jederzeit widerrufen, indem Sie den lokalen Speicher Ihres Browsers löschen oder Cookies bei Ihrem nächsten Besuch ablehnen.",
-      "legitimate": "<strong>Berechtigte Interessen</strong> \u2014 für Kontaktanfragen, soweit dies für die Beantwortung Ihrer Nachricht erforderlich ist."
+      "consent": "<strong>Einwilligung</strong> — für Analyse-Cookies. Sie können die Einwilligung jederzeit widerrufen, indem Sie den lokalen Speicher Ihres Browsers löschen oder Cookies bei Ihrem nächsten Besuch ablehnen.",
+      "legitimate": "<strong>Berechtigte Interessen</strong> — für Kontaktanfragen, soweit dies für die Beantwortung Ihrer Nachricht erforderlich ist."
     },
     "cookies": {
       "title": "5. Cookies",
@@ -393,7 +395,7 @@
       "erasure": "Löschung Ihrer personenbezogenen Daten",
       "restriction": "Widerspruch gegen oder Einschränkung der Verarbeitung Ihrer personenbezogenen Daten",
       "withdraw": "Widerruf der Einwilligung jederzeit (sofern die Verarbeitung auf Einwilligung basiert)",
-      "complain": "Beschwerde beim Information Commissioner\u2019s Office (ICO) unter <ico>ico.org.uk</ico>"
+      "complain": "Beschwerde beim Information Commissioner’s Office (ICO) unter <ico>ico.org.uk</ico>"
     },
     "thirdParty": {
       "title": "9. Links zu Drittanbietern",
@@ -407,5 +409,15 @@
       "title": "11. Änderungen dieser Richtlinie",
       "p": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite mit einem aktualisierten Überarbeitungsdatum veröffentlicht. Wir empfehlen, diese Richtlinie regelmäßig zu überprüfen."
     }
+  },
+  "importConfigModal": {
+    "title": "Konfiguration importieren",
+    "description": "Die folgende Konfiguration ersetzt Ihre aktuellen Einstellungen:",
+    "deviceName": "Gerätename",
+    "friendlyName": "Anzeigename",
+    "sensors": "Sensoren",
+    "confirm": "Konfiguration laden",
+    "invalidFile": "Die ausgewählte Datei ist keine gültige HAMon-Konfiguration.",
+    "errorReading": "Datei konnte nicht gelesen werden."
   }
 }
