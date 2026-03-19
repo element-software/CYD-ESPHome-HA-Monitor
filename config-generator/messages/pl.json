@@ -1,0 +1,411 @@
+{
+  "common": {
+    "close": "Zamknij",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "done": "Gotowe",
+    "opensInNewTab": "(otwiera się w nowej karcie)"
+  },
+  "copyButton": {
+    "copy": "Kopiuj",
+    "copied": "Skopiowano!"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "aboutCyd": "O CYD",
+    "configGenerator": "Generator konfiguracji",
+    "buyNow": "KUP TERAZ",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu",
+    "starOnGithub": "Gwiazdka na GitHub",
+    "githubStars": "Gwiazdki GitHub"
+  },
+  "footer": {
+    "tagline": "Narzędzia konfiguracyjne i informacje o CYD · ESPHome / Home Assistant",
+    "affiliateNotice": "KUP TERAZ to link afiliacyjny.",
+    "poweredBy": "Napędzane przez",
+    "links": {
+      "home": "Strona główna",
+      "aboutCyd": "O CYD",
+      "configGenerator": "Generator konfiguracji",
+      "buyNow": "Kup teraz (Amazon)",
+      "github": "GitHub",
+      "privacyPolicy": "Polityka prywatności",
+      "softwareDev": "Tworzenie oprogramowania",
+      "smartHome": "Ekspert smart home"
+    }
+  },
+  "pageFooter": {
+    "home": "Strona główna",
+    "configGenerator": "Generator konfiguracji",
+    "github": "GitHub",
+    "softwareDev": "Szukasz tworzenia oprogramowania?",
+    "smartHome": "Szukasz eksperta smart home?",
+    "privacyPolicy": "Polityka prywatności"
+  },
+  "home": {
+    "heroLabel": "Wyróżnione",
+    "title": "Cheap Yellow Display (CYD)",
+    "subtitle": "Narzędzia konfiguracyjne i informacje dla ESP32-2432S028",
+    "whatIsCyd": {
+      "title": "Czym jest CYD?",
+      "p1": "<strong>Cheap Yellow Display</strong> (CYD) to popularna nazwa dla <strong>ESP32-2432S028</strong> — kompleksowej płytki deweloperskiej łączącej mikrokontroler ESP32 z 2,8″ kolorowym ekranem dotykowym TFT (240×320), dotyk rezystywny (XPT2046 lub CST816 w niektórych wariantach) oraz przydatne dodatki, takie jak wbudowana dioda LED RGB, slot microSD i LDR. Stała się ulubienicą społeczności maker i smart home do budowania kompaktowych dashboardów, wyświetlaczy statusu i paneli sterowania bez konieczności podłączania oddzielnego ekranu.",
+      "p2": "Ponieważ wyświetlacz i ESP32 znajdują się na jednej płytce, możesz zbudować urządzenie z pełnym GUI (np. monitor Home Assistant), wgrywając firmware i łącząc się z Wi‑Fi — bez lutowania ani skomplikowanego okablowania."
+    },
+    "purpose": {
+      "title": "Cel tej strony",
+      "p1": "Ta strona pomaga w pełni wykorzystać możliwości CYD przy użyciu <strong>ESPHome</strong> i (opcjonalnie) <strong>Home Assistant</strong>. Zamiast ręcznie edytować YAML, możesz używać narzędzi tutaj do wizualnego generowania i dostosowywania konfiguracji, a następnie kopiować wynik do ESPHome i wgrywać firmware na urządzenie.",
+      "p2": "Projekt obsługuje <strong>monitor Home Assistant</strong> (dashboard czujników z zegarem), dostosowany do ekranu i układu GPIO urządzenia CYD."
+    },
+    "atAGlance": {
+      "title": "CYD w skrócie",
+      "board": "<strong>Płytka:</strong> ESP32-WROOM-32, 2,8″ ILI9341 TFT (240×320), dotyk SPI",
+      "displayPins": "<strong>Piny wyświetlacza:</strong> TFT na HSPI (np. CLK 14, MOSI 13, MISO 12, CS 15, DC 2); podświetlenie często na GPIO 21 (lub 27 w wariantach z dotykiem I2C)",
+      "rgbLed": "<strong>Wbudowana dioda LED RGB:</strong> Czerwona GPIO 4, Zielona GPIO 16, Niebieska GPIO 17 (aktywna niskim stanem)",
+      "typicalUse": "<strong>Typowe zastosowanie:</strong> ESPHome + LVGL do dashboardów, zegarów, kafelków czujników i niestandardowych interfejsów",
+      "note": "Pinouty mogą się nieznacznie różnić w zależności od producenta i wersji; generator konfiguracji oferuje presety dla popularnych wariantów (dotyk SPI / dotyk I2C) i opcjonalne niestandardowe piny."
+    },
+    "configGeneratorCta": {
+      "title": "Generator konfiguracji",
+      "description": "<strong>Generator konfiguracji</strong> to aplikacja internetowa, która pozwala budować konfigurację CYD bez dotykania YAML. Wybierasz czujniki, ustawiasz opcje urządzenia i GPIO, a otrzymujesz kompletny plik YAML ESPHome gotowy do wklejenia. Redukuje błędy, zapewnia spójność pinoutów i podstawień oraz umożliwia podgląd układu na żywo. Skopiuj wygenerowany YAML jednym kliknięciem i wgraj przez ESPHome.",
+      "button": "Otwórz Generator konfiguracji"
+    }
+  },
+  "pageHeader": {
+    "title": "CYD HAMon Config Generator",
+    "subtitle": "Skonfiguruj swój monitor Home Assistant Cheap Yellow Display"
+  },
+  "configGeneratorPage": {
+    "generateYaml": "Generuj YAML"
+  },
+  "deviceSettings": {
+    "title": "Ustawienia urządzenia",
+    "deviceName": "Nazwa urządzenia",
+    "friendlyName": "Przyjazna nazwa",
+    "gpioConfig": "Konfiguracja GPIO",
+    "displaySettings": "Ustawienia wyświetlacza",
+    "clockWith": "Z zegarem",
+    "clockWithout": "Bez zegara",
+    "radius": "Promień {value}",
+    "variants": {
+      "spi_touch": "Dotyk SPI",
+      "i2c_touch": "Dotyk I2C",
+      "custom": "Niestandardowy"
+    },
+    "iconSets": {
+      "material_symbols": "Material Symbols",
+      "material_design_icons": "Material Design Icons"
+    }
+  },
+  "gpioModal": {
+    "title": "Konfiguracja GPIO urządzenia",
+    "subtitle": "Wybierz wariant płytki lub ustaw piny ręcznie.",
+    "variant": "Wariant",
+    "displayBacklight": "Wyświetlacz i podświetlenie",
+    "touchSpi": "Dotyk (SPI – XPT2046)",
+    "touchI2c": "Dotyk (I2C – CST816)",
+    "pins": {
+      "backlightPwm": "PWM podświetlenia",
+      "tftClk": "TFT CLK",
+      "tftMosi": "TFT MOSI",
+      "tftMiso": "TFT MISO",
+      "tftCs": "TFT CS",
+      "tftDc": "TFT DC",
+      "touchClk": "Touch CLK",
+      "touchMosi": "Touch MOSI",
+      "touchMiso": "Touch MISO",
+      "touchCs": "Touch CS",
+      "i2cSda": "I2C SDA",
+      "i2cScl": "I2C SCL",
+      "touchReset": "Reset dotyku"
+    },
+    "variantDescriptions": {
+      "spi_touch": "Standardowy CYD, podświetlenie GPIO21",
+      "i2c_touch": "CYD z dotykiem I2C, podświetlenie GPIO27",
+      "custom": "Ustaw każdy pin ręcznie (wypełnione z bieżącego wariantu)"
+    }
+  },
+  "displayModal": {
+    "title": "Ustawienia wyświetlacza",
+    "subtitle": "Opcje wizualne i układu dla wyświetlacza urządzenia.",
+    "hideClock": {
+      "label": "Ukryj zegar",
+      "description": "Dodaje dodatkowy wiersz dla siatki czujników 4×2."
+    },
+    "buttonRadius": {
+      "label": "Promień narożników przycisków",
+      "help": "0 = ostre narożniki, 34 = w pełni zaokrąglone."
+    },
+    "iconSet": {
+      "label": "Zestaw ikon",
+      "description": "Ikony używane w podglądzie i wygenerowanym YAML.",
+      "materialDesign": {
+        "label": "Material Design Icons",
+        "description": "Klasyczny zestaw ikon (społeczność)"
+      },
+      "materialSymbols": {
+        "label": "Material Symbols",
+        "description": "Ikony Google Fonts (fonts.google.com/icons)"
+      }
+    }
+  },
+  "sensorList": {
+    "title": "Konfiguracja czujników"
+  },
+  "sensorPanel": {
+    "row": "Wiersz",
+    "col": "Kolumna",
+    "types": {
+      "sensor": "Czujnik (numeryczny)",
+      "binary": "Czujnik binarny",
+      "light": "Światło",
+      "switch": "Przełącznik"
+    },
+    "typeLabel": "Typ",
+    "labelField": "Etykieta",
+    "entityId": "ID encji",
+    "accuracy": "Dokładność",
+    "accuracyWhole": "Liczba całkowita",
+    "accuracyOne": "1 miejsce dziesiętne",
+    "accuracyTwo": "2 miejsca dziesiętne",
+    "unit": "Jednostka",
+    "unitCustom": "Niestandardowa",
+    "thresholds": "Progi i kolory",
+    "highestFirst": "Najwyższa wartość pierwsza",
+    "addThreshold": "Dodaj",
+    "threshold": "Próg {n}",
+    "highest": "(najwyższy)",
+    "lowest": "(najniższy)",
+    "thresholdColor": "Kolor progu",
+    "stateOn": "WŁ.",
+    "stateOff": "WYŁ.",
+    "colorOn": "Kolor stanu WŁ.",
+    "colorOff": "Kolor stanu WYŁ.",
+    "labelPlaceholder": "Energia",
+    "entityPlaceholder": "sensor.przykład",
+    "customFormatPlaceholder": "%.1f°C",
+    "thresholdValuePlaceholder": "1000",
+    "onPlaceholderBinary": "Otwarte",
+    "offPlaceholderBinary": "Zamknięte",
+    "onPlaceholderLight": "Włączone",
+    "offPlaceholderLight": "Wyłączone"
+  },
+  "yamlModal": {
+    "title": "Wygenerowany YAML"
+  },
+  "iconPicker": {
+    "label": "Ikona",
+    "title": "Wybierz ikonę",
+    "search": "Szukaj ikon...",
+    "noResults": "Brak ikon pasujących do \"{search}\"",
+    "cancel": "Anuluj"
+  },
+  "cookieConsent": {
+    "title": "🍪 Preferencje plików cookie",
+    "message": "Używamy analitycznych plików cookie, aby zrozumieć, jak korzysta się ze strony i poprawić Twoje doświadczenia. Nie są zbierane żadne dane osobowe.",
+    "privacyPolicy": "Polityka prywatności",
+    "accept": "Akceptuj pliki cookie",
+    "decline": "Odrzuć"
+  },
+  "aboutCyd": {
+    "backToHome": "← Powrót do strony głównej",
+    "title": "O CYD (Cheap Yellow Display)",
+    "subtitle": "Kompletny przewodnik po rodzinie CYD — warianty, sprzęt, pinout, stos oprogramowania i odniesienia.",
+    "whatIsCyd": {
+      "title": "Czym jest CYD?",
+      "p1": "<strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) to popularna nazwa w społeczności dla płytek opartych na ESP32, które łączą mikrokontroler z kolorowym ekranem dotykowym TFT w jednej jednostce. Najbardziej znany model to <strong>ESP32-2432S028</strong> (ekran 2,8″, 240×320), ale <strong>istnieje kilka wariantów</strong> — różne rozmiary ekranu, technologie dotyku i złącza. Łączy je ten sam urok: budowanie dashboardów, wyświetlaczy statusu i paneli sterowania bez podłączania oddzielnego ekranu.",
+      "p2": "Ponieważ wyświetlacz i ESP32 znajdują się na jednej płytce, możesz zbudować urządzenie z pełnym GUI (np. monitor Home Assistant), wgrywając firmware i łącząc się z Wi‑Fi — bez lutowania ani skomplikowanego okablowania. Możesz <cydLink>kupić CYD na Amazon</cydLink> i zacząć używać go tego samego dnia."
+    },
+    "variations": {
+      "title": "Warianty CYD",
+      "intro": "Nie wszystkie płytki w stylu „CYD” są identyczne. Kupując lub konfigurując <cydLink>CYD</cydLink>, sprawdź te aspekty — wpływają na zgodność z obudowami, kablami i firmware (w tym generatorem konfiguracji tej strony).",
+      "screenSize": {
+        "title": "Rozmiar i rozdzielczość ekranu",
+        "intro": "Płytki są sprzedawane w różnych rozmiarach fizycznych i rozdzielczościach. Numery modeli często kodują rozmiar (np. <strong>S028</strong> ≈ 2,8″, <strong>S035</strong> ≈ 3,5″). Popularne warianty:",
+        "size24": "<strong>2,4″</strong> — Mniejszy, często 240×320; niektóre używają ILI9341 lub ST7789.",
+        "size28": "<strong>2,8″ (np. ESP32-2432S028)</strong> — Najpopularniejszy „CYD”: 240×320, zazwyczaj ILI9341. Generator konfiguracji i HAMon tego projektu są przeznaczone dla tego rozmiaru i rozdzielczości.",
+        "size32": "<strong>3,2″ / 3,5″</strong> — Większe panele (np. 320×480); mogą używać ILI9486, ILI9488 lub innych sterowników. Pinouty i konfiguracja ESPHome różnią się od płytek 2,8″.",
+        "note": "Jeśli masz inny rozmiar lub rozdzielczość, może być konieczna zmiana wymiarów wyświetlacza i sterownika w ESPHome; pinout i typ dotyku nadal mają znaczenie (patrz poniżej)."
+      },
+      "touchType": {
+        "title": "Typ ekranu dotykowego",
+        "intro": "Dotyk jest <strong>rezystywny</strong> (SPI) lub <strong>pojemnościowy</strong> (I2C). Sterownik i GPIO są inne, więc firmware musi odpowiadać Twojej płytce:",
+        "xpt2046": "<strong>XPT2046</strong> — Dotyk rezystywny przez SPI. Współdzieli magistralę SPI wyświetlacza z oddzielnym chip-select (np. GPIO 33). Podświetlenie często na <strong>GPIO 21</strong>. To preset „dotyk SPI” w naszym generatorze konfiguracji.",
+        "cst816": "<strong>CST816</strong> — Dotyk pojemnościowy przez I2C (np. SDA 33, SCL 32). Nowsze/zrewidowane płytki często to używają. Podświetlenie często na <strong>GPIO 27</strong>. To preset „dotyk I2C” w naszym generatorze konfiguracji.",
+        "other": "Niektóre płytki używają innych kontrolerów (np. GT911). Będziesz potrzebować odpowiedniego komponentu dotyku ESPHome i pinoutu dla swojego konkretnego modułu.",
+        "note": "Jeśli dotyk lub podświetlenie zachowuje się dziwnie, sprawdź, czy masz wariant SPI (XPT2046) czy I2C (CST816) i wybierz odpowiedni preset lub niestandardowe piny."
+      },
+      "displayController": {
+        "title": "Kontroler wyświetlacza",
+        "p": "Większość płytek CYD 2,8″ używa kontrolera TFT <strong>ILI9341</strong>. Inne rozmiary mogą używać <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> lub podobnych. W ESPHome wybierasz odpowiednią platformę wyświetlacza (np. <code>ili9xxx</code> z <code>model: ili9341</code>). Nasz generator zakłada ILI9341 dla układu 2,8″ 240×320."
+      },
+      "usbConnector": {
+        "title": "Złącze USB",
+        "p": "Płytki są sprzedawane z <strong>Micro-USB</strong> lub <strong>USB-C</strong>. USB-C jest preferowane w nowych zakupach: łatwiejsze okablowanie i wiele obudów drukowanych w 3D (np. obudowa Aura Smart Display) jest zaprojektowanych pod port USB-C. Adaptery (np. USB-C 90°) pomagają przy prowadzeniu kabli. Nasz <cydLink>link Amazon</cydLink> kieruje do wersji USB-C."
+      },
+      "whatSiteTargets": {
+        "title": "Co obejmuje ta strona",
+        "p": "<strong>Generator konfiguracji</strong> i firmware <strong>HAMon</strong> na tej stronie są przeznaczone dla płytek <strong>2,8″ 240×320 ILI9341</strong> z <strong>XPT2046 (dotyk SPI)</strong> lub <strong>CST816 (dotyk I2C)</strong>. Jeśli masz inny rozmiar lub sterownik wyświetlacza, nadal możesz używać generatora jako punktu wyjścia i dostosować wygenerowany YAML (model wyświetlacza, wymiary, komponent dotyku i piny) do swojego sprzętu."
+      }
+    },
+    "hardware": {
+      "title": "Przegląd sprzętu",
+      "intro": "<cydLink>CYD</cydLink> integruje kilka komponentów na jednej PCB. Poniższy diagram pokazuje, jak łączą się główne bloki.",
+      "diagramLabel": "Schemat blokowy sprzętu CYD",
+      "diagramCaption": "ESP32 steruje wyświetlaczem przez SPI (HSPI) i odczytuje dotyk przez SPI (XPT2046) lub I2C (CST816 w zależności od wariantu). Dioda LED RGB, microSD i LDR to opcjonalne peryferia."
+    },
+    "components": {
+      "title": "Zestawienie komponentów",
+      "colComponent": "Komponent",
+      "colDetails": "Szczegóły",
+      "board": {
+        "name": "Płytka",
+        "details": "ESP32-2432S028 (<cydLink>CYD</cydLink>). Kup wersję <strong>USB-C</strong> dla nowoczesnych kabli i zgodności z obudowami."
+      },
+      "mcu": {
+        "name": "MCU",
+        "details": "ESP32-WROOM-32 (dual-core 240 MHz, WiFi 802.11 b/g/n, Bluetooth 4.2)."
+      },
+      "display": {
+        "name": "Wyświetlacz",
+        "details": "ILI9341 2,8″ TFT, 240×320 RGB, kolor 18-bitowy, SPI (HSPI). Podświetlenie zazwyczaj GPIO 21 lub 27."
+      },
+      "touch": {
+        "name": "Dotyk",
+        "details": "XPT2046 (rezystywny, SPI) na większości płytek; niektóre warianty używają CST816 (pojemnościowy, I2C). Sprawdź etykietę swojej płytki."
+      },
+      "rgbLed": {
+        "name": "Dioda LED RGB",
+        "details": "Czerwona GPIO 4, Zielona GPIO 16, Niebieska GPIO 17 (aktywna niskim stanem). Może sygnalizować status na pierwszy rzut oka."
+      },
+      "microsd": {
+        "name": "microSD",
+        "details": "Opcjonalny slot do logowania lub zasobów (np. czcionki)."
+      },
+      "ldr": {
+        "name": "LDR",
+        "details": "Rezystor zależny od światła do automatycznego przyciemniania podświetlenia przez oprogramowanie."
+      }
+    },
+    "pinout": {
+      "title": "Odniesienie do pinoutu",
+      "intro": "Przypisania pinów mogą się nieznacznie różnić w zależności od producenta i wersji. Generator konfiguracji na tej stronie oferuje presety dla popularnych wariantów (dotyk SPI / dotyk I2C). Typowe wartości:",
+      "colFunction": "Funkcja",
+      "colGpio": "GPIO",
+      "colNotes": "Uwagi",
+      "rows": {
+        "tftClkNotes": "HSPI SCK",
+        "tftMosiNotes": "HSPI MOSI",
+        "tftMisoNotes": "HSPI MISO (opcjonalny)",
+        "tftCsNotes": "Chip select",
+        "tftDcNotes": "Dane/polecenie",
+        "backlightNotes": "Lub 27 na niektórych płytkach z dotykiem I2C",
+        "touchXptNotes": "Współdzieli HSPI; oddzielny CS (np. 33)",
+        "touchCstNotes": "Wariant z dotykiem I2C",
+        "rgbLedNotes": "Aktywna niskim stanem"
+      }
+    },
+    "software": {
+      "title": "Stos oprogramowania",
+      "intro": "Z <strong>ESPHome</strong> i <strong>LVGL</strong>, <cydLink>CYD</cydLink> może uruchamiać bogaty interfejs (zegary, kafelki czujników, dashboardy) i komunikować się z Home Assistant przez natywne API. Przepływ danych:",
+      "diagramLabel": "Stos oprogramowania i przepływ danych"
+    },
+    "useCases": {
+      "title": "Typowe przypadki użycia",
+      "monitor": "<strong>Monitor Home Assistant</strong> — Zegar, data i 6–8 kafelków encji (drzwi, ruch, energia, temperatura) z kolorowo-kodowanym statusem. Generator konfiguracji tej strony jest przeznaczony dla tego układu.",
+      "controlPanel": "<strong>Panel sterowania smart home</strong> — Przyciski i przełączniki do sterowania oświetleniem, scenami i automatyzacjami przez HA.",
+      "weather": "<strong>Dashboard pogodowy / informacyjny</strong> — Prognoza, kalendarz lub kanał RSS wyświetlany na <cydLink>CYD</cydLink>.",
+      "prototyping": "<strong>Prototypowanie</strong> — Dema LVGL, niestandardowe interfejsy lub nauka ESP32 + wyświetlacz bez osobnego okablowania."
+    },
+    "references": {
+      "title": "Linki referencyjne",
+      "intro": "Oficjalna dokumentacja, projekty społeczności i gdzie <cydLink>kupić CYD</cydLink>.",
+      "amazon": "Kup CYD na Amazon (afiliacyjny)",
+      "amazonDesc": "— Płytka CYD ILI9341 2,8″ (USB-C). Link afiliacyjny; wspiera ten projekt.",
+      "esphome": "ESPHome",
+      "esphomeDesc": "— Firmware i konfiguracja oparta na YAML dla urządzeń ESP.",
+      "esphomeDisplay": "Wyświetlacz ILI9341 ESPHome",
+      "esphomeDisplayDesc": "— Oficjalna dokumentacja komponentu wyświetlacza.",
+      "homeAssistant": "Home Assistant",
+      "homeAssistantDesc": "— Otwartoźródłowa automatyka domowa; encje zasilają dashboard CYD.",
+      "github": "CYD-ESPHome-HA-Monitor (GitHub)",
+      "githubDesc": "— Ten projekt: konfiguracja HAMon i generator YAML.",
+      "community": "CYD Smart Dashboard (drrcastro)",
+      "communityDesc": "— Inspiracja społeczności dla dashboardów CYD + HA.",
+      "esp32": "ESP32 (Espressif)",
+      "esp32Desc": "— Dokumentacja MCU od Espressif.",
+      "ili9341": "Karta katalogowa ILI9341",
+      "ili9341Desc": "— Dokumentacja kontrolera TFT (zewnętrzny PDF)."
+    },
+    "cta": {
+      "title": "Gotowy do skonfigurowania CYD?",
+      "description": "Użyj <strong>Generatora konfiguracji</strong>, aby wizualnie zbudować swój YAML ESPHome — bez potrzeby ręcznej edycji. Wybierz czujniki, presety GPIO i skopiuj wynik do ESPHome.",
+      "openGenerator": "Otwórz Generator konfiguracji",
+      "buyCyd": "Kup CYD na Amazon"
+    }
+  },
+  "privacyPolicy": {
+    "backToConfigGenerator": "← Powrót do Generatora konfiguracji",
+    "title": "Polityka prywatności",
+    "lastUpdated": "Ostatnia aktualizacja: February 2026",
+    "intro": {
+      "title": "1. Wprowadzenie",
+      "p1": "Niniejsza Polityka prywatności wyjaśnia, w jaki sposób <strong>CYD HAMon Config Generator</strong> („my”, „nasz” lub „strona”), obsługiwany przez Element Software, gromadzi, wykorzystuje i chroni informacje podczas odwiedzania <strong>cheapyellowdisplay.co.uk</strong>.",
+      "p2": "Zobowiązujemy się do ochrony Twojej prywatności i obsługi wszelkich informacji, które posiadamy na Twój temat, zgodnie z UK General Data Protection Regulation (UK GDPR) i Ustawą o ochronie danych z 2018 roku."
+    },
+    "infoCollect": {
+      "title": "2. Zbierane informacje",
+      "intro": "Ta strona gromadzi informacje w dwóch okolicznościach:",
+      "analytics": "<strong>Dane analityczne (za Twoją zgodą):</strong> Używamy Google Analytics do gromadzenia anonimowych danych o użytkowaniu, takich jak odwiedzone strony, czas na stronie, typ przeglądarki i przybliżony region geograficzny. Dane te nie identyfikują Cię osobiście.",
+      "personal": "<strong>Dane osobowe, które podajesz:</strong> Jeśli wypełnisz formularz kontaktowy lub podasz dane osobowe (takie jak imię i nazwisko lub adres e-mail), informacje te są gromadzone wyłącznie w celu odpowiedzi na Twoje zapytanie.",
+      "noConsent": "Jeśli odmówisz plików cookie analitycznych, żadne dane śledzenia nie będą gromadzone ani przesyłane."
+    },
+    "howWeUse": {
+      "title": "3. Jak wykorzystujemy Twoje informacje",
+      "analytics": "<strong>Dane analityczne</strong> są wykorzystywane wyłącznie do zrozumienia, jak korzysta się ze strony i poprawy doświadczeń użytkownika. Nigdy nie są używane do reklam, profilowania ani sprzedawane podmiotom trzecim.",
+      "contact": "<strong>Informacje kontaktowe</strong> są używane tylko do odpowiedzi na Twoje zapytanie i nie są udostępniane podmiotom trzecim ani używane do celów marketingowych bez Twojej wyraźnej zgody."
+    },
+    "legalBasis": {
+      "title": "4. Podstawa prawna przetwarzania",
+      "intro": "Na podstawie UK GDPR opieramy się na następujących podstawach prawnych przetwarzania danych osobowych:",
+      "consent": "<strong>Zgoda</strong> — dla analitycznych plików cookie. Możesz wycofać zgodę w dowolnym momencie, czyszcząc lokalne przechowywanie przeglądarki lub odmawiając plików cookie podczas następnej wizyty.",
+      "legitimate": "<strong>Uzasadnione interesy</strong> — dla zapytań kontaktowych, w zakresie niezbędnym do odpowiedzi na Twoją wiadomość."
+    },
+    "cookies": {
+      "title": "5. Pliki cookie",
+      "p1": "Ta strona używa jednej preferencji własnego pliku cookie przechowywanej w lokalnym przechowywaniu przeglądarki (<code>cookie_consent</code>) w celu zapamiętania Twojej preferencji analitycznej.",
+      "p2": "Jeśli zaakceptujesz analityczne pliki cookie, Google Analytics ustawia własne pliki cookie (np. <code>_ga</code>, <code>_ga_*</code>) w celu rozróżniania użytkowników i sesji. Te pliki cookie są regulowane przez <googlePrivacy>Politykę prywatności Google</googlePrivacy>.",
+      "p3": "Możesz wycofać zgodę na analizę w dowolnym momencie, czyszcząc lokalne przechowywanie przeglądarki dla tej strony, co spowoduje ponowne pojawienie się banera zgody podczas następnej wizyty."
+    },
+    "dataSharing": {
+      "title": "6. Udostępnianie danych",
+      "p": "Nie sprzedajemy, nie wymieniamy ani nie wynajmujemy Twoich danych osobowych podmiotom trzecim. Dane analityczne są przetwarzane przez Google LLC na podstawie umowy o przetwarzanie danych. Google może przekazywać dane poza Wielką Brytanię; więcej informacji znajdziesz w <googlePrivacy>Polityce prywatności Google</googlePrivacy>."
+    },
+    "dataRetention": {
+      "title": "7. Przechowywanie danych",
+      "p": "Dane Google Analytics są przechowywane domyślnie przez 14 miesięcy, po czym są automatycznie usuwane. Wszelkie dane osobowe podane przez formularz kontaktowy są przechowywane tylko przez czas niezbędny do obsługi Twojego zapytania, a następnie bezpiecznie usuwane."
+    },
+    "yourRights": {
+      "title": "8. Twoje prawa",
+      "intro": "Na podstawie UK GDPR masz prawo do:",
+      "access": "Dostępu do danych osobowych, które posiadamy na Twój temat",
+      "correction": "Żądania poprawienia niedokładnych danych osobowych",
+      "erasure": "Żądania usunięcia Twoich danych osobowych",
+      "restriction": "Sprzeciwu lub ograniczenia przetwarzania Twoich danych osobowych",
+      "withdraw": "Wycofania zgody w dowolnym momencie (gdy przetwarzanie jest oparte na zgodzie)",
+      "complain": "Złożenia skargi do Information Commissioner's Office (ICO) pod adresem <ico>ico.org.uk</ico>"
+    },
+    "thirdParty": {
+      "title": "9. Linki do podmiotów trzecich",
+      "p": "Ta strona zawiera linki do zewnętrznych witryn (np. GitHub, element-software.co.uk). Nie ponosimy odpowiedzialności za praktyki prywatności tych witryn i zachęcamy do zapoznania się z ich politykami prywatności."
+    },
+    "contact": {
+      "title": "10. Kontakt",
+      "p": "Jeśli masz pytania dotyczące niniejszej Polityki prywatności lub chcesz skorzystać ze swoich praw dotyczących danych, skontaktuj się z nami pod adresem <email>info@cheapyellowdisplay.co.uk</email>."
+    },
+    "changes": {
+      "title": "11. Zmiany w tej polityce",
+      "p": "Możemy od czasu do czasu aktualizować niniejszą Politykę prywatności. Wszelkie zmiany zostaną opublikowane na tej stronie ze zaktualizowaną datą rewizji. Zachęcamy do okresowego sprawdzania tej polityki."
+    }
+  }
+}

@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
 const GITHUB_REPO = 'element-software/CYD-ESPHome-HA-Monitor';
@@ -11,14 +13,14 @@ const GITHUB_STARS_BADGE = `https://img.shields.io/github/stars/${GITHUB_REPO}?s
 
 type NavLink = {
   href: string;
-  label: string;
+  labelKey: 'home' | 'aboutCyd' | 'configGenerator';
   external?: boolean;
 };
 
-const NAV_LINKS: NavLink[] = [
-  { href: '/', label: 'Home' },
-  { href: '/about-cyd', label: 'About CYD' },
-  { href: '/config-generator', label: 'Config Generator' },
+const NAV_LINK_DEFS: NavLink[] = [
+  { href: '/', labelKey: 'home' },
+  { href: '/about-cyd', labelKey: 'aboutCyd' },
+  { href: '/config-generator', labelKey: 'configGenerator' },
 ];
 
 function NavLink({
@@ -59,6 +61,7 @@ function NavLink({
 }
 
 export default function SiteHeader() {
+  const t = useTranslations('nav');
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -101,26 +104,27 @@ export default function SiteHeader() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 shrink-0 opacity-90 hover:opacity-100 transition-opacity"
-              aria-label="Star on GitHub"
+              aria-label={t('starOnGithub')}
             >
               <img
                 src={GITHUB_STARS_BADGE}
-                alt="GitHub stars"
+                alt={t('githubStars')}
                 className="h-6 w-auto"
                 width={96}
                 height={24}
               />
             </a>
-            {NAV_LINKS.map((link) => (
-              <NavLink key={link.href} href={link.href} label={link.label} external={link.external} />
+            {NAV_LINK_DEFS.map((link) => (
+              <NavLink key={link.href} href={link.href} label={t(link.labelKey)} external={link.external} />
             ))}
+            <LanguageSwitcher />
             <a
               href={BUY_NOW_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2 rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-amber-400 transition-colors"
             >
-              BUY NOW
+              {t('buyNow')}
             </a>
           </nav>
 
@@ -132,7 +136,7 @@ export default function SiteHeader() {
               className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={menuOpen ? t('closeMenu') : t('openMenu')}
             >
               {menuOpen ? (
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden>
@@ -158,28 +162,31 @@ export default function SiteHeader() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 py-2"
                     onClick={() => setMenuOpen(false)}
-                    aria-label="Star on GitHub"
+                    aria-label={t('starOnGithub')}
                   >
                     <img
                       src={GITHUB_STARS_BADGE}
-                      alt="GitHub stars"
+                      alt={t('githubStars')}
                       className="h-6 w-auto"
                       width={96}
                       height={24}
                     />
                   </a>
                 </div>
-                {NAV_LINKS.map((link) => (
+                {NAV_LINK_DEFS.map((link) => (
                   <div key={link.href} className="px-2" role="none">
                     <NavLink
                       href={link.href}
-                      label={link.label}
+                      label={t(link.labelKey)}
                       external={link.external}
                       onClick={() => setMenuOpen(false)}
                     />
                   </div>
                 ))}
                 <div className="mt-2 border-t border-gray-100 pt-2 px-2" role="none">
+                  <div className="px-1 pb-2">
+                    <LanguageSwitcher />
+                  </div>
                   <a
                     href={BUY_NOW_URL}
                     target="_blank"
@@ -187,7 +194,7 @@ export default function SiteHeader() {
                     className="block rounded-md bg-amber-500 px-4 py-2.5 text-center text-sm font-semibold text-gray-900 hover:bg-amber-400 transition-colors"
                     onClick={() => setMenuOpen(false)}
                   >
-                    BUY NOW
+                    {t('buyNow')}
                   </a>
                 </div>
               </div>

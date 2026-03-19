@@ -1,0 +1,411 @@
+{
+  "common": {
+    "close": "关闭",
+    "cancel": "取消",
+    "save": "保存",
+    "done": "完成",
+    "opensInNewTab": "（在新标签页中打开）"
+  },
+  "copyButton": {
+    "copy": "复制",
+    "copied": "已复制！"
+  },
+  "nav": {
+    "home": "首页",
+    "aboutCyd": "关于 CYD",
+    "configGenerator": "配置生成器",
+    "buyNow": "立即购买",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "starOnGithub": "在 GitHub 上标星",
+    "githubStars": "GitHub 星标数"
+  },
+  "footer": {
+    "tagline": "CYD 配置工具与信息 · ESPHome / Home Assistant",
+    "affiliateNotice": "立即购买是联盟推广链接。",
+    "poweredBy": "技术支持",
+    "links": {
+      "home": "首页",
+      "aboutCyd": "关于 CYD",
+      "configGenerator": "配置生成器",
+      "buyNow": "立即购买（Amazon）",
+      "github": "GitHub",
+      "privacyPolicy": "隐私政策",
+      "softwareDev": "软件开发",
+      "smartHome": "智能家居专家"
+    }
+  },
+  "pageFooter": {
+    "home": "首页",
+    "configGenerator": "配置生成器",
+    "github": "GitHub",
+    "softwareDev": "正在寻找软件开发服务？",
+    "smartHome": "正在寻找智能家居专家？",
+    "privacyPolicy": "隐私政策"
+  },
+  "home": {
+    "heroLabel": "头图",
+    "title": "Cheap Yellow Display (CYD)",
+    "subtitle": "ESP32-2432S028 的配置工具与使用指南",
+    "whatIsCyd": {
+      "title": "什么是 CYD？",
+      "p1": "<strong>Cheap Yellow Display</strong>（CYD）是 <strong>ESP32-2432S028</strong> 的流行称呼——这是一款集成式开发板，将 ESP32 微控制器与 2.8 英寸彩色 TFT 触摸屏（240×320）、电阻式触摸（部分型号为 XPT2046 或 CST816）以及内置 RGB LED、microSD 卡槽、LDR 等实用功能整合于一体。它已成为创客和智能家居社区的热门选择，可用于构建紧凑型仪表盘、状态显示屏和控制面板，无需另接显示屏。",
+      "p2": "由于显示屏和 ESP32 集成在同一块板上，只需烧录固件并连接 Wi‑Fi，即可构建功能完整的图形界面设备（例如 Home Assistant 监控器）——无需焊接或复杂布线。"
+    },
+    "purpose": {
+      "title": "本网站的目的",
+      "p1": "本网站旨在帮助您在使用 <strong>ESPHome</strong> 和（可选的）<strong>Home Assistant</strong> 时充分发挥 CYD 的潜力。无需手动编辑 YAML，您可以使用本站工具可视化生成和自定义配置，然后将结果粘贴到 ESPHome 并烧录设备。",
+      "p2": "本项目支持 <strong>Home Assistant 监控器</strong>（带时钟的传感器仪表盘），专为 CYD 的屏幕尺寸和 GPIO 布局量身设计。"
+    },
+    "atAGlance": {
+      "title": "CYD 概览",
+      "board": "<strong>开发板：</strong>ESP32-WROOM-32，2.8 英寸 ILI9341 TFT（240×320），SPI 触摸",
+      "displayPins": "<strong>显示引脚：</strong>TFT 接 HSPI（如 CLK 14、MOSI 13、MISO 12、CS 15、DC 2）；背光通常为 GPIO 21（I2C 触摸型号可能为 27）",
+      "rgbLed": "<strong>板载 RGB LED：</strong>红色 GPIO 4、绿色 GPIO 16、蓝色 GPIO 17（低电平有效）",
+      "typicalUse": "<strong>典型用途：</strong>结合 ESPHome + LVGL 构建仪表盘、时钟、传感器卡片及自定义界面",
+      "note": "引脚定义因制造商和版本略有差异；配置生成器提供常见型号（SPI 触摸 / I2C 触摸）的预设，以及可选的自定义引脚。"
+    },
+    "configGeneratorCta": {
+      "title": "配置生成器",
+      "description": "<strong>配置生成器</strong>是一款网页应用，让您无需接触 YAML 即可构建 CYD 配置。选择传感器、设置设备和 GPIO 选项，即可获得完整的 ESPHome YAML 文件，直接粘贴到 ESPHome 设备即可使用。它能减少错误、保持引脚和替换变量的一致性，并提供布局实时预览。一键复制生成的 YAML 以通过 ESPHome 烧录。",
+      "button": "打开配置生成器"
+    }
+  },
+  "pageHeader": {
+    "title": "CYD HAMon Config Generator",
+    "subtitle": "配置您的 Cheap Yellow Display Home Assistant 监控器"
+  },
+  "configGeneratorPage": {
+    "generateYaml": "生成 YAML"
+  },
+  "deviceSettings": {
+    "title": "设备设置",
+    "deviceName": "设备名称",
+    "friendlyName": "友好名称",
+    "gpioConfig": "GPIO 配置",
+    "displaySettings": "显示设置",
+    "clockWith": "显示时钟",
+    "clockWithout": "不显示时钟",
+    "radius": "圆角 {value}",
+    "variants": {
+      "spi_touch": "SPI 触摸",
+      "i2c_touch": "I2C 触摸",
+      "custom": "自定义"
+    },
+    "iconSets": {
+      "material_symbols": "Material Symbols",
+      "material_design_icons": "Material Design Icons"
+    }
+  },
+  "gpioModal": {
+    "title": "设备 GPIO 配置",
+    "subtitle": "选择开发板型号或手动设置引脚。",
+    "variant": "型号",
+    "displayBacklight": "显示屏与背光",
+    "touchSpi": "触摸（SPI – XPT2046）",
+    "touchI2c": "触摸（I2C – CST816）",
+    "pins": {
+      "backlightPwm": "背光 PWM",
+      "tftClk": "TFT CLK",
+      "tftMosi": "TFT MOSI",
+      "tftMiso": "TFT MISO",
+      "tftCs": "TFT CS",
+      "tftDc": "TFT DC",
+      "touchClk": "Touch CLK",
+      "touchMosi": "Touch MOSI",
+      "touchMiso": "Touch MISO",
+      "touchCs": "Touch CS",
+      "i2cSda": "I2C SDA",
+      "i2cScl": "I2C SCL",
+      "touchReset": "触摸复位"
+    },
+    "variantDescriptions": {
+      "spi_touch": "标准 CYD，背光 GPIO21",
+      "i2c_touch": "I2C 触摸版 CYD，背光 GPIO27",
+      "custom": "手动设置每个引脚（已从当前型号预填）"
+    }
+  },
+  "displayModal": {
+    "title": "显示设置",
+    "subtitle": "设备显示屏的视觉和布局选项。",
+    "hideClock": {
+      "label": "隐藏时钟",
+      "description": "额外增加一行，形成 4×2 传感器网格。"
+    },
+    "buttonRadius": {
+      "label": "按钮圆角半径",
+      "help": "0 = 直角，34 = 完全圆角。"
+    },
+    "iconSet": {
+      "label": "图标集",
+      "description": "预览和生成的 YAML 中使用的图标。",
+      "materialDesign": {
+        "label": "Material Design Icons",
+        "description": "经典图标集（社区版）"
+      },
+      "materialSymbols": {
+        "label": "Material Symbols",
+        "description": "Google Fonts 图标（fonts.google.com/icons）"
+      }
+    }
+  },
+  "sensorList": {
+    "title": "传感器配置"
+  },
+  "sensorPanel": {
+    "row": "行",
+    "col": "列",
+    "types": {
+      "sensor": "传感器（数值型）",
+      "binary": "二元传感器",
+      "light": "灯光",
+      "switch": "开关"
+    },
+    "typeLabel": "类型",
+    "labelField": "标签",
+    "entityId": "实体 ID",
+    "accuracy": "精度",
+    "accuracyWhole": "整数",
+    "accuracyOne": "1 位小数",
+    "accuracyTwo": "2 位小数",
+    "unit": "单位",
+    "unitCustom": "自定义",
+    "thresholds": "阈值与颜色",
+    "highestFirst": "最高值在前",
+    "addThreshold": "添加",
+    "threshold": "阈值 {n}",
+    "highest": "（最高）",
+    "lowest": "（最低）",
+    "thresholdColor": "阈值颜色",
+    "stateOn": "开",
+    "stateOff": "关",
+    "colorOn": "开启状态颜色",
+    "colorOff": "关闭状态颜色",
+    "labelPlaceholder": "能耗",
+    "entityPlaceholder": "sensor.example",
+    "customFormatPlaceholder": "%.1f°C",
+    "thresholdValuePlaceholder": "1000",
+    "onPlaceholderBinary": "打开",
+    "offPlaceholderBinary": "关闭",
+    "onPlaceholderLight": "开",
+    "offPlaceholderLight": "关"
+  },
+  "yamlModal": {
+    "title": "生成的 YAML"
+  },
+  "iconPicker": {
+    "label": "图标",
+    "title": "选择图标",
+    "search": "搜索图标...",
+    "noResults": "没有与”{search}”匹配的图标",
+    "cancel": "取消"
+  },
+  "cookieConsent": {
+    "title": "🍪 Cookie 偏好设置",
+    "message": "我们使用分析性 Cookie 来了解网站的使用情况并改善您的体验。不会收集任何个人信息。",
+    "privacyPolicy": "隐私政策",
+    "accept": "接受 Cookie",
+    "decline": "拒绝"
+  },
+  "aboutCyd": {
+    "backToHome": "← 返回首页",
+    "title": "关于 CYD（Cheap Yellow Display）",
+    "subtitle": "CYD 系列完整指南——型号变体、硬件、引脚定义、软件栈及参考资料。",
+    "whatIsCyd": {
+      "title": "什么是 CYD？",
+      "p1": "<strong>Cheap Yellow Display</strong>（<cydLink>CYD</cydLink>）是社区对基于 ESP32 开发板的流行称呼，这类板卡将微控制器与彩色 TFT 触摸屏集成于一体。最知名的型号是 <strong>ESP32-2432S028</strong>（2.8 英寸屏，240×320），但<strong>还有多种变体</strong>——屏幕尺寸、触摸技术和接口各有不同。它们共同的优势在于：无需单独连接显示屏，即可构建仪表盘、状态显示屏和控制面板。",
+      "p2": "由于显示屏和 ESP32 集成在同一块板上，只需烧录固件并连接 Wi‑Fi，即可构建功能完整的图形界面设备（例如 Home Assistant 监控器）——无需焊接或复杂布线。您可以在 <cydLink>Amazon 购买 CYD</cydLink>，当天即可上手使用。"
+    },
+    "variations": {
+      "title": "CYD 型号变体",
+      "intro": "并非所有”CYD 风格”的板卡都完全相同。在购买或配置 <cydLink>CYD</cydLink> 时，请注意以下几点——它们会影响外壳、线缆和固件的兼容性（包括本站的配置生成器）。",
+      "screenSize": {
+        "title": "屏幕尺寸与分辨率",
+        "intro": "板卡以不同的物理尺寸和分辨率销售。型号编号通常包含尺寸信息（例如 <strong>S028</strong> ≈ 2.8 英寸，<strong>S035</strong> ≈ 3.5 英寸）。常见变体：",
+        "size24": "<strong>2.4 英寸</strong>——较小，通常为 240×320；部分使用 ILI9341 或 ST7789。",
+        "size28": "<strong>2.8 英寸（如 ESP32-2432S028）</strong>——最常见的”CYD”：240×320，通常为 ILI9341。本项目的配置生成器和 HAMon 均针对此尺寸和分辨率设计。",
+        "size32": "<strong>3.2 英寸 / 3.5 英寸</strong>——较大面板（如 320×480）；可能使用 ILI9486、ILI9488 或其他驱动芯片。引脚定义和 ESPHome 配置与 2.8 英寸板卡不同。",
+        "note": "如果您的屏幕尺寸或分辨率不同，可能需要在 ESPHome 中调整显示尺寸和驱动型号；引脚定义和触摸类型仍然重要（见下文）。"
+      },
+      "touchType": {
+        "title": "触摸屏类型",
+        "intro": "触摸分为<strong>电阻式</strong>（SPI）和<strong>电容式</strong>（I2C）两种。驱动和 GPIO 有所不同，因此固件必须与您的板卡匹配：",
+        "xpt2046": "<strong>XPT2046</strong>——通过 SPI 的电阻式触摸。与显示屏共用 SPI 总线，使用独立的片选信号（如 GPIO 33）。背光通常接 <strong>GPIO 21</strong>。这是配置生成器中的”SPI 触摸”预设。",
+        "cst816": "<strong>CST816</strong>——通过 I2C 的电容式触摸（如 SDA 33、SCL 32）。较新或修订版板卡多采用此方案。背光通常接 <strong>GPIO 27</strong>。这是配置生成器中的”I2C 触摸”预设。",
+        "other": "部分板卡使用其他控制芯片（如 GT911）。您需要为您的具体模块选择正确的 ESPHome 触摸组件和引脚定义。",
+        "note": "如果触摸或背光行为异常，请确认您的板卡是 SPI（XPT2046）还是 I2C（CST816）变体，并选择对应的预设或自定义引脚。"
+      },
+      "displayController": {
+        "title": "显示控制芯片",
+        "p": "大多数 2.8 英寸 CYD 板卡使用 <strong>ILI9341</strong> TFT 控制芯片。其他尺寸可能使用 <strong>ST7789</strong>、<strong>ILI9488</strong>、<strong>ILI9486</strong> 等。在 ESPHome 中，您需要选择对应的显示平台（如 <code>ili9xxx</code>，配置 <code>model: ili9341</code>）。本生成器默认针对 2.8 英寸 240×320 的 ILI9341 布局。"
+      },
+      "usbConnector": {
+        "title": "USB 接口",
+        "p": "板卡分为 <strong>Micro-USB</strong> 和 <strong>USB-C</strong> 两种接口。新购时推荐选择 USB-C：接线更方便，许多 3D 打印外壳（如 Aura Smart Display 外壳）也是为 USB-C 接口设计的。转接头（如 90° USB-C 弯头）有助于整理线缆。我们的 <cydLink>Amazon 链接</cydLink>指向 USB-C 版本。"
+      },
+      "whatSiteTargets": {
+        "title": "本站适用范围",
+        "p": "本站的<strong>配置生成器</strong>和 <strong>HAMon</strong> 固件针对 <strong>2.8 英寸 240×320 ILI9341</strong> 板卡，支持 <strong>XPT2046（SPI 触摸）</strong>或 <strong>CST816（I2C 触摸）</strong>。如果您的屏幕尺寸或显示驱动不同，仍可将生成器作为起点，并根据实际硬件调整生成的 YAML（显示型号、尺寸、触摸组件和引脚）。"
+      }
+    },
+    "hardware": {
+      "title": "硬件概览",
+      "intro": "<cydLink>CYD</cydLink> 将多个组件集成在一块 PCB 上。下图展示了主要功能模块的连接关系。",
+      "diagramLabel": "CYD 硬件框图",
+      "diagramCaption": "ESP32 通过 SPI（HSPI）驱动显示屏，并通过 SPI（XPT2046）或 I2C（CST816，取决于型号）读取触摸输入。RGB LED、microSD 和 LDR 为可选外设。"
+    },
+    "components": {
+      "title": "组件明细",
+      "colComponent": "组件",
+      "colDetails": "详情",
+      "board": {
+        "name": "开发板",
+        "details": "ESP32-2432S028（<cydLink>CYD</cydLink>）。建议购买 <strong>USB-C</strong> 版本，兼容现代线缆和外壳。"
+      },
+      "mcu": {
+        "name": "MCU",
+        "details": "ESP32-WROOM-32（双核 240 MHz，WiFi 802.11 b/g/n，蓝牙 4.2）。"
+      },
+      "display": {
+        "name": "显示屏",
+        "details": "ILI9341 2.8 英寸 TFT，240×320 RGB，18 位色，SPI（HSPI）。背光通常为 GPIO 21 或 27。"
+      },
+      "touch": {
+        "name": "触摸",
+        "details": "大多数板卡为 XPT2046（电阻式，SPI）；部分型号使用 CST816（电容式，I2C）。请查看板卡上的标签。"
+      },
+      "rgbLed": {
+        "name": "RGB LED",
+        "details": "红色 GPIO 4、绿色 GPIO 16、蓝色 GPIO 17（低电平有效）。可一目了然地显示状态。"
+      },
+      "microsd": {
+        "name": "microSD",
+        "details": "可选卡槽，用于日志记录或资源文件（如字体）。"
+      },
+      "ldr": {
+        "name": "LDR",
+        "details": "光敏电阻，用于通过软件自动调节背光亮度。"
+      }
+    },
+    "pinout": {
+      "title": "引脚参考",
+      "intro": "引脚分配因制造商和版本略有差异。本站配置生成器提供常见变体（SPI 触摸 / I2C 触摸）的预设。典型引脚值：",
+      "colFunction": "功能",
+      "colGpio": "GPIO",
+      "colNotes": "备注",
+      "rows": {
+        "tftClkNotes": "HSPI SCK",
+        "tftMosiNotes": "HSPI MOSI",
+        "tftMisoNotes": "HSPI MISO（可选）",
+        "tftCsNotes": "片选信号",
+        "tftDcNotes": "数据/命令",
+        "backlightNotes": "部分 I2C 触摸板卡为 27",
+        "touchXptNotes": "共用 HSPI；独立片选（如 33）",
+        "touchCstNotes": "I2C 触摸变体",
+        "rgbLedNotes": "低电平有效"
+      }
+    },
+    "software": {
+      "title": "软件栈",
+      "intro": "借助 <strong>ESPHome</strong> 和 <strong>LVGL</strong>，<cydLink>CYD</cydLink> 可运行丰富的界面（时钟、传感器卡片、仪表盘），并通过原生 API 与 Home Assistant 通信。数据流向：",
+      "diagramLabel": "软件栈与数据流"
+    },
+    "useCases": {
+      "title": "典型应用场景",
+      "monitor": "<strong>Home Assistant 监控器</strong>——时钟、日期，以及 6–8 个实体卡片（门、运动、能耗、温度），状态以颜色区分。本站配置生成器即针对此布局设计。",
+      "controlPanel": "<strong>智能家居控制面板</strong>——通过 HA 控制灯光、场景和自动化的按钮和开关。",
+      "weather": "<strong>天气 / 信息仪表盘</strong>——在 <cydLink>CYD</cydLink> 上显示天气预报、日历或 RSS 订阅。",
+      "prototyping": "<strong>原型开发</strong>——LVGL 演示、自定义界面，或无需额外布线地学习 ESP32 + 显示屏开发。"
+    },
+    "references": {
+      "title": "参考链接",
+      "intro": "官方文档、社区项目及 <cydLink>购买 CYD</cydLink> 的渠道。",
+      "amazon": "在 Amazon 购买 CYD（联盟链接）",
+      "amazonDesc": "——2.8 英寸 ILI9341 CYD 板卡（USB-C）。联盟推广链接，支持本项目。",
+      "esphome": "ESPHome",
+      "esphomeDesc": "——基于 YAML 配置的 ESP 设备固件框架。",
+      "esphomeDisplay": "ESPHome ILI9341 显示屏",
+      "esphomeDisplayDesc": "——官方显示组件文档。",
+      "homeAssistant": "Home Assistant",
+      "homeAssistantDesc": "——开源家庭自动化平台；实体数据驱动 CYD 仪表盘。",
+      "github": "CYD-ESPHome-HA-Monitor（GitHub）",
+      "githubDesc": "——本项目：HAMon 配置与 YAML 生成器。",
+      "community": "CYD Smart Dashboard（drrcastro）",
+      "communityDesc": "——社区灵感来源，适用于 CYD + HA 仪表盘。",
+      "esp32": "ESP32（Espressif）",
+      "esp32Desc": "——Espressif 官方 MCU 参考资料。",
+      "ili9341": "ILI9341 数据手册",
+      "ili9341Desc": "——TFT 控制芯片参考资料（外部 PDF）。"
+    },
+    "cta": {
+      "title": "准备好配置您的 CYD 了吗？",
+      "description": "使用<strong>配置生成器</strong>可视化构建您的 ESPHome YAML——无需手动编辑 YAML。选择传感器、GPIO 预设，然后将结果复制到 ESPHome 即可。",
+      "openGenerator": "打开配置生成器",
+      "buyCyd": "在 Amazon 购买 CYD"
+    }
+  },
+  "privacyPolicy": {
+    "backToConfigGenerator": "← 返回配置生成器",
+    "title": "隐私政策",
+    "lastUpdated": "最后更新：February 2026",
+    "intro": {
+      "title": "1. 简介",
+      "p1": "本隐私政策说明 <strong>CYD HAMon Config Generator</strong>（“我们”或”本站”），由 Element Software 运营，在您访问 <strong>cheapyellowdisplay.co.uk</strong> 时如何收集、使用和保护信息。",
+      "p2": "我们致力于保护您的隐私，并依据英国《通用数据保护条例》（UK GDPR）及 2018 年《数据保护法》处理我们掌握的关于您的信息。"
+    },
+    "infoCollect": {
+      "title": "2. 我们收集的信息",
+      "intro": "本站在以下两种情况下收集信息：",
+      "analytics": "<strong>分析数据（经您同意）：</strong>我们使用 Google Analytics 收集匿名使用数据，例如访问的页面、在站时长、浏览器类型及大致地理区域。这些数据不会识别您的个人身份。",
+      "personal": "<strong>您主动提供的个人信息：</strong>如果您提交联系表单或以其他方式提供个人信息（如姓名或电子邮件地址），这些信息仅用于回复您的咨询。",
+      "noConsent": "如果您拒绝分析性 Cookie，则不会收集或传输任何跟踪数据。"
+    },
+    "howWeUse": {
+      "title": "3. 我们如何使用您的信息",
+      "analytics": "<strong>分析数据</strong>仅用于了解网站使用情况并改善用户体验，绝不用于广告、用户画像，也不会出售给第三方。",
+      "contact": "<strong>联系信息</strong>仅用于回复您的咨询，未经您明确同意，不会与第三方共享，也不会用于营销目的。"
+    },
+    "legalBasis": {
+      "title": "4. 处理的法律依据",
+      "intro": "根据 UK GDPR，我们依据以下法律依据处理个人数据：",
+      "consent": "<strong>同意</strong>——用于分析性 Cookie。您可随时通过清除浏览器本地存储或在下次访问时拒绝 Cookie 来撤回同意。",
+      "legitimate": "<strong>合法利益</strong>——用于联系咨询，仅限于回复您消息所必要的范围。"
+    },
+    "cookies": {
+      "title": "5. Cookie",
+      "p1": "本站在浏览器本地存储中保存一条第一方 Cookie 偏好记录（<code>cookie_consent</code>），用于记住您的分析偏好。",
+      "p2": "如果您接受分析性 Cookie，Google Analytics 会设置其自有 Cookie（如 <code>_ga</code>、<code>_ga_*</code>）以区分用户和会话。这些 Cookie 受 <googlePrivacy>Google 隐私政策</googlePrivacy>约束。",
+      "p3": "您可随时通过清除本站的浏览器本地存储来撤回分析同意，届时同意横幅将在您下次访问时重新出现。"
+    },
+    "dataSharing": {
+      "title": "6. 数据共享",
+      "p": "我们不会出售、交换或出租您的个人信息给第三方。分析数据由 Google LLC 根据数据处理协议进行处理。Google 可能将数据传输至英国境外；详情请参阅 <googlePrivacy>Google 隐私政策</googlePrivacy>。"
+    },
+    "dataRetention": {
+      "title": "7. 数据保留",
+      "p": "Google Analytics 数据默认保留 14 个月，之后自动删除。通过联系表单提供的个人信息仅在处理您的咨询所需的时间内保留，之后将被安全删除。"
+    },
+    "yourRights": {
+      "title": "8. 您的权利",
+      "intro": "根据 UK GDPR，您有权：",
+      "access": "访问我们持有的关于您的个人数据",
+      "correction": "请求更正不准确的个人数据",
+      "erasure": "请求删除您的个人数据",
+      "restriction": "反对或限制对您个人数据的处理",
+      "withdraw": "随时撤回同意（在处理基于同意的情况下）",
+      "complain": "向信息专员办公室（ICO）提出投诉，网址：<ico>ico.org.uk</ico>"
+    },
+    "thirdParty": {
+      "title": "9. 第三方链接",
+      "p": "本站包含指向外部网站的链接（如 GitHub、element-software.co.uk）。我们对这些网站的隐私实践不承担责任，建议您查阅其隐私政策。"
+    },
+    "contact": {
+      "title": "10. 联系我们",
+      "p": "如您对本隐私政策有任何疑问，或希望行使您的数据权利，请通过 <email>info@cheapyellowdisplay.co.uk</email> 与我们联系。"
+    },
+    "changes": {
+      "title": "11. 政策变更",
+      "p": "我们可能会不时更新本隐私政策。任何变更将在本页发布，并附上更新后的修订日期。我们建议您定期查阅本政策。"
+    }
+  }
+}

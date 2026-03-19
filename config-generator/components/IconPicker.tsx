@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { findIconByCode, getCodeForIconSet, getIconFontClass, getIconsForSet, iconCodeToLigature } from '@/lib/icons';
 import { cydColorToCss } from '@/lib/colorUtils';
 import type { IconSet } from '@/types/config';
@@ -19,11 +20,12 @@ interface IconPickerProps {
 export default function IconPicker({
   value,
   onChange,
-  label = 'Icon',
+  label,
   iconColor = '0x888888',
   buttonClassName,
   iconSet,
 }: IconPickerProps) {
+  const t = useTranslations('iconPicker');
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -60,7 +62,7 @@ export default function IconPicker({
     <>
       <div className="flex flex-col items-center justify-center">
         <label className="block text-xs font-medium text-gray-500 mb-1">
-          {label}
+          {label ?? t('label')}
         </label>
         <button
           type="button"
@@ -99,10 +101,10 @@ export default function IconPicker({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-gray-200 bg-gray-50 shrink-0">
-              <h3 className="text-lg font-semibold text-gray-800">Choose icon</h3>
+              <h3 className="text-lg font-semibold text-gray-800">{t('title')}</h3>
               <input
                 type="text"
-                placeholder="Search icons..."
+                placeholder={t('search')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="mt-2 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -117,7 +119,7 @@ export default function IconPicker({
                 );
                 const categories = Array.from(new Set(filtered.map((i) => i.category)));
                 if (filtered.length === 0) {
-                  return <p className="text-sm text-gray-400 text-center py-8">No icons match &ldquo;{search}&rdquo;</p>;
+                  return <p className="text-sm text-gray-400 text-center py-8">{t('noResults', { search })}</p>;
                 }
                 return categories.map((cat) => (
                   <div key={cat} className="mb-4">
@@ -159,7 +161,7 @@ export default function IconPicker({
                 }}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-md transition-colors"
               >
-                Cancel
+                {t('cancel')}
               </button>
             </div>
           </div>

@@ -1,6 +1,10 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function PageFooter() {
+  const t = useTranslations('pageFooter');
   return (
     <footer className="mt-12 border-t border-gray-200 pt-6 pb-8">
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-600">
@@ -8,14 +12,14 @@ export default function PageFooter() {
           href="/"
           className="hover:text-gray-900 transition-colors"
         >
-          Home
+          {t('home')}
         </Link>
         <span className="hidden sm:inline text-gray-300">|</span>
         <Link
           href="/config-generator"
           className="hover:text-gray-900 transition-colors"
         >
-          Config Generator
+          {t('configGenerator')}
         </Link>
         <span className="hidden sm:inline text-gray-300">|</span>
         <a
@@ -39,7 +43,7 @@ export default function PageFooter() {
               fill="currentColor"
             />
           </svg>
-          <span>GitHub</span>
+          <span>{t('github')}</span>
         </a>
         <span className="hidden sm:inline text-gray-300">|</span>
         <a
@@ -48,7 +52,7 @@ export default function PageFooter() {
           rel="noopener noreferrer"
           className="hover:text-gray-900 transition-colors"
         >
-          Looking for software development?
+          {t('softwareDev')}
         </a>
         <span className="hidden sm:inline text-gray-300">|</span>
         <a
@@ -57,14 +61,14 @@ export default function PageFooter() {
           rel="noopener noreferrer"
           className="hover:text-gray-900 transition-colors"
         >
-          Looking for a smart home expert?
+          {t('smartHome')}
         </a>
         <span className="hidden sm:inline text-gray-300">|</span>
         <Link
           href="/privacy-policy"
           className="hover:text-gray-900 transition-colors"
         >
-          Privacy Policy
+          {t('privacyPolicy')}
         </Link>
       </div>
     </footer>

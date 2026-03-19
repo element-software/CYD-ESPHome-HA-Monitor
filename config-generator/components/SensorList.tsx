@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ConfigData, SensorConfig } from '@/types/config';
 import SensorConfigPanel from './SensorConfigPanel';
 
@@ -10,6 +11,7 @@ interface SensorListProps {
 }
 
 export default function SensorList({ config, onChange }: SensorListProps) {
+  const t = useTranslations('sensorList');
   const rows = config.hideClock ? 4 : 3;
   const visibleSensors = config.sensors.slice(0, rows * 2);
 
@@ -34,7 +36,7 @@ export default function SensorList({ config, onChange }: SensorListProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <h2 className="text-lg font-semibold mb-3 text-gray-800">
-        Sensor Configuration
+        {t('title')}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {visibleSensors.map((sensor, index) => {

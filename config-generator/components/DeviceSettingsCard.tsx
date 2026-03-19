@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ConfigData } from '@/types/config';
 import { getEffectivePins } from '@/lib/devicePresets';
 import DeviceGpioModal from './DeviceGpioModal';
@@ -20,33 +21,30 @@ function ChevronRight() {
 }
 
 export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsCardProps) {
+  const t = useTranslations('deviceSettings');
   const [gpioModalOpen, setGpioModalOpen] = useState(false);
   const [displayModalOpen, setDisplayModalOpen] = useState(false);
 
   const pins = getEffectivePins(config);
-  const variantLabel = config.deviceVariant === 'i2c_touch'
-    ? 'I2C touch'
-    : config.deviceVariant === 'custom'
-      ? 'Custom'
-      : 'SPI touch';
+  const variant = config.deviceVariant ?? 'spi_touch';
+  const variantLabel = t(`variants.${variant}`);
 
-  const iconSetLabel = (config.iconSet ?? 'material_design_icons') === 'material_symbols'
-    ? 'Material Symbols'
-    : 'Material Design Icons';
+  const iconSetKey = (config.iconSet ?? 'material_design_icons') as 'material_symbols' | 'material_design_icons';
+  const iconSetLabel = t(`iconSets.${iconSetKey}`);
 
   const displaySummary = [
-    config.hideClock ? 'No clock' : 'With clock',
-    `Radius ${config.buttonRadius ?? 0}`,
+    config.hideClock ? t('clockWithout') : t('clockWith'),
+    t('radius', { value: config.buttonRadius ?? 0 }),
     iconSetLabel,
   ].join(' · ');
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Device Settings</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t('title')}</h2>
       <div className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Device Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('deviceName')}</label>
             <input
               type="text"
               value={config.deviceName}
@@ -56,7 +54,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Friendly Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('friendlyName')}</label>
             <input
               type="text"
               value={config.friendlyName}
@@ -74,7 +72,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left flex items-center justify-between gap-2 transition-colors"
           >
             <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-700">GPIO Config</p>
+              <p className="text-sm font-medium text-gray-700">{t('gpioConfig')}</p>
               <p className="text-xs text-gray-500 truncate">{variantLabel} · {pins.backlightPin} backlight</p>
             </div>
             <ChevronRight />
@@ -86,7 +84,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left flex items-center justify-between gap-2 transition-colors"
           >
             <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-700">Display Settings</p>
+              <p className="text-sm font-medium text-gray-700">{t('displaySettings')}</p>
               <p className="text-xs text-gray-500 truncate">{displaySummary}</p>
             </div>
             <ChevronRight />

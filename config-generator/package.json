@@ -16,6 +16,7 @@
   "dependencies": {
     "@material-design-icons/font": "^0.14.15",
     "next": "^16",
+    "next-intl": "^4.8.3",
     "react": "^19",
     "react-dom": "^19"
   },

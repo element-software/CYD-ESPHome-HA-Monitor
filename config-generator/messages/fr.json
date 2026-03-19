@@ -1,0 +1,411 @@
+{
+  "common": {
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "done": "Terminé",
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
+  },
+  "copyButton": {
+    "copy": "Copier",
+    "copied": "Copié !"
+  },
+  "nav": {
+    "home": "Accueil",
+    "aboutCyd": "À propos du CYD",
+    "configGenerator": "Générateur de configuration",
+    "buyNow": "ACHETER",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "starOnGithub": "Étoiler sur GitHub",
+    "githubStars": "Étoiles GitHub"
+  },
+  "footer": {
+    "tagline": "Outils de config CYD & infos · ESPHome / Home Assistant",
+    "affiliateNotice": "ACHETER est un lien d'affiliation.",
+    "poweredBy": "Propulsé par",
+    "links": {
+      "home": "Accueil",
+      "aboutCyd": "À propos du CYD",
+      "configGenerator": "Générateur de configuration",
+      "buyNow": "Acheter (Amazon)",
+      "github": "GitHub",
+      "privacyPolicy": "Politique de confidentialité",
+      "softwareDev": "Développement logiciel",
+      "smartHome": "Expert maison intelligente"
+    }
+  },
+  "pageFooter": {
+    "home": "Accueil",
+    "configGenerator": "Générateur de configuration",
+    "github": "GitHub",
+    "softwareDev": "Vous cherchez un développeur logiciel ?",
+    "smartHome": "Vous cherchez un expert maison intelligente ?",
+    "privacyPolicy": "Politique de confidentialité"
+  },
+  "home": {
+    "heroLabel": "Hero",
+    "title": "Cheap Yellow Display (CYD)",
+    "subtitle": "Outils de configuration et informations pour l'ESP32-2432S028",
+    "whatIsCyd": {
+      "title": "Qu'est-ce qu'un CYD ?",
+      "p1": "Le <strong>Cheap Yellow Display</strong> (CYD) est le nom populaire du <strong>ESP32-2432S028</strong> — une carte de développement tout-en-un qui combine un microcontrôleur ESP32 avec un écran tactile TFT couleur 2,8\u2033 (240\u00d7320), un tactile résistif (XPT2046 ou CST816 sur certaines variantes), et des extras utiles comme une LED RGB intégrée, un slot microSD et un LDR. C'est devenu un favori dans la communauté maker et maison intelligente pour créer des tableaux de bord compacts, des affichages d'état et des panneaux de contrôle sans câblage d'écran séparé.",
+      "p2": "Comme l'écran et l'ESP32 sont sur une seule carte, vous pouvez créer un appareil GUI complet (par ex. un moniteur Home Assistant) en flashant le firmware et en vous connectant au Wi\u2011Fi — sans soudure ni câblage complexe."
+    },
+    "purpose": {
+      "title": "Objectif de ce site",
+      "p1": "Ce site existe pour vous aider à tirer le meilleur de votre CYD avec <strong>ESPHome</strong> et (optionnellement) <strong>Home Assistant</strong>. Plutôt que d'éditer le YAML manuellement, vous pouvez utiliser les outils ici pour générer et personnaliser visuellement les configurations, puis copier le résultat dans ESPHome et flasher votre appareil.",
+      "p2": "Le projet prend en charge un <strong>moniteur Home Assistant</strong> (tableau de bord de capteurs avec horloge), adapté à l'écran du CYD et à sa configuration GPIO."
+    },
+    "atAGlance": {
+      "title": "CYD en un coup d'œil",
+      "board": "<strong>Carte :</strong> ESP32-WROOM-32, TFT ILI9341 2,8\u2033 (240\u00d7320), tactile SPI",
+      "displayPins": "<strong>Broches d'affichage :</strong> TFT sur HSPI (ex. CLK 14, MOSI 13, MISO 12, CS 15, DC 2) ; rétroéclairage souvent GPIO 21 (ou 27 sur les variantes tactiles I2C)",
+      "rgbLed": "<strong>LED RGB intégrée :</strong> Rouge GPIO 4, Vert GPIO 16, Bleu GPIO 17 (active basse)",
+      "typicalUse": "<strong>Utilisation typique :</strong> ESPHome + LVGL pour tableaux de bord, horloges, tuiles de capteurs et UIs personnalisées",
+      "note": "Les assignations de broches peuvent varier légèrement selon le fabricant et la révision ; le générateur de configuration propose des préréglages pour les variantes courantes (tactile SPI / tactile I2C) et des broches personnalisées optionnelles."
+    },
+    "configGeneratorCta": {
+      "title": "Générateur de configuration",
+      "description": "Le <strong>Générateur de configuration</strong> est une application web qui vous permet de créer votre configuration CYD sans toucher au YAML. Vous choisissez vos capteurs, configurez les options de l'appareil et GPIO, et obtenez un fichier YAML ESPHome complet à coller dans ESPHome. Il réduit les erreurs, maintient les assignations de broches et les substitutions cohérentes, et vous donne un aperçu en direct de la mise en page. Copiez le YAML généré en un clic pour le flashage via ESPHome.",
+      "button": "Ouvrir le générateur de configuration"
+    }
+  },
+  "pageHeader": {
+    "title": "Générateur de configuration CYD HAMon",
+    "subtitle": "Configurez votre moniteur Home Assistant Cheap Yellow Display"
+  },
+  "configGeneratorPage": {
+    "generateYaml": "Générer le YAML"
+  },
+  "deviceSettings": {
+    "title": "Paramètres de l'appareil",
+    "deviceName": "Nom de l'appareil",
+    "friendlyName": "Nom convivial",
+    "gpioConfig": "Config GPIO",
+    "displaySettings": "Paramètres d'affichage",
+    "clockWith": "Avec horloge",
+    "clockWithout": "Sans horloge",
+    "radius": "Rayon {value}",
+    "variants": {
+      "spi_touch": "Tactile SPI",
+      "i2c_touch": "Tactile I2C",
+      "custom": "Personnalisé"
+    },
+    "iconSets": {
+      "material_symbols": "Material Symbols",
+      "material_design_icons": "Material Design Icons"
+    }
+  },
+  "gpioModal": {
+    "title": "Configuration GPIO de l'appareil",
+    "subtitle": "Choisissez une variante de carte ou définissez les broches manuellement.",
+    "variant": "Variante",
+    "displayBacklight": "Affichage & rétroéclairage",
+    "touchSpi": "Tactile (SPI \u2013 XPT2046)",
+    "touchI2c": "Tactile (I2C \u2013 CST816)",
+    "pins": {
+      "backlightPwm": "PWM rétroéclairage",
+      "tftClk": "TFT CLK",
+      "tftMosi": "TFT MOSI",
+      "tftMiso": "TFT MISO",
+      "tftCs": "TFT CS",
+      "tftDc": "TFT DC",
+      "touchClk": "Touch CLK",
+      "touchMosi": "Touch MOSI",
+      "touchMiso": "Touch MISO",
+      "touchCs": "Touch CS",
+      "i2cSda": "I2C SDA",
+      "i2cScl": "I2C SCL",
+      "touchReset": "Réinitialisation tactile"
+    },
+    "variantDescriptions": {
+      "spi_touch": "CYD standard, rétroéclairage GPIO21",
+      "i2c_touch": "CYD avec tactile I2C, rétroéclairage GPIO27",
+      "custom": "Définir chaque broche manuellement (pré-rempli depuis la variante actuelle)"
+    }
+  },
+  "displayModal": {
+    "title": "Paramètres d'affichage",
+    "subtitle": "Options visuelles et de mise en page pour l'affichage de l'appareil.",
+    "hideClock": {
+      "label": "Masquer l'horloge",
+      "description": "Ajoute une ligne supplémentaire pour une grille de capteurs 4\u00d72."
+    },
+    "buttonRadius": {
+      "label": "Rayon des coins des boutons",
+      "help": "0 = coins carrés, 34 = entièrement arrondi."
+    },
+    "iconSet": {
+      "label": "Jeu d'icônes",
+      "description": "Icônes utilisées dans l'aperçu et le YAML généré.",
+      "materialDesign": {
+        "label": "Material Design Icons",
+        "description": "Jeu d'icônes classique (communauté)"
+      },
+      "materialSymbols": {
+        "label": "Material Symbols",
+        "description": "Icônes Google Fonts (fonts.google.com/icons)"
+      }
+    }
+  },
+  "sensorList": {
+    "title": "Configuration des capteurs"
+  },
+  "sensorPanel": {
+    "row": "Ligne",
+    "col": "Col",
+    "types": {
+      "sensor": "Capteur (Numérique)",
+      "binary": "Capteur binaire",
+      "light": "Lumière",
+      "switch": "Interrupteur"
+    },
+    "typeLabel": "Type",
+    "labelField": "Libellé",
+    "entityId": "ID d'entité",
+    "accuracy": "Précision",
+    "accuracyWhole": "Nombre entier",
+    "accuracyOne": "1 décimale",
+    "accuracyTwo": "2 décimales",
+    "unit": "Unité",
+    "unitCustom": "Personnalisé",
+    "thresholds": "Seuils & couleurs",
+    "highestFirst": "Valeur la plus haute en premier",
+    "addThreshold": "Ajouter",
+    "threshold": "Seuil {n}",
+    "highest": "(le plus haut)",
+    "lowest": "(le plus bas)",
+    "thresholdColor": "Couleur du seuil",
+    "stateOn": "ON",
+    "stateOff": "OFF",
+    "colorOn": "Couleur état ON",
+    "colorOff": "Couleur état OFF",
+    "labelPlaceholder": "Énergie",
+    "entityPlaceholder": "sensor.exemple",
+    "customFormatPlaceholder": "%.1f\u00b0C",
+    "thresholdValuePlaceholder": "1000",
+    "onPlaceholderBinary": "Ouvert",
+    "offPlaceholderBinary": "Fermé",
+    "onPlaceholderLight": "Allumé",
+    "offPlaceholderLight": "Éteint"
+  },
+  "yamlModal": {
+    "title": "YAML généré"
+  },
+  "iconPicker": {
+    "label": "Icône",
+    "title": "Choisir une icône",
+    "search": "Rechercher des icônes...",
+    "noResults": "Aucune icône ne correspond à \"{search}\"",
+    "cancel": "Annuler"
+  },
+  "cookieConsent": {
+    "title": "\ud83c\udf6a Préférences de cookies",
+    "message": "Nous utilisons des cookies d'analyse pour comprendre comment le site est utilisé et améliorer votre expérience. Aucune information personnelle n'est collectée.",
+    "privacyPolicy": "Politique de confidentialité",
+    "accept": "Accepter les cookies",
+    "decline": "Refuser"
+  },
+  "aboutCyd": {
+    "backToHome": "\u2190 Retour à l'accueil",
+    "title": "À propos du CYD (Cheap Yellow Display)",
+    "subtitle": "Un guide complet sur la famille CYD \u2014 variantes, matériel, brochage, pile logicielle et références.",
+    "whatIsCyd": {
+      "title": "Qu'est-ce qu'un CYD ?",
+      "p1": "Le <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) est le nom populaire dans la communauté pour les cartes basées sur ESP32 qui combinent un microcontrôleur avec un écran tactile TFT couleur en une seule unité. Le modèle le plus connu est l'<strong>ESP32-2432S028</strong> (écran 2,8\u2033, 240\u00d7320), mais <strong>plusieurs variantes existent</strong> \u2014 différentes tailles d'écran, technologies tactiles et connecteurs. Ils partagent le même avantage : créer des tableaux de bord, des affichages d'état et des panneaux de contrôle sans câblage d'écran séparé.",
+      "p2": "Comme l'écran et l'ESP32 sont sur une seule carte, vous pouvez créer un appareil GUI complet (par ex. un moniteur Home Assistant) en flashant le firmware et en vous connectant au Wi\u2011Fi \u2014 sans soudure. Vous pouvez <cydLink>acheter un CYD sur Amazon</cydLink> et être opérationnel le jour même."
+    },
+    "variations": {
+      "title": "Variantes du CYD",
+      "intro": "Toutes les cartes \u201estyle CYD\u201d ne sont pas identiques. Lors de l'achat ou de la configuration d'un <cydLink>CYD</cydLink>, vérifiez ces aspects \u2014 ils affectent la compatibilité avec les boîtiers, les câbles et le firmware (y compris le générateur de configuration de ce site).",
+      "screenSize": {
+        "title": "Taille d'écran et résolution",
+        "intro": "Les cartes sont vendues en différentes tailles physiques et résolutions. Les numéros de modèle encodent souvent la taille (ex. <strong>S028</strong> \u2248 2,8\u2033, <strong>S035</strong> \u2248 3,5\u2033). Variantes courantes :",
+        "size24": "<strong>2,4\u2033</strong> \u2014 Plus petit, souvent 240\u00d7320 ; certains utilisent ILI9341 ou ST7789.",
+        "size28": "<strong>2,8\u2033 (ex. ESP32-2432S028)</strong> \u2014 Le \u201eCYD\u201d le plus courant : 240\u00d7320, généralement ILI9341. Le générateur de configuration et HAMon de ce projet sont conçus pour cette taille et résolution.",
+        "size32": "<strong>3,2\u2033 / 3,5\u2033</strong> \u2014 Panneaux plus grands (ex. 320\u00d7480) ; peuvent utiliser ILI9486, ILI9488 ou d'autres pilotes. Les brochages et la configuration ESPHome diffèrent des cartes 2,8\u2033.",
+        "note": "Si vous avez une taille ou résolution différente, vous devrez peut-être ajuster les dimensions d'affichage et le pilote dans ESPHome ; le brochage et le type tactile comptent toujours (voir ci-dessous)."
+      },
+      "touchType": {
+        "title": "Type d'écran tactile",
+        "intro": "Le tactile est soit <strong>résistif</strong> (SPI) soit <strong>capacitif</strong> (I2C). Le pilote et les GPIOs sont différents, donc le firmware doit correspondre à votre carte :",
+        "xpt2046": "<strong>XPT2046</strong> \u2014 Tactile résistif via SPI. Partage le bus SPI de l'affichage avec un chip-select séparé (ex. GPIO 33). Le rétroéclairage est souvent sur <strong>GPIO 21</strong>. C'est le préréglage \u201etactile SPI\u201d dans notre générateur.",
+        "cst816": "<strong>CST816</strong> \u2014 Tactile capacitif via I2C (ex. SDA 33, SCL 32). Les cartes plus récentes utilisent souvent cela. Le rétroéclairage est souvent sur <strong>GPIO 27</strong>. C'est le préréglage \u201etactile I2C\u201d dans notre générateur.",
+        "other": "Certaines cartes utilisent d'autres contrôleurs (ex. GT911). Vous aurez besoin du composant tactile ESPHome correct et du brochage pour votre module spécifique.",
+        "note": "Si le tactile ou le rétroéclairage se comporte bizarrement, confirmez si vous avez la variante SPI (XPT2046) ou I2C (CST816) et sélectionnez le préréglage correspondant ou les broches personnalisées."
+      },
+      "displayController": {
+        "title": "Contrôleur d'affichage",
+        "p": "La plupart des cartes CYD 2,8\u2033 utilisent le contrôleur TFT <strong>ILI9341</strong>. D'autres tailles peuvent utiliser <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> ou similaires. Dans ESPHome, vous choisissez la plateforme d'affichage correspondante (ex. <code>ili9xxx</code> avec <code>model: ili9341</code>). Notre générateur suppose ILI9341 pour la mise en page 2,8\u2033 240\u00d7320."
+      },
+      "usbConnector": {
+        "title": "Connecteur USB",
+        "p": "Les cartes sont vendues avec <strong>Micro-USB</strong> ou <strong>USB-C</strong>. L'USB-C est préféré pour les nouveaux achats : câblage plus facile et de nombreux boîtiers imprimés en 3D (ex. le boîtier Aura Smart Display) sont conçus pour le port USB-C. Des adaptateurs (ex. USB-C 90°) aident pour le routage des câbles. Notre <cydLink>lien Amazon</cydLink> pointe vers la version USB-C."
+      },
+      "whatSiteTargets": {
+        "title": "Ce que ce site cible",
+        "p": "Le <strong>Générateur de configuration</strong> et le firmware <strong>HAMon</strong> sur ce site ciblent les cartes <strong>2,8\u2033 240\u00d7320 ILI9341</strong> avec soit <strong>XPT2046 (tactile SPI)</strong> soit <strong>CST816 (tactile I2C)</strong>. Si vous avez une taille ou un pilote d'affichage différent, vous pouvez toujours utiliser le générateur comme point de départ et ajuster le YAML généré (modèle d'affichage, dimensions, composant tactile et broches) pour correspondre à votre matériel."
+      }
+    },
+    "hardware": {
+      "title": "Vue d'ensemble du matériel",
+      "intro": "Le <cydLink>CYD</cydLink> intègre plusieurs composants sur un seul circuit imprimé. Le diagramme ci-dessous montre comment les principaux blocs se connectent.",
+      "diagramLabel": "Diagramme de blocs matériels CYD",
+      "diagramCaption": "L'ESP32 pilote l'affichage via SPI (HSPI) et lit le tactile via SPI (XPT2046) ou I2C (CST816 selon la variante). LED RGB, microSD et LDR sont des périphériques optionnels."
+    },
+    "components": {
+      "title": "Détail des composants",
+      "colComponent": "Composant",
+      "colDetails": "Détails",
+      "board": {
+        "name": "Carte",
+        "details": "ESP32-2432S028 (<cydLink>CYD</cydLink>). Choisissez la version <strong>USB-C</strong> pour les câbles modernes et la compatibilité des boîtiers."
+      },
+      "mcu": {
+        "name": "MCU",
+        "details": "ESP32-WROOM-32 (double cœur 240 MHz, WiFi 802.11 b/g/n, Bluetooth 4.2)."
+      },
+      "display": {
+        "name": "Affichage",
+        "details": "ILI9341 TFT 2,8\u2033, 240\u00d7320 RGB, couleur 18 bits, SPI (HSPI). Rétroéclairage généralement GPIO 21 ou 27."
+      },
+      "touch": {
+        "name": "Tactile",
+        "details": "XPT2046 (résistif, SPI) sur la plupart des cartes ; certaines variantes utilisent CST816 (capacitif, I2C). Vérifiez l'étiquette de votre carte."
+      },
+      "rgbLed": {
+        "name": "LED RGB",
+        "details": "Rouge GPIO 4, Vert GPIO 16, Bleu GPIO 17 (active basse). Peut afficher l'état d'un coup d'œil."
+      },
+      "microsd": {
+        "name": "microSD",
+        "details": "Slot optionnel pour la journalisation ou les ressources (ex. polices)."
+      },
+      "ldr": {
+        "name": "LDR",
+        "details": "Résistance photo-dépendante pour l'atténuation automatique du rétroéclairage par logiciel."
+      }
+    },
+    "pinout": {
+      "title": "Référence de brochage",
+      "intro": "Les assignations de broches peuvent varier légèrement selon le fabricant et la révision. Le générateur de configuration sur ce site propose des préréglages pour les variantes courantes (tactile SPI / tactile I2C). Valeurs typiques :",
+      "colFunction": "Fonction",
+      "colGpio": "GPIO",
+      "colNotes": "Notes",
+      "rows": {
+        "tftClkNotes": "HSPI SCK",
+        "tftMosiNotes": "HSPI MOSI",
+        "tftMisoNotes": "HSPI MISO (optionnel)",
+        "tftCsNotes": "Sélection de chip",
+        "tftDcNotes": "Données/commande",
+        "backlightNotes": "Ou 27 sur certaines cartes tactiles I2C",
+        "touchXptNotes": "Partage HSPI ; CS séparé (ex. 33)",
+        "touchCstNotes": "Variante tactile I2C",
+        "rgbLedNotes": "Active basse"
+      }
+    },
+    "software": {
+      "title": "Pile logicielle",
+      "intro": "Avec <strong>ESPHome</strong> et <strong>LVGL</strong>, le <cydLink>CYD</cydLink> peut exécuter une interface riche (horloges, tuiles de capteurs, tableaux de bord) et communiquer avec Home Assistant via l'API native. Flux de données :",
+      "diagramLabel": "Pile logicielle et flux de données"
+    },
+    "useCases": {
+      "title": "Cas d'utilisation typiques",
+      "monitor": "<strong>Moniteur Home Assistant</strong> \u2014 Horloge, date et 6 à 8 tuiles d'entités (portes, mouvement, énergie, température) avec statut codé par couleur. Le générateur de configuration de ce site cible cette mise en page.",
+      "controlPanel": "<strong>Panneau de contrôle maison intelligente</strong> \u2014 Boutons et interrupteurs pour contrôler les lumières, les scènes et les automatisations via HA.",
+      "weather": "<strong>Tableau de bord météo / info</strong> \u2014 Prévisions, calendrier ou flux RSS affiché sur le <cydLink>CYD</cydLink>.",
+      "prototyping": "<strong>Prototypage</strong> \u2014 Démos LVGL, UIs personnalisées ou apprentissage de l'ESP32 + affichage sans câblage séparé."
+    },
+    "references": {
+      "title": "Liens de référence",
+      "intro": "Documentation officielle, projets communautaires et où <cydLink>acheter le CYD</cydLink>.",
+      "amazon": "Acheter CYD sur Amazon (affiliation)",
+      "amazonDesc": "\u2014 Carte CYD ILI9341 2,8\u2033 (USB-C). Lien d'affiliation ; soutient ce projet.",
+      "esphome": "ESPHome",
+      "esphomeDesc": "\u2014 Firmware et configuration basée sur YAML pour appareils ESP.",
+      "esphomeDisplay": "Affichage ESPHome ILI9341",
+      "esphomeDisplayDesc": "\u2014 Documentation officielle du composant d'affichage.",
+      "homeAssistant": "Home Assistant",
+      "homeAssistantDesc": "\u2014 Automatisation domotique open-source ; les entités alimentent le tableau de bord CYD.",
+      "github": "CYD-ESPHome-HA-Monitor (GitHub)",
+      "githubDesc": "\u2014 Ce projet : configuration HAMon et générateur YAML.",
+      "community": "CYD Smart Dashboard (drrcastro)",
+      "communityDesc": "\u2014 Inspiration communautaire pour les tableaux de bord CYD + HA.",
+      "esp32": "ESP32 (Espressif)",
+      "esp32Desc": "\u2014 Référence MCU d'Espressif.",
+      "ili9341": "Fiche technique ILI9341",
+      "ili9341Desc": "\u2014 Référence contrôleur TFT (PDF externe)."
+    },
+    "cta": {
+      "title": "Prêt à configurer votre CYD ?",
+      "description": "Utilisez le <strong>Générateur de configuration</strong> pour créer votre YAML ESPHome visuellement \u2014 pas besoin d'éditer le YAML manuellement. Choisissez les capteurs, les préréglages GPIO et copiez le résultat dans ESPHome.",
+      "openGenerator": "Ouvrir le générateur de configuration",
+      "buyCyd": "Acheter CYD sur Amazon"
+    }
+  },
+  "privacyPolicy": {
+    "backToConfigGenerator": "\u2190 Retour au générateur de configuration",
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour : février 2026",
+    "intro": {
+      "title": "1. Introduction",
+      "p1": "Cette politique de confidentialité explique comment le <strong>Générateur de configuration CYD HAMon</strong> (\u201cnous\u201d, \u201cnotre\u201d ou \u201cle site\u201d), exploité par Element Software, collecte, utilise et protège les informations lorsque vous visitez <strong>cheapyellowdisplay.co.uk</strong>.",
+      "p2": "Nous nous engageons à protéger votre vie privée et à traiter toutes les informations que nous détenons sur vous conformément au Règlement général sur la protection des données du Royaume-Uni (UK RGPD) et au Data Protection Act 2018."
+    },
+    "infoCollect": {
+      "title": "2. Informations collectées",
+      "intro": "Ce site collecte des informations dans deux cas :",
+      "analytics": "<strong>Données analytiques (avec votre consentement) :</strong> Nous utilisons Google Analytics pour collecter des données d'utilisation anonymisées telles que les pages visitées, le temps sur le site, le type de navigateur et la région géographique approximative. Ces données ne vous identifient pas personnellement.",
+      "personal": "<strong>Informations personnelles que vous fournissez :</strong> Si vous soumettez un formulaire de contact ou fournissez autrement des informations personnelles (comme votre nom ou adresse e-mail), ces informations sont collectées uniquement pour répondre à votre demande.",
+      "noConsent": "Si vous refusez les cookies analytiques, aucune donnée de suivi n'est collectée ou transmise."
+    },
+    "howWeUse": {
+      "title": "3. Utilisation de vos informations",
+      "analytics": "<strong>Les données analytiques</strong> sont utilisées uniquement pour comprendre comment le site est utilisé et améliorer l'expérience utilisateur. Elles ne sont jamais utilisées pour la publicité, le profilage ou vendues à des tiers.",
+      "contact": "<strong>Les informations de contact</strong> sont utilisées uniquement pour répondre à votre demande et ne sont pas partagées avec des tiers ni utilisées à des fins marketing sans votre consentement explicite."
+    },
+    "legalBasis": {
+      "title": "4. Base juridique du traitement",
+      "intro": "En vertu du UK RGPD, nous nous appuyons sur les bases juridiques suivantes pour le traitement des données personnelles :",
+      "consent": "<strong>Consentement</strong> \u2014 pour les cookies analytiques. Vous pouvez retirer votre consentement à tout moment en effaçant le stockage local de votre navigateur ou en refusant les cookies lors de votre prochaine visite.",
+      "legitimate": "<strong>Intérêts légitimes</strong> \u2014 pour les demandes de contact, dans la mesure nécessaire pour répondre à votre message."
+    },
+    "cookies": {
+      "title": "5. Cookies",
+      "p1": "Ce site utilise une seule préférence de cookie de première partie stockée dans le stockage local de votre navigateur (<code>cookie_consent</code>) pour mémoriser votre préférence analytique.",
+      "p2": "Si vous acceptez les cookies analytiques, Google Analytics définit ses propres cookies (ex. <code>_ga</code>, <code>_ga_*</code>) pour distinguer les utilisateurs et les sessions. Ces cookies sont régis par la <googlePrivacy>politique de confidentialité de Google</googlePrivacy>.",
+      "p3": "Vous pouvez retirer votre consentement analytique à tout moment en effaçant le stockage local de votre navigateur pour ce site, ce qui fera réapparaître la bannière de consentement lors de votre prochaine visite."
+    },
+    "dataSharing": {
+      "title": "6. Partage des données",
+      "p": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Les données analytiques sont traitées par Google LLC dans le cadre d'un accord de traitement des données. Google peut transférer des données hors du Royaume-Uni ; pour plus d'informations, consultez la <googlePrivacy>politique de confidentialité de Google</googlePrivacy>."
+    },
+    "dataRetention": {
+      "title": "7. Conservation des données",
+      "p": "Les données Google Analytics sont conservées par défaut pendant 14 mois, après quoi elles sont automatiquement supprimées. Les informations personnelles fournies via un formulaire de contact sont conservées uniquement le temps nécessaire pour traiter votre demande, puis supprimées de manière sécurisée."
+    },
+    "yourRights": {
+      "title": "8. Vos droits",
+      "intro": "En vertu du UK RGPD, vous avez le droit de :",
+      "access": "Accéder aux données personnelles que nous détenons sur vous",
+      "correction": "Demander la correction de données personnelles inexactes",
+      "erasure": "Demander l'effacement de vos données personnelles",
+      "restriction": "Vous opposer au traitement de vos données personnelles ou en demander la limitation",
+      "withdraw": "Retirer votre consentement à tout moment (lorsque le traitement est basé sur le consentement)",
+      "complain": "Déposer une plainte auprès de l'Information Commissioner's Office (ICO) à <ico>ico.org.uk</ico>"
+    },
+    "thirdParty": {
+      "title": "9. Liens vers des tiers",
+      "p": "Ce site contient des liens vers des sites externes (ex. GitHub, element-software.co.uk). Nous ne sommes pas responsables des pratiques de confidentialité de ces sites et vous encourageons à consulter leurs politiques de confidentialité."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "p": "Si vous avez des questions sur cette politique de confidentialité ou souhaitez exercer vos droits en matière de données, veuillez nous contacter à <email>info@cheapyellowdisplay.co.uk</email>."
+    },
+    "changes": {
+      "title": "11. Modifications de cette politique",
+      "p": "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps. Toute modification sera publiée sur cette page avec une date de révision mise à jour. Nous vous encourageons à consulter cette politique périodiquement."
+    }
+  }
+}
