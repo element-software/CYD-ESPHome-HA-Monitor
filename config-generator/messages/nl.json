@@ -1,0 +1,411 @@
+{
+  "common": {
+    "close": "Sluiten",
+    "cancel": "Annuleren",
+    "save": "Opslaan",
+    "done": "Klaar",
+    "opensInNewTab": "(opent in nieuw tabblad)"
+  },
+  "copyButton": {
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd!"
+  },
+  "nav": {
+    "home": "Home",
+    "aboutCyd": "Over CYD",
+    "configGenerator": "Configuratiegenerator",
+    "buyNow": "NU KOPEN",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten",
+    "starOnGithub": "Ster geven op GitHub",
+    "githubStars": "GitHub-sterren"
+  },
+  "footer": {
+    "tagline": "CYD-configuratietools & informatie · ESPHome / Home Assistant",
+    "affiliateNotice": "NU KOPEN is een affiliate-link.",
+    "poweredBy": "Mogelijk gemaakt door",
+    "links": {
+      "home": "Home",
+      "aboutCyd": "Over CYD",
+      "configGenerator": "Configuratiegenerator",
+      "buyNow": "Nu kopen (Amazon)",
+      "github": "GitHub",
+      "privacyPolicy": "Privacybeleid",
+      "softwareDev": "Softwareontwikkeling",
+      "smartHome": "Smart home-expert"
+    }
+  },
+  "pageFooter": {
+    "home": "Home",
+    "configGenerator": "Configuratiegenerator",
+    "github": "GitHub",
+    "softwareDev": "Op zoek naar softwareontwikkeling?",
+    "smartHome": "Op zoek naar een smart home-expert?",
+    "privacyPolicy": "Privacybeleid"
+  },
+  "home": {
+    "heroLabel": "Uitgelicht",
+    "title": "Cheap Yellow Display (CYD)",
+    "subtitle": "Configuratietools en informatie voor de ESP32-2432S028",
+    "whatIsCyd": {
+      "title": "Wat is een CYD?",
+      "p1": "Het <strong>Cheap Yellow Display</strong> (CYD) is de populaire naam voor de <strong>ESP32-2432S028</strong> — een alles-in-één ontwikkelbord dat een ESP32-microcontroller combineert met een 2,8″ kleuren-TFT-touchscreen (240×320), resistieve touch (XPT2046 of CST816 op sommige varianten) en handige extra's zoals een ingebouwde RGB-led, microSD-slot en LDR. Het is een favoriet geworden in de maker- en smart home-community voor compacte dashboards, statusdisplays en bedieningspanelen zonder apart scherm.",
+      "p2": "Omdat het display en de ESP32 op één bord zitten, kun je een volledig GUI-apparaat bouwen (bijv. een Home Assistant-monitor) door de firmware te flashen en verbinding te maken met Wi‑Fi — geen solderen of complexe bedrading vereist."
+    },
+    "purpose": {
+      "title": "Doel van deze website",
+      "p1": "Deze site helpt je het maximale uit je CYD te halen bij gebruik van <strong>ESPHome</strong> en (optioneel) <strong>Home Assistant</strong>. In plaats van YAML handmatig te bewerken, kun je de tools hier gebruiken om configuraties visueel te genereren en aan te passen, en het resultaat vervolgens in ESPHome plakken en je apparaat flashen.",
+      "p2": "Het project ondersteunt een <strong>Home Assistant-monitor</strong> (sensorsdashboard met klok), afgestemd op het scherm en GPIO-indeling van de CYD."
+    },
+    "atAGlance": {
+      "title": "CYD in een oogopslag",
+      "board": "<strong>Bord:</strong> ESP32-WROOM-32, 2,8″ ILI9341 TFT (240×320), SPI-touch",
+      "displayPins": "<strong>Displaypinnen:</strong> TFT op HSPI (bijv. CLK 14, MOSI 13, MISO 12, CS 15, DC 2); achtergrondverlichting vaak GPIO 21 (of 27 op I2C-touchvarianten)",
+      "rgbLed": "<strong>Ingebouwde RGB-led:</strong> Rood GPIO 4, Groen GPIO 16, Blauw GPIO 17 (actief laag)",
+      "typicalUse": "<strong>Typisch gebruik:</strong> ESPHome + LVGL voor dashboards, klokken, sensortegels en aangepaste UI's",
+      "note": "Pinouts kunnen iets variëren per fabrikant en revisie; de configuratiegenerator biedt presets voor veelvoorkomende varianten (SPI-touch / I2C-touch) en optionele aangepaste pinnen."
+    },
+    "configGeneratorCta": {
+      "title": "Configuratiegenerator",
+      "description": "De <strong>Configuratiegenerator</strong> is een webapplicatie waarmee je je CYD-configuratie kunt opbouwen zonder YAML aan te raken. Je kiest je sensoren, stelt apparaat- en GPIO-opties in en krijgt een volledig ESPHome YAML-bestand om in je ESPHome-apparaat te plakken. Het vermindert fouten, houdt pinouts en vervangingen consistent en geeft je een live preview van de indeling. Kopieer het gegenereerde YAML met één klik voor het flashen via ESPHome.",
+      "button": "Configuratiegenerator openen"
+    }
+  },
+  "pageHeader": {
+    "title": "CYD HAMon Config Generator",
+    "subtitle": "Configureer je Cheap Yellow Display Home Assistant Monitor"
+  },
+  "configGeneratorPage": {
+    "generateYaml": "YAML genereren"
+  },
+  "deviceSettings": {
+    "title": "Apparaatinstellingen",
+    "deviceName": "Apparaatnaam",
+    "friendlyName": "Weergavenaam",
+    "gpioConfig": "GPIO-configuratie",
+    "displaySettings": "Displayinstellingen",
+    "clockWith": "Met klok",
+    "clockWithout": "Zonder klok",
+    "radius": "Radius {value}",
+    "variants": {
+      "spi_touch": "SPI-touch",
+      "i2c_touch": "I2C-touch",
+      "custom": "Aangepast"
+    },
+    "iconSets": {
+      "material_symbols": "Material Symbols",
+      "material_design_icons": "Material Design Icons"
+    }
+  },
+  "gpioModal": {
+    "title": "GPIO-configuratie apparaat",
+    "subtitle": "Kies een boardvariant of stel pinnen handmatig in.",
+    "variant": "Variant",
+    "displayBacklight": "Display en achtergrondverlichting",
+    "touchSpi": "Touch (SPI – XPT2046)",
+    "touchI2c": "Touch (I2C – CST816)",
+    "pins": {
+      "backlightPwm": "Achtergrondverlichting PWM",
+      "tftClk": "TFT CLK",
+      "tftMosi": "TFT MOSI",
+      "tftMiso": "TFT MISO",
+      "tftCs": "TFT CS",
+      "tftDc": "TFT DC",
+      "touchClk": "Touch CLK",
+      "touchMosi": "Touch MOSI",
+      "touchMiso": "Touch MISO",
+      "touchCs": "Touch CS",
+      "i2cSda": "I2C SDA",
+      "i2cScl": "I2C SCL",
+      "touchReset": "Touch reset"
+    },
+    "variantDescriptions": {
+      "spi_touch": "Standaard CYD, achtergrondverlichting GPIO21",
+      "i2c_touch": "CYD met I2C-touch, achtergrondverlichting GPIO27",
+      "custom": "Stel elke pin handmatig in (vooringevuld vanuit huidige variant)"
+    }
+  },
+  "displayModal": {
+    "title": "Displayinstellingen",
+    "subtitle": "Visuele en indelingsopties voor het apparaatdisplay.",
+    "hideClock": {
+      "label": "Klok verbergen",
+      "description": "Voegt een extra rij toe voor een 4×2-sensorenraster."
+    },
+    "buttonRadius": {
+      "label": "Hoekradius knoppen",
+      "help": "0 = rechte hoeken, 34 = volledig afgerond."
+    },
+    "iconSet": {
+      "label": "Iconenset",
+      "description": "Pictogrammen gebruikt in de preview en gegenereerde YAML.",
+      "materialDesign": {
+        "label": "Material Design Icons",
+        "description": "Klassieke iconenset (community)"
+      },
+      "materialSymbols": {
+        "label": "Material Symbols",
+        "description": "Google Fonts-iconen (fonts.google.com/icons)"
+      }
+    }
+  },
+  "sensorList": {
+    "title": "Sensorconfiguratie"
+  },
+  "sensorPanel": {
+    "row": "Rij",
+    "col": "Kolom",
+    "types": {
+      "sensor": "Sensor (Numeriek)",
+      "binary": "Binaire sensor",
+      "light": "Licht",
+      "switch": "Schakelaar"
+    },
+    "typeLabel": "Type",
+    "labelField": "Label",
+    "entityId": "Entiteits-ID",
+    "accuracy": "Nauwkeurigheid",
+    "accuracyWhole": "Geheel getal",
+    "accuracyOne": "1 decimaal",
+    "accuracyTwo": "2 decimalen",
+    "unit": "Eenheid",
+    "unitCustom": "Aangepast",
+    "thresholds": "Drempelwaarden en kleuren",
+    "highestFirst": "Hoogste waarde eerst",
+    "addThreshold": "Toevoegen",
+    "threshold": "Drempelwaarde {n}",
+    "highest": "(hoogste)",
+    "lowest": "(laagste)",
+    "thresholdColor": "Drempelkleur",
+    "stateOn": "AAN",
+    "stateOff": "UIT",
+    "colorOn": "Kleur staat AAN",
+    "colorOff": "Kleur staat UIT",
+    "labelPlaceholder": "Energie",
+    "entityPlaceholder": "sensor.voorbeeld",
+    "customFormatPlaceholder": "%.1f°C",
+    "thresholdValuePlaceholder": "1000",
+    "onPlaceholderBinary": "Open",
+    "offPlaceholderBinary": "Gesloten",
+    "onPlaceholderLight": "Aan",
+    "offPlaceholderLight": "Uit"
+  },
+  "yamlModal": {
+    "title": "Gegenereerde YAML"
+  },
+  "iconPicker": {
+    "label": "Pictogram",
+    "title": "Pictogram kiezen",
+    "search": "Pictogrammen zoeken...",
+    "noResults": "Geen pictogrammen gevonden voor \"{search}\"",
+    "cancel": "Annuleren"
+  },
+  "cookieConsent": {
+    "title": "🍪 Cookievoorkeuren",
+    "message": "We gebruiken analytische cookies om te begrijpen hoe de site wordt gebruikt en je ervaring te verbeteren. Er worden geen persoonlijke gegevens verzameld.",
+    "privacyPolicy": "Privacybeleid",
+    "accept": "Cookies accepteren",
+    "decline": "Weigeren"
+  },
+  "aboutCyd": {
+    "backToHome": "← Terug naar Home",
+    "title": "Over de CYD (Cheap Yellow Display)",
+    "subtitle": "Een complete gids voor de CYD-familie — varianten, hardware, pinout, softwarestack en verwijzingen.",
+    "whatIsCyd": {
+      "title": "Wat is een CYD?",
+      "p1": "Het <strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) is de populaire communitynaam voor ESP32-gebaseerde boards die een microcontroller combineren met een kleuren-TFT-touchscreen in één eenheid. Het bekendste model is de <strong>ESP32-2432S028</strong> (scherm van 2,8″, 240×320), maar er <strong>bestaan meerdere varianten</strong> — verschillende schermformaten, touchtechnologieën en connectoren. Ze delen dezelfde aantrekkingskracht: dashboards, statusdisplays en bedieningspanelen bouwen zonder apart scherm.",
+      "p2": "Omdat het display en de ESP32 op één bord zitten, kun je een volledig GUI-apparaat bouwen (bijv. een Home Assistant-monitor) door de firmware te flashen en verbinding te maken met Wi‑Fi — geen solderen of complexe bedrading vereist. Je kunt <cydLink>een CYD kopen op Amazon</cydLink> en dezelfde dag aan de slag."
+    },
+    "variations": {
+      "title": "CYD-varianten",
+      "intro": "Niet alle 'CYD-stijl' boards zijn identiek. Bij het kopen of configureren van een <cydLink>CYD</cydLink>, controleer deze aspecten — ze beïnvloeden de compatibiliteit met behuizingen, kabels en firmware (inclusief de configuratiegenerator van deze site).",
+      "screenSize": {
+        "title": "Schermformaat en resolutie",
+        "intro": "Boards worden verkocht in verschillende fysieke formaten en resoluties. Modelnummers coderen vaak het formaat (bijv. <strong>S028</strong> ≈ 2,8″, <strong>S035</strong> ≈ 3,5″). Veelvoorkomende varianten:",
+        "size24": "<strong>2,4″</strong> — Kleiner, vaak 240×320; sommige gebruiken ILI9341 of ST7789.",
+        "size28": "<strong>2,8″ (bijv. ESP32-2432S028)</strong> — De meest voorkomende 'CYD': 240×320, meestal ILI9341. De configuratiegenerator en HAMon van dit project zijn ontworpen voor dit formaat en deze resolutie.",
+        "size32": "<strong>3,2″ / 3,5″</strong> — Grotere panelen (bijv. 320×480); kunnen ILI9486, ILI9488 of andere drivers gebruiken. Pinouts en ESPHome-configuratie wijken af van de 2,8″-boards.",
+        "note": "Als je een ander formaat of resolutie hebt, moet je mogelijk de displayafmetingen en driver in ESPHome aanpassen; pinout en touchtype zijn nog steeds belangrijk (zie hieronder)."
+      },
+      "touchType": {
+        "title": "Touchscreentype",
+        "intro": "Touch is <strong>resistief</strong> (SPI) of <strong>capacitief</strong> (I2C). De driver en GPIO's zijn anders, dus de firmware moet overeenkomen met je board:",
+        "xpt2046": "<strong>XPT2046</strong> — Resistieve touch via SPI. Deelt de SPI-bus van het display met een aparte chip-select (bijv. GPIO 33). Achtergrondverlichting staat vaak op <strong>GPIO 21</strong>. Dit is de 'SPI-touch'-preset in onze configuratiegenerator.",
+        "cst816": "<strong>CST816</strong> — Capacitieve touch via I2C (bijv. SDA 33, SCL 32). Nieuwere/herziene boards gebruiken dit vaak. Achtergrondverlichting staat vaak op <strong>GPIO 27</strong>. Dit is de 'I2C-touch'-preset in onze configuratiegenerator.",
+        "other": "Sommige boards gebruiken andere controllers (bijv. GT911). Je hebt de juiste ESPHome-touchcomponent en pinout nodig voor jouw specifieke module.",
+        "note": "Als touch of achtergrondverlichting vreemd werkt, controleer of je de SPI- (XPT2046) of I2C-variant (CST816) hebt en selecteer de overeenkomende preset of aangepaste pinnen."
+      },
+      "displayController": {
+        "title": "Displaycontroller",
+        "p": "De meeste 2,8″ CYD-boards gebruiken de <strong>ILI9341</strong> TFT-controller. Andere formaten kunnen <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> of vergelijkbaar gebruiken. In ESPHome kies je het bijpassende displayplatform (bijv. <code>ili9xxx</code> met <code>model: ili9341</code>). Onze generator gaat uit van ILI9341 voor de 2,8″ 240×320-indeling."
+      },
+      "usbConnector": {
+        "title": "USB-connector",
+        "p": "Boards worden verkocht met <strong>Micro-USB</strong> of <strong>USB-C</strong>. USB-C verdient de voorkeur voor nieuwe aankopen: eenvoudiger kabelwerk en veel 3D-geprinte behuizingen (bijv. de Aura Smart Display-behuizing) zijn ontworpen voor de USB-C-poort. Adapters (bijv. 90° USB-C) helpen bij kabelgeleiding. Onze <cydLink>Amazon-link</cydLink> verwijst naar de USB-C-versie."
+      },
+      "whatSiteTargets": {
+        "title": "Wat deze site ondersteunt",
+        "p": "De <strong>Configuratiegenerator</strong> en <strong>HAMon</strong>-firmware op deze site zijn gericht op <strong>2,8″ 240×320 ILI9341</strong>-boards met <strong>XPT2046 (SPI-touch)</strong> of <strong>CST816 (I2C-touch)</strong>. Als je een ander formaat of displaydriver hebt, kun je de generator nog steeds als uitgangspunt gebruiken en de gegenereerde YAML (displaymodel, afmetingen, touchcomponent en pinnen) aanpassen aan je hardware."
+      }
+    },
+    "hardware": {
+      "title": "Hardware-overzicht",
+      "intro": "De <cydLink>CYD</cydLink> integreert meerdere componenten op één PCB. Het onderstaande diagram toont hoe de hoofdblokken verbonden zijn.",
+      "diagramLabel": "CYD hardware-blokdiagram",
+      "diagramCaption": "ESP32 bestuurt het display via SPI (HSPI) en leest touch via SPI (XPT2046) of I2C (CST816 afhankelijk van variant). RGB-led, microSD en LDR zijn optionele randapparatuur."
+    },
+    "components": {
+      "title": "Componentenoverzicht",
+      "colComponent": "Component",
+      "colDetails": "Details",
+      "board": {
+        "name": "Board",
+        "details": "ESP32-2432S028 (<cydLink>CYD</cydLink>). Koop de <strong>USB-C</strong>-versie voor moderne kabels en behuizingscompatibiliteit."
+      },
+      "mcu": {
+        "name": "MCU",
+        "details": "ESP32-WROOM-32 (dual-core 240 MHz, WiFi 802.11 b/g/n, Bluetooth 4.2)."
+      },
+      "display": {
+        "name": "Display",
+        "details": "ILI9341 2,8″ TFT, 240×320 RGB, 18-bits kleur, SPI (HSPI). Achtergrondverlichting doorgaans GPIO 21 of 27."
+      },
+      "touch": {
+        "name": "Touch",
+        "details": "XPT2046 (resistief, SPI) op de meeste boards; sommige varianten gebruiken CST816 (capacitief, I2C). Controleer het label van je board."
+      },
+      "rgbLed": {
+        "name": "RGB-led",
+        "details": "Rood GPIO 4, Groen GPIO 16, Blauw GPIO 17 (actief laag). Kan status in één oogopslag tonen."
+      },
+      "microsd": {
+        "name": "microSD",
+        "details": "Optioneel slot voor logging of bestanden (bijv. lettertypen)."
+      },
+      "ldr": {
+        "name": "LDR",
+        "details": "Lichtafhankelijke weerstand voor automatisch dimmen van achtergrondverlichting via software."
+      }
+    },
+    "pinout": {
+      "title": "Pinoutreferentie",
+      "intro": "Pintoewijzingen kunnen iets variëren per fabrikant en revisie. De configuratiegenerator op deze site biedt presets voor veelvoorkomende varianten (SPI-touch / I2C-touch). Typische waarden:",
+      "colFunction": "Functie",
+      "colGpio": "GPIO",
+      "colNotes": "Opmerkingen",
+      "rows": {
+        "tftClkNotes": "HSPI SCK",
+        "tftMosiNotes": "HSPI MOSI",
+        "tftMisoNotes": "HSPI MISO (optioneel)",
+        "tftCsNotes": "Chip select",
+        "tftDcNotes": "Data/commando",
+        "backlightNotes": "Of 27 op sommige I2C-touchboards",
+        "touchXptNotes": "Deelt HSPI; aparte CS (bijv. 33)",
+        "touchCstNotes": "I2C-touchvariant",
+        "rgbLedNotes": "Actief laag"
+      }
+    },
+    "software": {
+      "title": "Softwarestack",
+      "intro": "Met <strong>ESPHome</strong> en <strong>LVGL</strong> kan de <cydLink>CYD</cydLink> een rijke UI uitvoeren (klokken, sensortegels, dashboards) en communiceren met Home Assistant via de native API. Gegevensstroom:",
+      "diagramLabel": "Softwarestack en gegevensstroom"
+    },
+    "useCases": {
+      "title": "Typische gebruikssituaties",
+      "monitor": "<strong>Home Assistant-monitor</strong> — Klok, datum en 6–8 entiteitstegels (deuren, beweging, energie, temperatuur) met kleurgecodeerde status. De configuratiegenerator van deze site is op deze indeling gericht.",
+      "controlPanel": "<strong>Smart home-bedieningspaneel</strong> — Knoppen en schakelaars voor het bedienen van lampen, scènes en automatiseringen via HA.",
+      "weather": "<strong>Weer-/infodashboard</strong> — Weersvoorspelling, agenda of RSS-feed weergegeven op de <cydLink>CYD</cydLink>.",
+      "prototyping": "<strong>Prototyping</strong> — LVGL-demo's, aangepaste UI's of leren werken met ESP32 + display zonder aparte bedrading."
+    },
+    "references": {
+      "title": "Referentielinks",
+      "intro": "Officiële documentatie, communityprojecten en waar je <cydLink>de CYD kunt kopen</cydLink>.",
+      "amazon": "Koop CYD op Amazon (affiliate)",
+      "amazonDesc": "— 2,8″ ILI9341 CYD-board (USB-C). Affiliate-link; ondersteunt dit project.",
+      "esphome": "ESPHome",
+      "esphomeDesc": "— Firmware en YAML-gebaseerde configuratie voor ESP-apparaten.",
+      "esphomeDisplay": "ESPHome ILI9341-display",
+      "esphomeDisplayDesc": "— Officiële documentatie displaycomponent.",
+      "homeAssistant": "Home Assistant",
+      "homeAssistantDesc": "— Open-source domotica; entiteiten voeden het CYD-dashboard.",
+      "github": "CYD-ESPHome-HA-Monitor (GitHub)",
+      "githubDesc": "— Dit project: HAMon-configuratie en YAML-generator.",
+      "community": "CYD Smart Dashboard (drrcastro)",
+      "communityDesc": "— Community-inspiratie voor CYD + HA-dashboards.",
+      "esp32": "ESP32 (Espressif)",
+      "esp32Desc": "— MCU-referentie van Espressif.",
+      "ili9341": "ILI9341 datasheet",
+      "ili9341Desc": "— TFT-controllerreferentie (externe PDF)."
+    },
+    "cta": {
+      "title": "Klaar om je CYD te configureren?",
+      "description": "Gebruik de <strong>Configuratiegenerator</strong> om je ESPHome YAML visueel te bouwen — geen YAML handmatig bewerken nodig. Kies sensoren, GPIO-presets en kopieer het resultaat naar ESPHome.",
+      "openGenerator": "Configuratiegenerator openen",
+      "buyCyd": "Koop CYD op Amazon"
+    }
+  },
+  "privacyPolicy": {
+    "backToConfigGenerator": "← Terug naar Configuratiegenerator",
+    "title": "Privacybeleid",
+    "lastUpdated": "Laatst bijgewerkt: February 2026",
+    "intro": {
+      "title": "1. Inleiding",
+      "p1": "Dit privacybeleid legt uit hoe <strong>CYD HAMon Config Generator</strong> ('wij', 'ons' of 'de site'), beheerd door Element Software, informatie verzamelt, gebruikt en beschermt wanneer je <strong>cheapyellowdisplay.co.uk</strong> bezoekt.",
+      "p2": "We zetten ons in voor de bescherming van je privacy en het verwerken van informatie die we over je bewaren in overeenstemming met de UK General Data Protection Regulation (UK GDPR) en de Data Protection Act 2018."
+    },
+    "infoCollect": {
+      "title": "2. Informatie die we verzamelen",
+      "intro": "Deze site verzamelt informatie in twee omstandigheden:",
+      "analytics": "<strong>Analysegegevens (met jouw toestemming):</strong> We gebruiken Google Analytics om geanonimiseerde gebruiksgegevens te verzamelen, zoals bezochte pagina's, tijd op de site, browsertype en globale geografische regio. Deze gegevens identificeren je niet persoonlijk.",
+      "personal": "<strong>Persoonlijke informatie die je verstrekt:</strong> Als je een contactformulier invult of anderszins persoonlijke informatie verstrekt (zoals je naam of e-mailadres), wordt die informatie uitsluitend verzameld om op je verzoek te reageren.",
+      "noConsent": "Als je analytische cookies weigert, worden er geen trackinggegevens verzameld of verzonden."
+    },
+    "howWeUse": {
+      "title": "3. Hoe we je informatie gebruiken",
+      "analytics": "<strong>Analysegegevens</strong> worden uitsluitend gebruikt om te begrijpen hoe de site wordt gebruikt en de gebruikerservaring te verbeteren. Ze worden nooit gebruikt voor reclame, profilering of verkocht aan derden.",
+      "contact": "<strong>Contactinformatie</strong> wordt alleen gebruikt om op je verzoek te reageren en wordt niet gedeeld met derden of gebruikt voor marketingdoeleinden zonder jouw uitdrukkelijke toestemming."
+    },
+    "legalBasis": {
+      "title": "4. Rechtsgrondslag voor verwerking",
+      "intro": "Onder de UK GDPR vertrouwen we op de volgende rechtsgronden voor de verwerking van persoonsgegevens:",
+      "consent": "<strong>Toestemming</strong> — voor analytische cookies. Je kunt toestemming op elk moment intrekken door de lokale opslag van je browser te wissen of cookies te weigeren bij je volgende bezoek.",
+      "legitimate": "<strong>Gerechtvaardigde belangen</strong> — voor contactverzoeken, voor zover noodzakelijk om op je bericht te reageren."
+    },
+    "cookies": {
+      "title": "5. Cookies",
+      "p1": "Deze site gebruikt één eigen cookievoorkeur opgeslagen in de lokale opslag van je browser (<code>cookie_consent</code>) om je analysevoorkeur te onthouden.",
+      "p2": "Als je analytische cookies accepteert, plaatst Google Analytics zijn eigen cookies (bijv. <code>_ga</code>, <code>_ga_*</code>) om gebruikers en sessies te onderscheiden. Deze cookies worden beheerst door het <googlePrivacy>Privacybeleid van Google</googlePrivacy>.",
+      "p3": "Je kunt je analytische toestemming op elk moment intrekken door de lokale opslag van je browser voor deze site te wissen, waardoor de toestemmingsbanner bij je volgende bezoek opnieuw verschijnt."
+    },
+    "dataSharing": {
+      "title": "6. Gegevens delen",
+      "p": "We verkopen, verhandelen of verhuren je persoonlijke gegevens niet aan derden. Analysegegevens worden verwerkt door Google LLC onder een gegevensverwerkingsovereenkomst. Google kan gegevens buiten het VK overdragen; zie voor meer informatie het <googlePrivacy>Privacybeleid van Google</googlePrivacy>."
+    },
+    "dataRetention": {
+      "title": "7. Gegevensbewaring",
+      "p": "Google Analytics-gegevens worden standaard 14 maanden bewaard, waarna ze automatisch worden verwijderd. Persoonlijke informatie die via een contactformulier wordt verstrekt, wordt alleen bewaard zo lang als nodig om je verzoek af te handelen en daarna veilig verwijderd."
+    },
+    "yourRights": {
+      "title": "8. Jouw rechten",
+      "intro": "Onder de UK GDPR heb je het recht om:",
+      "access": "De persoonsgegevens in te zien die we over je bewaren",
+      "correction": "Correctie van onjuiste persoonsgegevens te vragen",
+      "erasure": "Verwijdering van je persoonsgegevens te vragen",
+      "restriction": "Bezwaar te maken tegen of beperking te vragen van de verwerking van je persoonsgegevens",
+      "withdraw": "Toestemming op elk moment in te trekken (wanneer de verwerking op toestemming is gebaseerd)",
+      "complain": "Een klacht in te dienen bij de Information Commissioner's Office (ICO) op <ico>ico.org.uk</ico>"
+    },
+    "thirdParty": {
+      "title": "9. Links naar derden",
+      "p": "Deze site bevat links naar externe websites (bijv. GitHub, element-software.co.uk). We zijn niet verantwoordelijk voor de privacypraktijken van die sites en moedigen je aan hun privacybeleid te raadplegen."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "p": "Als je vragen hebt over dit privacybeleid of je gegevensrechten wilt uitoefenen, neem dan contact met ons op via <email>info@cheapyellowdisplay.co.uk</email>."
+    },
+    "changes": {
+      "title": "11. Wijzigingen in dit beleid",
+      "p": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. Eventuele wijzigingen worden op deze pagina geplaatst met een bijgewerkte revisiedatum. We moedigen je aan dit beleid periodiek te bekijken."
+    }
+  }
+}

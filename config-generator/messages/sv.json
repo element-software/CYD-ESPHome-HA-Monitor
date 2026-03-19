@@ -1,0 +1,411 @@
+{
+  "common": {
+    "close": "Stäng",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "done": "Klar",
+    "opensInNewTab": "(öppnas i ny flik)"
+  },
+  "copyButton": {
+    "copy": "Kopiera",
+    "copied": "Kopierat!"
+  },
+  "nav": {
+    "home": "Hem",
+    "aboutCyd": "Om CYD",
+    "configGenerator": "Konfigurationsgenerator",
+    "buyNow": "KÖP NU",
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny",
+    "starOnGithub": "Stjärnmärk på GitHub",
+    "githubStars": "GitHub-stjärnor"
+  },
+  "footer": {
+    "tagline": "CYD-konfigurationsverktyg och info · ESPHome / Home Assistant",
+    "affiliateNotice": "KÖP NU är en affiliate-länk.",
+    "poweredBy": "Drivs av",
+    "links": {
+      "home": "Hem",
+      "aboutCyd": "Om CYD",
+      "configGenerator": "Konfigurationsgenerator",
+      "buyNow": "Köp nu (Amazon)",
+      "github": "GitHub",
+      "privacyPolicy": "Integritetspolicy",
+      "softwareDev": "Systemutveckling",
+      "smartHome": "Expert på smarta hem"
+    }
+  },
+  "pageFooter": {
+    "home": "Hem",
+    "configGenerator": "Konfigurationsgenerator",
+    "github": "GitHub",
+    "softwareDev": "Letar du efter systemutveckling?",
+    "smartHome": "Letar du efter en expert på smarta hem?",
+    "privacyPolicy": "Integritetspolicy"
+  },
+  "home": {
+    "heroLabel": "Startsida",
+    "title": "Cheap Yellow Display (CYD)",
+    "subtitle": "Konfigurationsverktyg och information för ESP32-2432S028",
+    "whatIsCyd": {
+      "title": "Vad är en CYD?",
+      "p1": "<strong>Cheap Yellow Display</strong> (CYD) är det populära namnet för <strong>ESP32-2432S028</strong> — ett allt-i-ett-utvecklingskort som kombinerar en ESP32-mikrokontroller med en 2,8″ färg-TFT-pekskärm (240×320), resistiv pekskärm (XPT2046 eller CST816 på vissa varianter) och användbara extras som inbyggd RGB-LED, microSD-kortplats och LDR. Det har blivit ett favoritalternativ i maker- och smarta hem-gemenskapen för kompakta instrumentpaneler, statusdisplayer och kontrollpaneler utan separat skärm.",
+      "p2": "Eftersom displayen och ESP32 sitter på samma kort kan du bygga en fullständig GUI-enhet (t.ex. en Home Assistant-monitor) genom att flasha firmware och ansluta till Wi‑Fi — ingen lödning eller komplex kabeldragning krävs."
+    },
+    "purpose": {
+      "title": "Syfte med den här webbplatsen",
+      "p1": "Den här webbplatsen finns för att hjälpa dig att få ut mesta möjliga av din CYD när du använder <strong>ESPHome</strong> och (valfritt) <strong>Home Assistant</strong>. Istället för att redigera YAML manuellt kan du använda verktygen här för att generera och anpassa konfigurationer visuellt, och sedan kopiera resultatet till ESPHome och flasha din enhet.",
+      "p2": "Projektet stöder en <strong>Home Assistant-monitor</strong> (sensordashboard med klocka), anpassad för CYD:s skärm och GPIO-layout."
+    },
+    "atAGlance": {
+      "title": "CYD i korthet",
+      "board": "<strong>Kort:</strong> ESP32-WROOM-32, 2,8″ ILI9341 TFT (240×320), SPI-pekskärm",
+      "displayPins": "<strong>Displaypinnar:</strong> TFT på HSPI (t.ex. CLK 14, MOSI 13, MISO 12, CS 15, DC 2); bakgrundsbelysning ofta GPIO 21 (eller 27 på I2C-pekskärmsvarianter)",
+      "rgbLed": "<strong>Inbyggd RGB-LED:</strong> Röd GPIO 4, Grön GPIO 16, Blå GPIO 17 (aktivt låg)",
+      "typicalUse": "<strong>Typisk användning:</strong> ESPHome + LVGL för instrumentpaneler, klockor, sensorplattor och anpassade gränssnitt",
+      "note": "Pinouts kan variera något beroende på tillverkare och revision; konfigurationsgeneratorn erbjuder förinställningar för vanliga varianter (SPI-pek / I2C-pek) och valfria anpassade pinnar."
+    },
+    "configGeneratorCta": {
+      "title": "Konfigurationsgenerator",
+      "description": "<strong>Konfigurationsgeneratorn</strong> är en webbapp som låter dig bygga din CYD-konfiguration utan att röra YAML. Du väljer dina sensorer, ställer in enhets- och GPIO-alternativ och får en komplett ESPHome YAML-fil att klistra in i din ESPHome-enhet. Det minskar fel, håller pinouts och ersättningar konsekventa och ger dig en live-förhandsvisning av layouten. Kopiera den genererade YAML med ett klick för flashning via ESPHome.",
+      "button": "Öppna konfigurationsgeneratorn"
+    }
+  },
+  "pageHeader": {
+    "title": "CYD HAMon Config Generator",
+    "subtitle": "Konfigurera din Cheap Yellow Display Home Assistant Monitor"
+  },
+  "configGeneratorPage": {
+    "generateYaml": "Generera YAML"
+  },
+  "deviceSettings": {
+    "title": "Enhetsinställningar",
+    "deviceName": "Enhetsnamn",
+    "friendlyName": "Visningsnamn",
+    "gpioConfig": "GPIO-konfiguration",
+    "displaySettings": "Displayinställningar",
+    "clockWith": "Med klocka",
+    "clockWithout": "Utan klocka",
+    "radius": "Radie {value}",
+    "variants": {
+      "spi_touch": "SPI-pek",
+      "i2c_touch": "I2C-pek",
+      "custom": "Anpassad"
+    },
+    "iconSets": {
+      "material_symbols": "Material Symbols",
+      "material_design_icons": "Material Design Icons"
+    }
+  },
+  "gpioModal": {
+    "title": "Enhetens GPIO-konfiguration",
+    "subtitle": "Välj en kortvariant eller ställ in pinnar manuellt.",
+    "variant": "Variant",
+    "displayBacklight": "Display och bakgrundsbelysning",
+    "touchSpi": "Pek (SPI – XPT2046)",
+    "touchI2c": "Pek (I2C – CST816)",
+    "pins": {
+      "backlightPwm": "Bakgrundsbelysning PWM",
+      "tftClk": "TFT CLK",
+      "tftMosi": "TFT MOSI",
+      "tftMiso": "TFT MISO",
+      "tftCs": "TFT CS",
+      "tftDc": "TFT DC",
+      "touchClk": "Touch CLK",
+      "touchMosi": "Touch MOSI",
+      "touchMiso": "Touch MISO",
+      "touchCs": "Touch CS",
+      "i2cSda": "I2C SDA",
+      "i2cScl": "I2C SCL",
+      "touchReset": "Pek-reset"
+    },
+    "variantDescriptions": {
+      "spi_touch": "Standard CYD, bakgrundsbelysning GPIO21",
+      "i2c_touch": "CYD med I2C-pek, bakgrundsbelysning GPIO27",
+      "custom": "Ställ in varje pinne manuellt (förifyllt från aktuell variant)"
+    }
+  },
+  "displayModal": {
+    "title": "Displayinställningar",
+    "subtitle": "Visuella alternativ och layoutalternativ för enhetsdisplayen.",
+    "hideClock": {
+      "label": "Dölj klocka",
+      "description": "Lägger till en extra rad för ett 4×2-sensornät."
+    },
+    "buttonRadius": {
+      "label": "Knapphornsradie",
+      "help": "0 = raka hörn, 34 = helt avrundade."
+    },
+    "iconSet": {
+      "label": "Ikonuppsättning",
+      "description": "Ikoner som används i förhandsvisningen och den genererade YAML.",
+      "materialDesign": {
+        "label": "Material Design Icons",
+        "description": "Klassisk ikonuppsättning (community)"
+      },
+      "materialSymbols": {
+        "label": "Material Symbols",
+        "description": "Google Fonts-ikoner (fonts.google.com/icons)"
+      }
+    }
+  },
+  "sensorList": {
+    "title": "Sensorkonfiguration"
+  },
+  "sensorPanel": {
+    "row": "Rad",
+    "col": "Kolumn",
+    "types": {
+      "sensor": "Sensor (numerisk)",
+      "binary": "Binär sensor",
+      "light": "Ljus",
+      "switch": "Strömbrytare"
+    },
+    "typeLabel": "Typ",
+    "labelField": "Etikett",
+    "entityId": "Entitets-ID",
+    "accuracy": "Noggrannhet",
+    "accuracyWhole": "Heltal",
+    "accuracyOne": "1 decimal",
+    "accuracyTwo": "2 decimaler",
+    "unit": "Enhet",
+    "unitCustom": "Anpassad",
+    "thresholds": "Tröskelvärden och färger",
+    "highestFirst": "Högsta värde först",
+    "addThreshold": "Lägg till",
+    "threshold": "Tröskel {n}",
+    "highest": "(högst)",
+    "lowest": "(lägst)",
+    "thresholdColor": "Tröskelffärg",
+    "stateOn": "PÅ",
+    "stateOff": "AV",
+    "colorOn": "Färg för tillstånd PÅ",
+    "colorOff": "Färg för tillstånd AV",
+    "labelPlaceholder": "Energi",
+    "entityPlaceholder": "sensor.exempel",
+    "customFormatPlaceholder": "%.1f°C",
+    "thresholdValuePlaceholder": "1000",
+    "onPlaceholderBinary": "Öppen",
+    "offPlaceholderBinary": "Stängd",
+    "onPlaceholderLight": "På",
+    "offPlaceholderLight": "Av"
+  },
+  "yamlModal": {
+    "title": "Genererad YAML"
+  },
+  "iconPicker": {
+    "label": "Ikon",
+    "title": "Välj ikon",
+    "search": "Sök ikoner...",
+    "noResults": "Inga ikoner matchar \"{search}\"",
+    "cancel": "Avbryt"
+  },
+  "cookieConsent": {
+    "title": "🍪 Cookie-inställningar",
+    "message": "Vi använder analytiska cookies för att förstå hur webbplatsen används och förbättra din upplevelse. Ingen personlig information samlas in.",
+    "privacyPolicy": "Integritetspolicy",
+    "accept": "Acceptera cookies",
+    "decline": "Avböj"
+  },
+  "aboutCyd": {
+    "backToHome": "← Tillbaka till startsidan",
+    "title": "Om CYD (Cheap Yellow Display)",
+    "subtitle": "En komplett guide till CYD-familjen — varianter, hårdvara, pinout, mjukvarustapel och referenser.",
+    "whatIsCyd": {
+      "title": "Vad är en CYD?",
+      "p1": "<strong>Cheap Yellow Display</strong> (<cydLink>CYD</cydLink>) är det populära community-namnet för ESP32-baserade kort som kombinerar en mikrokontroller med en färgad TFT-pekskärm i en enhet. Den mest kända modellen är <strong>ESP32-2432S028</strong> (2,8″ skärm, 240×320), men <strong>flera varianter finns</strong> — olika skärmstorlekar, pektekniker och anslutningar. De delar samma fördel: bygga instrumentpaneler, statusdisplayer och kontrollpaneler utan separat skärm.",
+      "p2": "Eftersom displayen och ESP32 sitter på samma kort kan du bygga en fullständig GUI-enhet (t.ex. en Home Assistant-monitor) genom att flasha firmware och ansluta till Wi‑Fi — ingen lödning eller komplex kabeldragning krävs. Du kan <cydLink>köpa en CYD på Amazon</cydLink> och komma igång samma dag."
+    },
+    "variations": {
+      "title": "CYD-varianter",
+      "intro": "Inte alla \"CYD-stil\"-kort är identiska. När du köper eller konfigurerar en <cydLink>CYD</cydLink>, kontrollera dessa aspekter — de påverkar kompatibilitet med skal, kablar och firmware (inklusive den här webbplatsens konfigurationsgenerator).",
+      "screenSize": {
+        "title": "Skärmstorlek och upplösning",
+        "intro": "Korten säljs i olika fysiska storlekar och upplösningar. Modellnummer kodar ofta storleken (t.ex. <strong>S028</strong> ≈ 2,8″, <strong>S035</strong> ≈ 3,5″). Vanliga varianter:",
+        "size24": "<strong>2,4″</strong> — Mindre, ofta 240×320; vissa använder ILI9341 eller ST7789.",
+        "size28": "<strong>2,8″ (t.ex. ESP32-2432S028)</strong> — Den vanligaste \"CYD\":n: 240×320, vanligtvis ILI9341. Det här projektets konfigurationsgenerator och HAMon är designade för den här storleken och upplösningen.",
+        "size32": "<strong>3,2″ / 3,5″</strong> — Större paneler (t.ex. 320×480); kan använda ILI9486, ILI9488 eller andra drivrutiner. Pinouts och ESPHome-konfiguration skiljer sig från 2,8″-korten.",
+        "note": "Om du har en annan storlek eller upplösning kan du behöva justera displaydimensioner och drivrutin i ESPHome; pinout och pektyp spelar fortfarande roll (se nedan)."
+      },
+      "touchType": {
+        "title": "Pekskärmstyp",
+        "intro": "Pek är antingen <strong>resistiv</strong> (SPI) eller <strong>kapacitiv</strong> (I2C). Drivrutinen och GPIO:erna är olika, så firmware måste matcha ditt kort:",
+        "xpt2046": "<strong>XPT2046</strong> — Resistiv pek via SPI. Delar displayens SPI-buss med separat chip-select (t.ex. GPIO 33). Bakgrundsbelysning ofta på <strong>GPIO 21</strong>. Detta är \"SPI-pek\"-förinställningen i vår konfigurationsgenerator.",
+        "cst816": "<strong>CST816</strong> — Kapacitiv pek via I2C (t.ex. SDA 33, SCL 32). Nyare/reviderade kort använder ofta detta. Bakgrundsbelysning ofta på <strong>GPIO 27</strong>. Detta är \"I2C-pek\"-förinställningen i vår konfigurationsgenerator.",
+        "other": "Vissa kort använder andra kontroller (t.ex. GT911). Du behöver rätt ESPHome-pekkomponent och pinout för din specifika modul.",
+        "note": "Om pek eller bakgrundsbelysning beter sig konstigt, bekräfta om du har SPI- (XPT2046) eller I2C-varianten (CST816) och välj matchande förinställning eller anpassade pinnar."
+      },
+      "displayController": {
+        "title": "Displaykontroller",
+        "p": "De flesta 2,8″ CYD-kort använder <strong>ILI9341</strong> TFT-kontrollern. Andra storlekar kan använda <strong>ST7789</strong>, <strong>ILI9488</strong>, <strong>ILI9486</strong> eller liknande. I ESPHome väljer du matchande displayplattform (t.ex. <code>ili9xxx</code> med <code>model: ili9341</code>). Vår generator förutsätter ILI9341 för 2,8″ 240×320-layouten."
+      },
+      "usbConnector": {
+        "title": "USB-kontakt",
+        "p": "Korten säljs med <strong>Micro-USB</strong> eller <strong>USB-C</strong>. USB-C rekommenderas för nya köp: enklare kablage och många 3D-printade skal (t.ex. Aura Smart Display-skalet) är designade för USB-C-porten. Adaptrar (t.ex. 90° USB-C) hjälper med kabelhantering. Vår <cydLink>Amazon-länk</cydLink> pekar på USB-C-versionen."
+      },
+      "whatSiteTargets": {
+        "title": "Vad den här webbplatsen riktar sig mot",
+        "p": "<strong>Konfigurationsgeneratorn</strong> och <strong>HAMon</strong>-firmware på den här webbplatsen är riktad mot <strong>2,8″ 240×320 ILI9341</strong>-kort med antingen <strong>XPT2046 (SPI-pek)</strong> eller <strong>CST816 (I2C-pek)</strong>. Om du har en annan storlek eller displaydrivrutin kan du fortfarande använda generatorn som utgångspunkt och justera den genererade YAML (displaymodell, dimensioner, pekkomponent och pinnar) för att matcha din hårdvara."
+      }
+    },
+    "hardware": {
+      "title": "Hårdvaruöversikt",
+      "intro": "<cydLink>CYD</cydLink> integrerar flera komponenter på ett enda PCB. Diagrammet nedan visar hur de viktigaste blocken är anslutna.",
+      "diagramLabel": "CYD hårdvarublockdiagram",
+      "diagramCaption": "ESP32 driver displayen via SPI (HSPI) och läser pek via SPI (XPT2046) eller I2C (CST816 beroende på variant). RGB-LED, microSD och LDR är valfria kringutrustningar."
+    },
+    "components": {
+      "title": "Komponentöversikt",
+      "colComponent": "Komponent",
+      "colDetails": "Detaljer",
+      "board": {
+        "name": "Kort",
+        "details": "ESP32-2432S028 (<cydLink>CYD</cydLink>). Köp <strong>USB-C</strong>-versionen för moderna kablar och skalkompatibilitet."
+      },
+      "mcu": {
+        "name": "MCU",
+        "details": "ESP32-WROOM-32 (dual-core 240 MHz, WiFi 802.11 b/g/n, Bluetooth 4.2)."
+      },
+      "display": {
+        "name": "Display",
+        "details": "ILI9341 2,8″ TFT, 240×320 RGB, 18-bitars färg, SPI (HSPI). Bakgrundsbelysning vanligtvis GPIO 21 eller 27."
+      },
+      "touch": {
+        "name": "Pek",
+        "details": "XPT2046 (resistiv, SPI) på de flesta kort; vissa varianter använder CST816 (kapacitiv, I2C). Kontrollera etiketten på ditt kort."
+      },
+      "rgbLed": {
+        "name": "RGB-LED",
+        "details": "Röd GPIO 4, Grön GPIO 16, Blå GPIO 17 (aktivt låg). Kan visa status på ett ögonblick."
+      },
+      "microsd": {
+        "name": "microSD",
+        "details": "Valfritt kortplats för loggning eller filer (t.ex. typsnitt)."
+      },
+      "ldr": {
+        "name": "LDR",
+        "details": "Ljusberoende motstånd för automatisk dimmning av bakgrundsbelysning via mjukvara."
+      }
+    },
+    "pinout": {
+      "title": "Pinout-referens",
+      "intro": "Pinntilldelningar kan variera något beroende på tillverkare och revision. Konfigurationsgeneratorn på den här webbplatsen erbjuder förinställningar för vanliga varianter (SPI-pek / I2C-pek). Typiska värden:",
+      "colFunction": "Funktion",
+      "colGpio": "GPIO",
+      "colNotes": "Noteringar",
+      "rows": {
+        "tftClkNotes": "HSPI SCK",
+        "tftMosiNotes": "HSPI MOSI",
+        "tftMisoNotes": "HSPI MISO (valfri)",
+        "tftCsNotes": "Chip select",
+        "tftDcNotes": "Data/kommando",
+        "backlightNotes": "Eller 27 på vissa I2C-pekkort",
+        "touchXptNotes": "Delar HSPI; separat CS (t.ex. 33)",
+        "touchCstNotes": "I2C-pekvariant",
+        "rgbLedNotes": "Aktivt låg"
+      }
+    },
+    "software": {
+      "title": "Mjukvarustapel",
+      "intro": "Med <strong>ESPHome</strong> och <strong>LVGL</strong> kan <cydLink>CYD</cydLink> köra ett rikt gränssnitt (klockor, sensorplattor, instrumentpaneler) och kommunicera med Home Assistant via det inbyggda API:et. Dataflöde:",
+      "diagramLabel": "Mjukvarustapel och dataflöde"
+    },
+    "useCases": {
+      "title": "Typiska användningsfall",
+      "monitor": "<strong>Home Assistant-monitor</strong> — Klocka, datum och 6–8 entitetsplattor (dörrar, rörelse, energi, temperatur) med färgkodad status. Den här webbplatsens konfigurationsgenerator riktar sig mot den här layouten.",
+      "controlPanel": "<strong>Smart hem-kontrollpanel</strong> — Knappar och strömbrytare för att styra lampor, scener och automatiseringar via HA.",
+      "weather": "<strong>Väder-/infodashboard</strong> — Prognos, kalender eller RSS-flöde visas på <cydLink>CYD</cydLink>.",
+      "prototyping": "<strong>Prototyping</strong> — LVGL-demos, anpassade gränssnitt eller lärande med ESP32 + display utan separat kablage."
+    },
+    "references": {
+      "title": "Referenslänkar",
+      "intro": "Officiell dokumentation, community-projekt och var du kan <cydLink>köpa CYD</cydLink>.",
+      "amazon": "Köp CYD på Amazon (affiliate)",
+      "amazonDesc": "— 2,8″ ILI9341 CYD-kort (USB-C). Affiliate-länk; stödjer det här projektet.",
+      "esphome": "ESPHome",
+      "esphomeDesc": "— Firmware och YAML-baserad konfiguration för ESP-enheter.",
+      "esphomeDisplay": "ESPHome ILI9341-display",
+      "esphomeDisplayDesc": "— Officiell dokumentation för displaykomponenten.",
+      "homeAssistant": "Home Assistant",
+      "homeAssistantDesc": "— Öppen källkod hemautomation; entiteter matar CYD-instrumentpanelen.",
+      "github": "CYD-ESPHome-HA-Monitor (GitHub)",
+      "githubDesc": "— Det här projektet: HAMon-konfiguration och YAML-generator.",
+      "community": "CYD Smart Dashboard (drrcastro)",
+      "communityDesc": "— Community-inspiration för CYD + HA-instrumentpaneler.",
+      "esp32": "ESP32 (Espressif)",
+      "esp32Desc": "— MCU-referens från Espressif.",
+      "ili9341": "ILI9341 datablad",
+      "ili9341Desc": "— TFT-kontrollerreferens (extern PDF)."
+    },
+    "cta": {
+      "title": "Redo att konfigurera din CYD?",
+      "description": "Använd <strong>konfigurationsgeneratorn</strong> för att bygga din ESPHome YAML visuellt — inget behov av att redigera YAML manuellt. Välj sensorer, GPIO-förinställningar och kopiera resultatet till ESPHome.",
+      "openGenerator": "Öppna konfigurationsgeneratorn",
+      "buyCyd": "Köp CYD på Amazon"
+    }
+  },
+  "privacyPolicy": {
+    "backToConfigGenerator": "← Tillbaka till konfigurationsgeneratorn",
+    "title": "Integritetspolicy",
+    "lastUpdated": "Senast uppdaterad: February 2026",
+    "intro": {
+      "title": "1. Introduktion",
+      "p1": "Den här integritetspolicyn förklarar hur <strong>CYD HAMon Config Generator</strong> (“vi”, “vår” eller “webbplatsen”), som drivs av Element Software, samlar in, använder och skyddar information när du besöker <strong>cheapyellowdisplay.co.uk</strong>.",
+      "p2": "Vi är engagerade i att skydda din integritet och hantera all information vi har om dig i enlighet med UK General Data Protection Regulation (UK GDPR) och Data Protection Act 2018."
+    },
+    "infoCollect": {
+      "title": "2. Information vi samlar in",
+      "intro": "Den här webbplatsen samlar in information i två situationer:",
+      "analytics": "<strong>Analysdata (med ditt samtycke):</strong> Vi använder Google Analytics för att samla in anonymiserade användningsdata som besökta sidor, tid på webbplatsen, webbläsartyp och ungefärlig geografisk region. Dessa data identifierar dig inte personligen.",
+      "personal": "<strong>Personuppgifter du tillhandahåller:</strong> Om du skickar ett kontaktformulär eller på annat sätt lämnar personuppgifter (som ditt namn eller e-postadress), samlas dessa uppgifter in enbart för att svara på din förfrågan.",
+      "noConsent": "Om du avvisar analytiska cookies samlas inga spårningsdata in eller överförs."
+    },
+    "howWeUse": {
+      "title": "3. Hur vi använder din information",
+      "analytics": "<strong>Analysdata</strong> används enbart för att förstå hur webbplatsen används och förbättra användarupplevelsen. De används aldrig för reklam, profilering eller säljs till tredje part.",
+      "contact": "<strong>Kontaktinformation</strong> används endast för att svara på din förfrågan och delas inte med tredje part eller används för marknadsföringssyften utan ditt uttryckliga samtycke."
+    },
+    "legalBasis": {
+      "title": "4. Rättslig grund för behandling",
+      "intro": "Enligt UK GDPR förlitar vi oss på följande rättsliga grunder för behandling av personuppgifter:",
+      "consent": "<strong>Samtycke</strong> — för analytiska cookies. Du kan återkalla samtycke när som helst genom att rensa din webbläsares lokala lagring eller avvisa cookies vid ditt nästa besök.",
+      "legitimate": "<strong>Berättigat intresse</strong> — för kontaktförfrågningar, i den mån det är nödvändigt för att svara på ditt meddelande."
+    },
+    "cookies": {
+      "title": "5. Cookies",
+      "p1": "Den här webbplatsen använder en enda förstapartscookiepreferens lagrad i din webbläsares lokala lagring (<code>cookie_consent</code>) för att komma ihåg din analyspreferens.",
+      "p2": "Om du accepterar analytiska cookies sätter Google Analytics sina egna cookies (t.ex. <code>_ga</code>, <code>_ga_*</code>) för att skilja användare och sessioner. Dessa cookies regleras av <googlePrivacy>Googles integritetspolicy</googlePrivacy>.",
+      "p3": "Du kan återkalla ditt analyseringssamtycke när som helst genom att rensa din webbläsares lokala lagring för den här webbplatsen, vilket gör att samtyckesbanderollen visas igen vid ditt nästa besök."
+    },
+    "dataSharing": {
+      "title": "6. Datadelning",
+      "p": "Vi säljer, handlar inte med eller hyr ut dina personuppgifter till tredje part. Analysdata behandlas av Google LLC under ett databehandlingsavtal. Google kan överföra data utanför Storbritannien; för mer information, se <googlePrivacy>Googles integritetspolicy</googlePrivacy>."
+    },
+    "dataRetention": {
+      "title": "7. Datalagring",
+      "p": "Google Analytics-data lagras i 14 månader som standard, varefter de raderas automatiskt. Eventuella personuppgifter som lämnats via ett kontaktformulär lagras endast så länge som det är nödvändigt för att hantera din förfrågan och raderas sedan på ett säkert sätt."
+    },
+    "yourRights": {
+      "title": "8. Dina rättigheter",
+      "intro": "Enligt UK GDPR har du rätt att:",
+      "access": "Få tillgång till de personuppgifter vi har om dig",
+      "correction": "Begära rättelse av felaktiga personuppgifter",
+      "erasure": "Begära radering av dina personuppgifter",
+      "restriction": "Invända mot eller begränsa behandlingen av dina personuppgifter",
+      "withdraw": "Återkalla samtycke när som helst (när behandlingen baseras på samtycke)",
+      "complain": "Lämna in ett klagomål till Information Commissioner's Office (ICO) på <ico>ico.org.uk</ico>"
+    },
+    "thirdParty": {
+      "title": "9. Tredjepartslänkar",
+      "p": "Den här webbplatsen innehåller länkar till externa webbplatser (t.ex. GitHub, element-software.co.uk). Vi är inte ansvariga för dessa webbplatsers integritetspraxis och uppmanar dig att granska deras integritetspolicyer."
+    },
+    "contact": {
+      "title": "10. Kontakt",
+      "p": "Om du har frågor om den här integritetspolicyn eller vill utöva dina datarättigheter, kontakta oss på <email>info@cheapyellowdisplay.co.uk</email>."
+    },
+    "changes": {
+      "title": "11. Ändringar i den här policyn",
+      "p": "Vi kan uppdatera den här integritetspolicyn från tid till annan. Eventuella ändringar kommer att publiceras på den här sidan med ett uppdaterat revisionsdatum. Vi uppmuntrar dig att regelbundet granska den här policyn."
+    }
+  }
+}
