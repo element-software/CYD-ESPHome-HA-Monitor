@@ -7,12 +7,24 @@ import enMessages from '@/messages/en.json';
 import deMessages from '@/messages/de.json';
 import frMessages from '@/messages/fr.json';
 import esMessages from '@/messages/es.json';
+import ptMessages from '@/messages/pt.json';
+import itMessages from '@/messages/it.json';
+import nlMessages from '@/messages/nl.json';
+import plMessages from '@/messages/pl.json';
+import svMessages from '@/messages/sv.json';
+import zhMessages from '@/messages/zh.json';
 
 const allMessages = {
   en: enMessages,
   de: deMessages,
   fr: frMessages,
   es: esMessages,
+  pt: ptMessages,
+  it: itMessages,
+  nl: nlMessages,
+  pl: plMessages,
+  sv: svMessages,
+  zh: zhMessages,
 } as const;
 
 type LocaleContextType = {
