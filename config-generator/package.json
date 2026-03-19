@@ -20,6 +20,9 @@
     "react": "^19",
     "react-dom": "^19"
   },
+  "overrides": {
+    "@swc/helpers": "^0.5.19"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/jest": "^30.0.0",
