@@ -5,12 +5,11 @@ import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
-import { ConfigData } from '@/types/config';
-import { defaultConfig } from '@/lib/defaultConfig';
+import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
 
 export default function ConfigGeneratorClient() {
   const t = useTranslations('configGeneratorPage');
-  const [config, setConfig] = useState<ConfigData>(defaultConfig);
+  const [config, setConfig] = useLocalStorageConfig();
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
 
   return (
