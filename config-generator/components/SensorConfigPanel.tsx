@@ -104,6 +104,12 @@ interface SensorConfigPanelProps {
   iconSet?: IconSet;
 }
 
+function getDefaultColorOn(type: SensorConfig["type"]): string {
+  if (type === "light") return "0xFFE082";
+  if (type === "switch" || type === "input_boolean") return "0x4CAF50";
+  return "0xFF5252";
+}
+
 export default function SensorConfigPanel({
   sensor,
   index,
@@ -215,6 +221,18 @@ export default function SensorConfigPanel({
           colorOff: "0x888888",
         });
         break;
+      case "input_boolean":
+        onChange({
+          ...base,
+          type: "input_boolean",
+          stateOn: "On",
+          stateOff: "Off",
+          iconOn: "\\ue8ac",
+          iconOff: "\\ue8ac",
+          colorOn: "0x4CAF50",
+          colorOff: "0x888888",
+        });
+        break;
     }
   };
 
@@ -248,7 +266,9 @@ export default function SensorConfigPanel({
                   ? "bg-green-100 text-green-800"
                   : sensor.type === "switch"
                     ? "bg-emerald-100 text-emerald-800"
-                    : "bg-amber-100 text-amber-800"
+                    : sensor.type === "input_boolean"
+                      ? "bg-teal-100 text-teal-800"
+                      : "bg-amber-100 text-amber-800"
             }`}
           >
             {t(`types.${sensor.type}`)}
@@ -287,6 +307,7 @@ export default function SensorConfigPanel({
                 <option value="binary">{t("types.binary")}</option>
                 <option value="light">{t("types.light")}</option>
                 <option value="switch">{t("types.switch")}</option>
+                <option value="input_boolean">{t("types.input_boolean")}</option>
               </select>
             </div>
             <div>
@@ -492,7 +513,7 @@ export default function SensorConfigPanel({
                 ))}
               </div>
             </>
-          ) : sensor.type === "binary" || sensor.type === "light" || sensor.type === "switch" ? (
+          ) : sensor.type === "binary" || sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean" ? (
             <>
               <div className="grid grid-cols-2 gap-2">
                 <div className="rounded border border-gray-300 p-2 flex flex-col gap-1">
@@ -507,7 +528,7 @@ export default function SensorConfigPanel({
                     />
                     <input
                       type="color"
-                      value={cydColorToCss(sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252"))}
+                      value={cydColorToCss(sensor.colorOn ?? getDefaultColorOn(sensor.type))}
                       onChange={(e) => updateField("colorOn", cssToCydColor(e.target.value))}
                       className="w-8 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
                       title={t("colorOn")}
@@ -515,7 +536,7 @@ export default function SensorConfigPanel({
                     <IconPicker
                       value={sensor.iconOn ?? sensor.iconOff ?? ""}
                       onChange={(code) => updateField("iconOn", code)}
-                      iconColor={sensor.colorOn ?? (sensor.type === "light" ? "0xFFE082" : sensor.type === "switch" ? "0x4CAF50" : "0xFF5252")}
+                      iconColor={sensor.colorOn ?? getDefaultColorOn(sensor.type)}
                       buttonClassName="w-8 h-8 shrink-0 p-0.5"
                       iconSet={iconSet}
                     />

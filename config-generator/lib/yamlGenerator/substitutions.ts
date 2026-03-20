@@ -5,7 +5,7 @@ import { cydReadableColor } from "@/lib/colorUtils";
 
 export function collectUniqueIconGlyphs(sensors: SensorConfig[]): string {
   const allIconCodes = sensors.flatMap((s) => {
-    if (s.type === "binary" || s.type === "light" || s.type === "switch")
+    if (s.type === "binary" || s.type === "light" || s.type === "switch" || s.type === "input_boolean")
       return [s.iconOn, s.iconOff].filter(Boolean) as string[];
     const icons: string[] = [s.icon];
     s.thresholds?.forEach((t) => {
@@ -75,7 +75,7 @@ export function generateSensorSubstitutions(
     const defaultColorOn =
       sensor.type === "light"
         ? "0xFFA500"
-        : sensor.type === "switch"
+        : sensor.type === "switch" || sensor.type === "input_boolean"
           ? "0x4CAF50"
           : "0xFF5252";
     const colorOff = sensor.colorOff || "0x32CD32";

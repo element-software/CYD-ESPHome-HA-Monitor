@@ -25,6 +25,16 @@ export interface SwitchSensorConfig extends BaseSensorConfig {
   colorOff?: string;
 }
 
+export interface InputBooleanSensorConfig extends BaseSensorConfig {
+  type: "input_boolean";
+  stateOn?: string;
+  stateOff?: string;
+  iconOn?: string;
+  iconOff?: string;
+  colorOn?: string;
+  colorOff?: string;
+}
+
 /** A single threshold entry: if sensor value exceeds `value`, use `color` (and optionally `icon`). */
 export interface ThresholdConfig {
   value: string;
@@ -68,14 +78,15 @@ export interface BinarySensorConfig extends BaseSensorConfig {
 }
 
 /** Discriminated union of all sensor config types */
-export type SensorConfig = NumericSensorConfig | BinarySensorConfig | LightSensorConfig | SwitchSensorConfig;
+export type SensorConfig = NumericSensorConfig | BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig;
 
 /** Keys that can be updated on any sensor (union of keys from all config types) */
 export type SensorConfigKey =
   | keyof NumericSensorConfig
   | keyof BinarySensorConfig
   | keyof LightSensorConfig
-  | keyof SwitchSensorConfig;
+  | keyof SwitchSensorConfig
+  | keyof InputBooleanSensorConfig;
 
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';

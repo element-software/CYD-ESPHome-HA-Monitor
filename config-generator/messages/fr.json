@@ -161,7 +161,8 @@
       "sensor": "Capteur (Numérique)",
       "binary": "Capteur binaire",
       "light": "Lumière",
-      "switch": "Interrupteur"
+      "switch": "Interrupteur",
+      "input_boolean": "Booléen d'entrée"
     },
     "typeLabel": "Type",
     "labelField": "Libellé",

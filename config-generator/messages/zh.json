@@ -161,7 +161,8 @@
       "sensor": "传感器（数值型）",
       "binary": "二元传感器",
       "light": "灯光",
-      "switch": "开关"
+      "switch": "开关",
+      "input_boolean": "输入布尔值"
     },
     "typeLabel": "类型",
     "labelField": "标签",

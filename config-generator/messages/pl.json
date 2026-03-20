@@ -161,7 +161,8 @@
       "sensor": "Czujnik (numeryczny)",
       "binary": "Czujnik binarny",
       "light": "Światło",
-      "switch": "Przełącznik"
+      "switch": "Przełącznik",
+      "input_boolean": "Boolean wejściowy"
     },
     "typeLabel": "Typ",
     "labelField": "Etykieta",

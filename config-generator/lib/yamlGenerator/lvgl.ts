@@ -11,9 +11,13 @@ export function generateLvglWidget(
 
   const xPos = col === 1 ? 2 : 121;
   const yPos = hideClock ? 6 + (row - 1) * 78 : 100 + (row - 1) * 70;
-  const isToggleable = sensor.type === "light" || sensor.type === "switch";
+  const isToggleable = sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean";
   const toggleAction =
-    sensor.type === "light" ? "light.toggle" : "switch.toggle";
+    sensor.type === "light"
+      ? "light.toggle"
+      : sensor.type === "input_boolean"
+        ? "input_boolean.toggle"
+        : "switch.toggle";
 
   const onClickBlock = isToggleable
     ? `

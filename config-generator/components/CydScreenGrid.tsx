@@ -136,8 +136,8 @@ function SensorCell({
   iconSet?: IconSet;
   buttonRadius?: number;
 }) {
-  const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch';
-  const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch') && isOn;
+  const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean';
+  const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean') && isOn;
 
   const iconCode =
     sensor.type === 'sensor'
@@ -167,7 +167,7 @@ function SensorCell({
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
 
   const labelColor =
-    sensor.type === 'light' || sensor.type === 'switch'
+    sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean'
       ? isToggleableOn ? onFgCss : DEVICE.label
       : DEVICE.label;
   const valueColor =

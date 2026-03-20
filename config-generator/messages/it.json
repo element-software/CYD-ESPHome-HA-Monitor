@@ -161,7 +161,8 @@
       "sensor": "Sensore (Numerico)",
       "binary": "Sensore binario",
       "light": "Luce",
-      "switch": "Interruttore"
+      "switch": "Interruttore",
+      "input_boolean": "Boolean di input"
     },
     "typeLabel": "Tipo",
     "labelField": "Etichetta",

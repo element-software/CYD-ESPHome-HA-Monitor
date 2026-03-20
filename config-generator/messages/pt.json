@@ -161,7 +161,8 @@
       "sensor": "Sensor (Numérico)",
       "binary": "Sensor Binário",
       "light": "Luz",
-      "switch": "Interruptor"
+      "switch": "Interruptor",
+      "input_boolean": "Boolean de entrada"
     },
     "typeLabel": "Tipo",
     "labelField": "Rótulo",
