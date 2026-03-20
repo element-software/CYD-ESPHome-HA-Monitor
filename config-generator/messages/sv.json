@@ -76,7 +76,9 @@
     "subtitle": "Konfigurera din Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
-    "generateYaml": "Generera YAML"
+    "generateYaml": "Generera YAML",
+    "exportJson": "Exportera JSON",
+    "importJson": "Importera JSON"
   },
   "deviceSettings": {
     "title": "Enhetsinställningar",
@@ -407,5 +409,15 @@
       "title": "11. Ändringar i den här policyn",
       "p": "Vi kan uppdatera den här integritetspolicyn från tid till annan. Eventuella ändringar kommer att publiceras på den här sidan med ett uppdaterat revisionsdatum. Vi uppmuntrar dig att regelbundet granska den här policyn."
     }
+  },
+  "importConfigModal": {
+    "title": "Importera konfiguration",
+    "description": "Följande konfiguration kommer att ersätta dina nuvarande inställningar:",
+    "deviceName": "Enhetsnamn",
+    "friendlyName": "Eget namn",
+    "sensors": "Sensorer",
+    "confirm": "Ladda konfiguration",
+    "invalidFile": "Den valda filen är inte en giltig HAMon-konfiguration.",
+    "errorReading": "Det gick inte att läsa filen."
   }
 }

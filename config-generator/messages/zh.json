@@ -76,7 +76,9 @@
     "subtitle": "配置您的 Cheap Yellow Display Home Assistant 监控器"
   },
   "configGeneratorPage": {
-    "generateYaml": "生成 YAML"
+    "generateYaml": "生成 YAML",
+    "exportJson": "导出 JSON",
+    "importJson": "导入 JSON"
   },
   "deviceSettings": {
     "title": "设备设置",
@@ -407,5 +409,15 @@
       "title": "11. 政策变更",
       "p": "我们可能会不时更新本隐私政策。任何变更将在本页发布，并附上更新后的修订日期。我们建议您定期查阅本政策。"
     }
+  },
+  "importConfigModal": {
+    "title": "导入配置",
+    "description": "以下配置将替换您当前的设置：",
+    "deviceName": "设备名称",
+    "friendlyName": "友好名称",
+    "sensors": "传感器",
+    "confirm": "加载配置",
+    "invalidFile": "所选文件不是有效的 HAMon 配置。",
+    "errorReading": "无法读取文件。"
   }
 }
