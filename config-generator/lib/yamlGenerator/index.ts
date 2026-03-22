@@ -2,6 +2,7 @@ import type {
   ConfigData,
   SensorConfig,
   BinarySensorConfig,
+  InputBooleanSensorConfig,
   LightSensorConfig,
   SwitchSensorConfig,
 } from "@/types/config";
@@ -32,13 +33,16 @@ export function generateYaml(config: ConfigData): string {
   const switchSensors = sensors.filter(
     (s): s is SwitchSensorConfig => s.type === "switch",
   );
+  const inputBooleanSensors = sensors.filter(
+    (s): s is InputBooleanSensorConfig => s.type === "input_boolean",
+  );
 
   return (
     generateHeader() +
     generateSubstitutions(config, sensors, getSensor) +
     generateBoilerplate(config) +
     generateLvglConfig(sensors, getSensor, hideClock ?? false, config.buttonRadius ?? 0) +
-    generateBinarySensorConfig(binarySensors, lightSensors) +
+    generateBinarySensorConfig(binarySensors, lightSensors, inputBooleanSensors) +
     generateSwitchSensorConfig(switchSensors) +
     generateLightConfig() +
     generateNumericSensorConfig(sensors)

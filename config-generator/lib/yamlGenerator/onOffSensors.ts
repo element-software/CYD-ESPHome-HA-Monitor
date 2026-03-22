@@ -1,13 +1,14 @@
 import type {
   BinarySensorConfig,
+  InputBooleanSensorConfig,
   LightSensorConfig,
   SwitchSensorConfig,
 } from "@/types/config";
 
 export function generateOnOffSensor(
-  sensor: BinarySensorConfig | LightSensorConfig | SwitchSensorConfig,
+  sensor: BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig,
 ): string {
-  const isToggleable = sensor.type === "light" || sensor.type === "switch";
+  const isToggleable = sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean";
   const iconColorOnExpr = isToggleable
     ? `lv_color_hex((uint32_t)\${${sensor.id}_color_on_text})`
     : `lv_color_hex((uint32_t)\${${sensor.id}_color_on})`;
@@ -68,12 +69,13 @@ export function generateOnOffSensor(
 export function generateBinarySensorConfig(
   binarySensors: BinarySensorConfig[],
   lightSensors: LightSensorConfig[],
+  inputBooleanSensors: InputBooleanSensorConfig[],
 ): string {
-  const all = [...binarySensors, ...lightSensors];
+  const all = [...binarySensors, ...lightSensors, ...inputBooleanSensors];
   if (all.length === 0) return "";
   return `
-# --- BINARY SENSOR & LIGHT ENTITY STATE ---
-# Binary sensors and HA light entities (on/off state); icon color follows state (color_on / color_off).
+# --- BINARY SENSOR, LIGHT & INPUT BOOLEAN ENTITY STATE ---
+# Binary sensors, HA light entities, and input_boolean helpers (on/off state); icon color follows state (color_on / color_off).
 binary_sensor:${all.map((s) => generateOnOffSensor(s)).join("\n")}
 
 `;

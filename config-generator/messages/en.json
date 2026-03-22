@@ -161,7 +161,8 @@
       "sensor": "Sensor (Numeric)",
       "binary": "Binary Sensor",
       "light": "Light",
-      "switch": "Switch"
+      "switch": "Switch",
+      "input_boolean": "Input Boolean"
     },
     "typeLabel": "Type",
     "labelField": "Label",

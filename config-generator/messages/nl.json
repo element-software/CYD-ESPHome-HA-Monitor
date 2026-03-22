@@ -161,7 +161,8 @@
       "sensor": "Sensor (Numeriek)",
       "binary": "Binaire sensor",
       "light": "Licht",
-      "switch": "Schakelaar"
+      "switch": "Schakelaar",
+      "input_boolean": "Invoer Boolean"
     },
     "typeLabel": "Type",
     "labelField": "Label",

@@ -161,7 +161,8 @@
       "sensor": "Sensor (numerisk)",
       "binary": "Binär sensor",
       "light": "Ljus",
-      "switch": "Strömbrytare"
+      "switch": "Strömbrytare",
+      "input_boolean": "Ingång Boolean"
     },
     "typeLabel": "Typ",
     "labelField": "Etikett",
