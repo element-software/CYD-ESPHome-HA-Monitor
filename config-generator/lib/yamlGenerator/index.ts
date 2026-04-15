@@ -14,7 +14,7 @@ import {
   generateBinarySensorConfig,
   generateSwitchSensorConfig,
 } from "./onOffSensors";
-import { generateNumericSensorConfig } from "./numericSensors";
+import { generateNumericSensorConfig, generateTextValueSensorConfig } from "./numericSensors";
 import { generateLightConfig } from "./light";
 
 export function generateYaml(config: ConfigData): string {
@@ -45,6 +45,7 @@ export function generateYaml(config: ConfigData): string {
     generateBinarySensorConfig(binarySensors, lightSensors, inputBooleanSensors) +
     generateSwitchSensorConfig(switchSensors) +
     generateLightConfig() +
+    generateTextValueSensorConfig(sensors) +
     generateNumericSensorConfig(sensors)
   );
 }

@@ -64,6 +64,12 @@ export interface NumericSensorConfig extends BaseSensorConfig {
   colorLow?: string;
 }
 
+export interface TextSensorConfig extends BaseSensorConfig {
+  type: "text";
+  icon: string;
+  iconColor: string;
+}
+
 /** No icon/iconColor; uses iconOn/iconOff and colorOn/colorOff per state. */
 export interface BinarySensorConfig extends BaseSensorConfig {
   type: "binary";
@@ -78,11 +84,12 @@ export interface BinarySensorConfig extends BaseSensorConfig {
 }
 
 /** Discriminated union of all sensor config types */
-export type SensorConfig = NumericSensorConfig | BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig;
+export type SensorConfig = NumericSensorConfig | TextSensorConfig | BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig;
 
 /** Keys that can be updated on any sensor (union of keys from all config types) */
 export type SensorConfigKey =
   | keyof NumericSensorConfig
+  | keyof TextSensorConfig
   | keyof BinarySensorConfig
   | keyof LightSensorConfig
   | keyof SwitchSensorConfig

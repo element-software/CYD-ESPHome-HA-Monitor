@@ -159,6 +159,7 @@
     "col": "Spalte",
     "types": {
       "sensor": "Sensor (Numerisch)",
+      "text": "Text Sensor",
       "binary": "Binärsensor",
       "light": "Licht",
       "switch": "Schalter",

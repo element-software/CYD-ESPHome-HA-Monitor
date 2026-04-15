@@ -7,6 +7,7 @@ export function collectUniqueIconGlyphs(sensors: SensorConfig[]): string {
   const allIconCodes = sensors.flatMap((s) => {
     if (s.type === "binary" || s.type === "light" || s.type === "switch" || s.type === "input_boolean")
       return [s.iconOn, s.iconOff].filter(Boolean) as string[];
+    if (s.type === "text") return [s.icon];
     const icons: string[] = [s.icon];
     s.thresholds?.forEach((t) => {
       if (t.icon) icons.push(t.icon);
@@ -69,6 +70,9 @@ export function generateSensorSubstitutions(
         `  ${sensor.id}_color_low: "${sensor.colorLow || "0x32CD32"}"`,
       );
     }
+  } else if (sensor.type === "text") {
+    lines.push(`  ${sensor.id}_icon: "${iconCodeToHexEscape(sensor.icon)}"`);
+    lines.push(`  ${sensor.id}_icon_color: "${sensor.iconColor}"`);
   } else {
     const iconOffEsc = iconCodeToHexEscape(sensor.iconOff ?? "");
     const iconOnEsc = iconCodeToHexEscape(sensor.iconOn ?? "");
