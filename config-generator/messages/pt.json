@@ -159,7 +159,7 @@
     "col": "Coluna",
     "types": {
       "sensor": "Sensor (Numérico)",
-      "text": "Text Sensor",
+      "text": "Sensor de texto",
       "binary": "Sensor Binário",
       "light": "Luz",
       "switch": "Interruptor",

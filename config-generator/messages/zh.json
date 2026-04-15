@@ -159,7 +159,7 @@
     "col": "列",
     "types": {
       "sensor": "传感器（数值型）",
-      "text": "Text Sensor",
+      "text": "文本传感器",
       "binary": "二元传感器",
       "light": "灯光",
       "switch": "开关",

@@ -460,14 +460,14 @@ export default function SensorConfigPanel({
                   </div>
                   <div className="min-w-[100px]">
                     <label className="block text-xs text-gray-600 mb-0.5">
-                      {t("colorOn")}
+                      {t("thresholdColor")}
                     </label>
                     <input
                       type="color"
                       value={cydColorToCss(sensor.iconColor ?? "0x00BFFF")}
                       onChange={(e) => updateField("iconColor", cssToCydColor(e.target.value))}
                       className="w-10 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
-                      title={t("colorOn")}
+                      title={t("thresholdColor")}
                     />
                   </div>
                 </div>

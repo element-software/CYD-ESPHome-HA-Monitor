@@ -159,7 +159,7 @@
     "col": "Kolom",
     "types": {
       "sensor": "Sensor (Numeriek)",
-      "text": "Text Sensor",
+      "text": "Tekstsensor",
       "binary": "Binaire sensor",
       "light": "Licht",
       "switch": "Schakelaar",

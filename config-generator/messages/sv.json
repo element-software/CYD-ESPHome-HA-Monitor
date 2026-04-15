@@ -159,7 +159,7 @@
     "col": "Kolumn",
     "types": {
       "sensor": "Sensor (numerisk)",
-      "text": "Text Sensor",
+      "text": "Textsensor",
       "binary": "Binär sensor",
       "light": "Ljus",
       "switch": "Strömbrytare",

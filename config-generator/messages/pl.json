@@ -159,7 +159,7 @@
     "col": "Kolumna",
     "types": {
       "sensor": "Czujnik (numeryczny)",
-      "text": "Text Sensor",
+      "text": "Czujnik tekstowy",
       "binary": "Czujnik binarny",
       "light": "Światło",
       "switch": "Przełącznik",
