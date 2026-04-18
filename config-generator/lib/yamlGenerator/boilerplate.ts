@@ -110,6 +110,7 @@ display:
     id: my_display
     model: ILI9341
     spi_id: tft
+    data_rate: 40MHz
     cs_pin: ${p.tftCs}
     dc_pin: ${p.tftDc}
     auto_clear_enabled: false

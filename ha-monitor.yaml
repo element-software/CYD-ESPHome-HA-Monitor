@@ -165,6 +165,7 @@ display:
     id: my_display
     model: ILI9341
     spi_id: tft
+    data_rate: 40MHz
     cs_pin: GPIO15
     dc_pin: GPIO2
     auto_clear_enabled: false
