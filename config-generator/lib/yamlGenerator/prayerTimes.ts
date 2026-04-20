@@ -37,6 +37,10 @@ function generatePrayerTimesSubstitutions(config: ConfigData): string {
   device_name: "${config.deviceName}"
   friendly_name: "${config.friendlyName}"
 
+  # --- Display balance (tune if text is hard to read or screen too dim) ---
+  default_backlight: "0.75"
+  bg_image_opa: "40%"
+
   # --- Prayer Times API ---
   prayer_api_url: "${buildApiUrl(config)}"
   prayer_city: "${city}"
@@ -125,6 +129,14 @@ touchscreen:
 esphome:
   name: \${device_name}
   friendly_name: \${friendly_name}
+  on_boot:
+    then:
+      - delay: 2s
+      - lvgl.widget.redraw:
+      - light.turn_on:
+          id: backlight
+          brightness: \${default_backlight}
+          transition_length: 0.5s
 
 esp32:
   board: esp32dev
@@ -152,6 +164,7 @@ wifi:
     password: !secret ${deviceName}_ap_password
   on_connect:
     - logger.log: "WiFi connected, fetching prayer times..."
+    - lvgl.widget.redraw:
     - script.execute: fetch_prayer_times
 
 captive_portal:
@@ -227,6 +240,11 @@ font:
     id: next_prayer_font
     size: 22
     glyphs: "0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+image:
+  - file: "images/pt-bg-dark.png"
+    id: pt_bg
+    type: rgb565
+    resize: 480x320
 `;
 }
 
@@ -285,6 +303,8 @@ lvgl:
   pages:
     - id: main_page
       bg_color: 0x0c0c0c
+      bg_image_src: pt_bg
+      bg_image_opa: \${bg_image_opa}
       widgets:
         # ----- Centered container: arc behind, then countdown text on top -----
         - obj:
