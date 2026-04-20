@@ -22,8 +22,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
         {config.friendlyName || config.deviceName} Device Preview
       </p>
       <p className="text-sm text-center w-full text-gray-500">
-        Click on a sensor to toggle it's state so you can preview what it'll
-        look like on the CYD. It is not 100% accurate, but a close match.
+        Click binary/light/switch sensors to toggle state. Click a numeric sensor value to enter a test number and see how thresholds affect the icon and colour.
       </p>
       <div className="relative aspect-3/4 w-full overflow-hidden">
         <div

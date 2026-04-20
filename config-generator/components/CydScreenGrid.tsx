@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
 import { cydColorToCss, readableColor } from '@/lib/colorUtils';
 import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
@@ -69,14 +69,13 @@ function getSampleValueFromFormat(format: string | undefined): number {
     : SAMPLE_DEFAULT;
 }
 
-/** Format a sample value from a printf-style format (e.g. %.0fW, %.1f°C). */
-function formatSampleFromFormat(format: string | undefined): string {
-  if (!format?.trim()) return '—';
+/** Format a numeric value with a printf-style format (e.g. %.0fW, %.1f°C). */
+function formatValueWithFormat(value: number, format: string | undefined): string {
+  if (!format?.trim()) return value.toString();
   const m = format.match(/^%(\.\d)f(.*)$/);
   if (!m) return format;
   const decimals = Math.min(3, parseInt(m[1].slice(1), 10) || 0);
-  const sample = getSampleValueFromFormat(format);
-  const numStr = decimals === 0 ? Math.round(sample).toString() : sample.toFixed(decimals);
+  const numStr = decimals === 0 ? Math.round(value).toString() : value.toFixed(decimals);
   const suffix = m[2];
   const suffixDisplay = suffix === '%%' ? '%' : suffix;
   return numStr + suffixDisplay;
@@ -129,31 +128,45 @@ function SensorCell({
   onToggle,
   iconSet,
   buttonRadius = 0,
+  previewValue,
+  onPreviewValueChange,
 }: {
   sensor: SensorConfig;
   isOn: boolean;
   onToggle?: () => void;
   iconSet?: IconSet;
   buttonRadius?: number;
+  previewValue?: string;
+  onPreviewValueChange?: (value: string) => void;
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean';
   const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean') && isOn;
 
+  // Resolve the effective numeric value: user-entered preview overrides the sample default.
+  let effectiveNumericValue = 0;
+  if (sensor.type === 'sensor') {
+    const parsed = previewValue !== undefined && previewValue !== '' ? parseFloat(previewValue) : NaN;
+    effectiveNumericValue = !isNaN(parsed) ? parsed : getSampleValueFromFormat(sensor.format);
+  }
+
   const iconCode =
     sensor.type === 'sensor'
-      ? getThresholdIconForValue(sensor, getSampleValueFromFormat(sensor.format))
+      ? getThresholdIconForValue(sensor, effectiveNumericValue)
       : sensor.type === 'text'
         ? sensor.icon
-      : isOn
+        : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');
 
   const iconColorRaw =
     sensor.type === 'sensor'
-      ? getThresholdColorForValue(sensor, getSampleValueFromFormat(sensor.format))
+      ? getThresholdColorForValue(sensor, effectiveNumericValue)
       : sensor.type === 'text'
         ? (sensor.iconColor ?? '0x888888')
-      : isOn
+        : isOn
         ? (sensor.colorOn ?? '0xFF0000')
         : (sensor.colorOff ?? '0x888888');
 
@@ -165,10 +178,10 @@ function SensorCell({
 
   const displayValue =
     sensor.type === 'sensor'
-      ? formatSampleFromFormat(sensor.format)
+      ? formatValueWithFormat(effectiveNumericValue, sensor.format)
       : sensor.type === 'text'
         ? 'Sample'
-      : isOn
+        : isOn
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
 
@@ -185,16 +198,30 @@ function SensorCell({
           ? iconColor
           : onFgCss;
 
+  const handleNumericClick = () => {
+    if (sensor.type !== 'sensor') return;
+    setIsEditing(true);
+    setTimeout(() => inputRef.current?.select(), 0);
+  };
+
+  const commitEdit = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div
-      className={`flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]${canToggle ? ' cursor-pointer' : ''}`}
+      className={[
+        'flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]',
+        canToggle ? 'cursor-pointer' : '',
+        sensor.type === 'sensor' ? 'cursor-text' : '',
+      ].filter(Boolean).join(' ')}
       style={{
         backgroundColor: onBgCss,
         // ESPHome radius is in px on a 240px-wide display; the clock font is 48px = 16cqmin,
         // so 1cqmin ≈ 3 ESPHome pixels → divide px radius by 3 to get cqmin.
         borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',
       }}
-      onClick={canToggle ? onToggle : undefined}
+      onClick={canToggle ? onToggle : sensor.type === 'sensor' ? handleNumericClick : undefined}
     >
       <span
         className={`${getIconFontClass(iconSet)} shrink-0 inline-flex items-center justify-center opacity-90`}
@@ -215,12 +242,27 @@ function SensorCell({
         >
           {sensor.label || '—'}
         </span>
-        <span
-          className="truncate font-bold"
-          style={{ color: valueColor, fontSize: FONT.state }}
-        >
-          {displayValue}
-        </span>
+        {sensor.type === 'sensor' && isEditing ? (
+          <input
+            ref={inputRef}
+            type="number"
+            step="any"
+            value={previewValue ?? ''}
+            onChange={(e) => onPreviewValueChange?.(e.target.value)}
+            onBlur={commitEdit}
+            onKeyDown={(e) => { if (e.key === 'Enter') commitEdit(); }}
+            onClick={(e) => e.stopPropagation()}
+            className="truncate font-bold bg-transparent border-0 border-b outline-none p-0 w-full min-w-0"
+            style={{ color: valueColor, fontSize: FONT.state, borderColor: valueColor }}
+          />
+        ) : (
+          <span
+            className="truncate font-bold"
+            style={{ color: valueColor, fontSize: FONT.state }}
+          >
+            {displayValue}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -228,6 +270,7 @@ function SensorCell({
 
 export default function CydScreenGrid({ config }: CydScreenGridProps) {
   const [toggledOn, setToggledOn] = useState<Set<string>>(() => new Set());
+  const [previewValues, setPreviewValues] = useState<Record<string, string>>({});
 
   const toggle = (id: string) =>
     setToggledOn((prev) => {
@@ -236,6 +279,9 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
       else next.add(id);
       return next;
     });
+
+  const setPreviewValue = (id: string, value: string) =>
+    setPreviewValues((prev) => ({ ...prev, [id]: value }));
 
   const rows = config.hideClock ? 4 : 3;
   const visibleSensors = config.sensors.slice(0, rows * 2);
@@ -259,6 +305,8 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
             onToggle={() => toggle(sensor.id)}
             iconSet={config.iconSet}
             buttonRadius={config.buttonRadius ?? 0}
+            previewValue={previewValues[sensor.id]}
+            onPreviewValueChange={(val) => setPreviewValue(sensor.id, val)}
           />
         ))}
       </div>
