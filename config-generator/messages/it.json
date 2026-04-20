@@ -160,6 +160,7 @@
     "col": "Colonna",
     "types": {
       "sensor": "Sensore (Numerico)",
+      "text": "Sensore di testo",
       "binary": "Sensore binario",
       "light": "Luce",
       "switch": "Interruttore",

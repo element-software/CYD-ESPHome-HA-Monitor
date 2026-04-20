@@ -197,6 +197,14 @@ export default function SensorConfigPanel({
           colorOff: "0x32CD32",
         });
         break;
+      case "text":
+        onChange({
+          ...base,
+          type: "text",
+          icon: "\\ue8b9",
+          iconColor: "0x00BFFF",
+        });
+        break;
       case "light":
         onChange({
           ...base,
@@ -262,6 +270,8 @@ export default function SensorConfigPanel({
             className={`text-xs px-2 py-1 rounded ${
               sensor.type === "sensor"
                 ? "bg-blue-100 text-blue-800"
+                : sensor.type === "text"
+                  ? "bg-violet-100 text-violet-800"
                 : sensor.type === "binary"
                   ? "bg-green-100 text-green-800"
                   : sensor.type === "switch"
@@ -304,6 +314,7 @@ export default function SensorConfigPanel({
                 className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               >
                 <option value="sensor">{t("types.sensor")}</option>
+                <option value="text">{t("types.text")}</option>
                 <option value="binary">{t("types.binary")}</option>
                 <option value="light">{t("types.light")}</option>
                 <option value="switch">{t("types.switch")}</option>
@@ -436,6 +447,31 @@ export default function SensorConfigPanel({
                     </div>
                   );
                 })()}
+              {sensor.type === "text" && (
+                <div className="flex-1 min-w-0 flex gap-2 items-end justify-start flex-wrap">
+                  <div className="min-w-[100px]">
+                    <label className="block text-xs text-gray-600 mb-0.5">Icon</label>
+                    <IconPicker
+                      value={sensor.icon}
+                      onChange={(code) => updateField("icon", code)}
+                      iconColor={sensor.iconColor ?? "0x00BFFF"}
+                      iconSet={iconSet}
+                    />
+                  </div>
+                  <div className="min-w-[100px]">
+                    <label className="block text-xs text-gray-600 mb-0.5">
+                      {t("thresholdColor")}
+                    </label>
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.iconColor ?? "0x00BFFF")}
+                      onChange={(e) => updateField("iconColor", cssToCydColor(e.target.value))}
+                      className="w-10 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title={t("thresholdColor")}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

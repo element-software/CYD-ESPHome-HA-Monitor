@@ -80,6 +80,20 @@ export function generateNumericSensor(sensor: SensorConfig): string {
 ${colorLambda}${iconLambda}`;
 }
 
+export function generateTextValueSensor(sensor: SensorConfig): string {
+  if (sensor.type !== "text") return "";
+  return `
+  - platform: homeassistant
+    id: ha_${sensor.id}
+    entity_id: \${${sensor.id}_entity}
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: val_${sensor.id}
+            text: !lambda |-
+              return x.c_str();`;
+}
+
 export function generateNumericSensorConfig(
   sensors: SensorConfig[],
 ): string {
@@ -88,5 +102,16 @@ export function generateNumericSensorConfig(
   return `
 # --- NUMERIC SENSOR CONFIG ---
 sensor:${numeric.map((s) => generateNumericSensor(s)).join("\n")}
+`;
+}
+
+export function generateTextValueSensorConfig(
+  sensors: SensorConfig[],
+): string {
+  const textSensors = sensors.filter((s) => s.type === "text");
+  if (textSensors.length === 0) return "";
+  return `
+# --- TEXT SENSOR CONFIG ---
+text_sensor:${textSensors.map((s) => generateTextValueSensor(s)).join("\n")}
 `;
 }

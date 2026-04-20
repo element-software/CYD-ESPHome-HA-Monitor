@@ -3,7 +3,7 @@
 A clean, compact clock and sensor dashboard for the **ESP32-2432S028** (the "Cheap Yellow Display" or CYD), built with **ESPHome** and **LVGL**.
 Try out the new [YAML generator](https://cheapyellowdisplay.co.uk/) - please note: it's not perfect and is a work in progress!
 
-Monitor 6 or 8 Home Assistant entities at a glance — binary sensors (doors, motion) and numeric sensors (energy, temperature) — with dynamic colour-coded status indicators and an optional clock with the date. 
+Monitor 6 or 8 Home Assistant entities at a glance — binary sensors (doors, motion), numeric sensors (energy, temperature), and text sensors — with dynamic colour-coded status indicators and an optional clock with the date. 
 
 | | | |
 |:---:|:---:|:---:|

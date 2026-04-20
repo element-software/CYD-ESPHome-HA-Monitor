@@ -142,6 +142,8 @@ function SensorCell({
   const iconCode =
     sensor.type === 'sensor'
       ? getThresholdIconForValue(sensor, getSampleValueFromFormat(sensor.format))
+      : sensor.type === 'text'
+        ? sensor.icon
       : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');
@@ -149,6 +151,8 @@ function SensorCell({
   const iconColorRaw =
     sensor.type === 'sensor'
       ? getThresholdColorForValue(sensor, getSampleValueFromFormat(sensor.format))
+      : sensor.type === 'text'
+        ? (sensor.iconColor ?? '0x888888')
       : isOn
         ? (sensor.colorOn ?? '0xFF0000')
         : (sensor.colorOff ?? '0x888888');
@@ -162,6 +166,8 @@ function SensorCell({
   const displayValue =
     sensor.type === 'sensor'
       ? formatSampleFromFormat(sensor.format)
+      : sensor.type === 'text'
+        ? 'Sample'
       : isOn
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
@@ -171,7 +177,7 @@ function SensorCell({
       ? isToggleableOn ? onFgCss : DEVICE.label
       : DEVICE.label;
   const valueColor =
-    sensor.type === 'sensor'
+    sensor.type === 'sensor' || sensor.type === 'text'
       ? DEVICE.value
       : isToggleableOn
         ? onFgCss
