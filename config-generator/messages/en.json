@@ -78,7 +78,8 @@
   "configGeneratorPage": {
     "generateYaml": "Generate YAML",
     "exportJson": "Export JSON",
-    "importJson": "Import JSON"
+    "importJson": "Import JSON",
+    "esphomeNotice": "Generated YAML uses the <code>mipi_spi</code> display platform (ILI9341). <strong>Minimum ESPHome: 2025.5.0</strong>. The legacy <code>ili9xxx</code> platform is superseded by <code>mipi_spi</code>. <link>ESPHome 2025.5.0 release notes</link>"
   },
   "deviceSettings": {
     "title": "Device Settings",

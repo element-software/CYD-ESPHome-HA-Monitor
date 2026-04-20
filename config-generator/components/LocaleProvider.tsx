@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
-import { type Locale, defaultLocale, LOCALE_STORAGE_KEY, locales } from '@/lib/i18n';
+import { type Locale, defaultLocale, defaultTimeZone, LOCALE_STORAGE_KEY, locales } from '@/lib/i18n';
 import enMessages from '@/messages/en.json';
 import deMessages from '@/messages/de.json';
 import frMessages from '@/messages/fr.json';
@@ -67,7 +67,11 @@ export default function LocaleProvider({ children }: { children: ReactNode }) {
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>
-      <NextIntlClientProvider locale={locale} messages={allMessages[locale]}>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={allMessages[locale]}
+        timeZone={defaultTimeZone}
+      >
         {children}
       </NextIntlClientProvider>
     </LocaleContext.Provider>

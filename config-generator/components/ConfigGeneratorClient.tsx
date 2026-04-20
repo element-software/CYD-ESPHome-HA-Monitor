@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
@@ -9,6 +9,26 @@ import CydDevicePreview from '@/components/CydDevicePreview';
 import { ConfigData } from '@/types/config';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
 import { isValidConfig } from '@/lib/configValidation';
+
+/** mipi_spi display driver added in this release (replaces ili9xxx for new configs). */
+const ESPHOME_MIPI_RELEASE_NOTES = 'https://esphome.io/changelog/2025.5.0/';
+
+const esphomeNoticeRich = {
+  strong: (c: ReactNode) => <strong>{c}</strong>,
+  code: (c: ReactNode) => (
+    <code className="bg-gray-100 px-1 rounded text-[0.9em]">{c}</code>
+  ),
+  link: (c: ReactNode) => (
+    <a
+      href={ESPHOME_MIPI_RELEASE_NOTES}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-700 hover:text-blue-800 font-medium underline underline-offset-2"
+    >
+      {c}
+    </a>
+  ),
+};
 
 export default function ConfigGeneratorClient() {
   const t = useTranslations('configGeneratorPage');
@@ -73,6 +93,12 @@ export default function ConfigGeneratorClient() {
 
   return (
     <>
+      <div
+        className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed"
+        role="note"
+      >
+        {t.rich('esphomeNotice', esphomeNoticeRich)}
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="space-y-6 min-w-0 col-span-2">
           <ConfigForm config={config} onChange={setConfig} />

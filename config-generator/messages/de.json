@@ -78,7 +78,8 @@
   "configGeneratorPage": {
     "generateYaml": "YAML generieren",
     "exportJson": "JSON exportieren",
-    "importJson": "JSON importieren"
+    "importJson": "JSON importieren",
+    "esphomeNotice": "Das generierte YAML nutzt die Display-Plattform <code>mipi_spi</code> (ILI9341). <strong>Mindest-ESPHome: 2025.5.0</strong>. Die ältere Plattform <code>ili9xxx</code> wurde durch <code>mipi_spi</code> ersetzt. <link>ESPHome 2025.5.0 – Versionshinweise</link>"
   },
   "deviceSettings": {
     "title": "Geräteeinstellungen",

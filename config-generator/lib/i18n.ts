@@ -3,6 +3,9 @@ export type Locale = typeof locales[number];
 
 export const defaultLocale: Locale = 'en';
 
+/** Used by next-intl for date/time formatting; fixed zone avoids SSR/client markup drift. */
+export const defaultTimeZone = 'UTC';
+
 export const LOCALE_STORAGE_KEY = 'locale';
 
 export const localeNames: Record<Locale, string> = {
