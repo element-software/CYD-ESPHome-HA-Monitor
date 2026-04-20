@@ -1,4 +1,5 @@
 import { getRequestConfig } from 'next-intl/server';
+import { defaultTimeZone } from '@/lib/i18n';
 import enMessages from '../messages/en.json';
 
 /**
@@ -10,4 +11,5 @@ import enMessages from '../messages/en.json';
 export default getRequestConfig(async () => ({
   locale: 'en',
   messages: enMessages,
+  timeZone: defaultTimeZone,
 }));

@@ -62,6 +62,14 @@ touchscreen:
       : "";
 
   return `
+# ------------------------------------------------------------------------------
+# Display: platform mipi_spi (model ILI9341). The mipi_spi driver shipped in
+# ESPHome 2025.5.0 — https://esphome.io/changelog/2025.5.0/
+# Legacy ili9xxx/st7735 are deprecated in favor of mipi_spi; see
+# https://github.com/esphome/esphome/pull/15416
+#
+# Minimum ESPHome: 2025.5.0. Deprecation warnings for ili9xxx/st7735 from 2026.4.0+.
+# ------------------------------------------------------------------------------
 # ==============================================================================
 esphome:
   name: \${device_name}
@@ -106,7 +114,7 @@ spi:
 ${spiTouchBlock}
 
 display:
-  - platform: ili9xxx
+  - platform: mipi_spi
     id: my_display
     model: ILI9341
     spi_id: tft

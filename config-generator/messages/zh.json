@@ -78,7 +78,8 @@
   "configGeneratorPage": {
     "generateYaml": "生成 YAML",
     "exportJson": "导出 JSON",
-    "importJson": "导入 JSON"
+    "importJson": "导入 JSON",
+    "esphomeNotice": "生成的 YAML 使用 <code>mipi_spi</code> 显示平台（ILI9341）。<strong>最低 ESPHome：2025.5.0</strong>。旧的 <code>ili9xxx</code> 平台已由 <code>mipi_spi</code> 取代。<link>ESPHome 2025.5.0 发布说明</link>"
   },
   "deviceSettings": {
     "title": "设备设置",
