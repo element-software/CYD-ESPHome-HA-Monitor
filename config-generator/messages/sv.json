@@ -164,7 +164,18 @@
       "binary": "Binär sensor",
       "light": "Ljus",
       "switch": "Strömbrytare",
-      "input_boolean": "Ingång Boolean"
+      "input_boolean": "Ingång Boolean",
+      "action": "Åtgärd"
+    },
+    "actionField": "Åtgärd",
+    "actionTextField": "Knapptext",
+    "actionTextPlaceholder": "Kör",
+    "actionPermissionHint": "Aktivera \"Tillåt denna enhet att utföra Home Assistant-åtgärder\" på ESPHome-enheten i Home Assistant (Inställningar → Enheter → din enhet → Konfigurera).",
+    "actionKinds": {
+      "script": "Kör skript",
+      "automation": "Utlös automatisering",
+      "scene": "Aktivera scen",
+      "input_button": "Tryck på ingångsknapp"
     },
     "typeLabel": "Typ",
     "labelField": "Etikett",

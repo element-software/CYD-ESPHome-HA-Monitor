@@ -140,9 +140,12 @@ function SensorCell({
   onPreviewValueChange?: (value: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean';
+  const isAction = sensor.type === 'action';
+  const isClickable = canToggle || isAction;
   const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean') && isOn;
 
   // Resolve the effective numeric value: user-entered preview overrides the sample default.
@@ -155,7 +158,7 @@ function SensorCell({
   const iconCode =
     sensor.type === 'sensor'
       ? getThresholdIconForValue(sensor, effectiveNumericValue)
-      : sensor.type === 'text'
+      : sensor.type === 'text' || sensor.type === 'action'
         ? sensor.icon
         : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
@@ -164,7 +167,7 @@ function SensorCell({
   const iconColorRaw =
     sensor.type === 'sensor'
       ? getThresholdColorForValue(sensor, effectiveNumericValue)
-      : sensor.type === 'text'
+      : sensor.type === 'text' || sensor.type === 'action'
         ? (sensor.iconColor ?? '0x888888')
         : isOn
         ? (sensor.colorOn ?? '0xFF0000')
@@ -172,7 +175,9 @@ function SensorCell({
 
   const onBgCss = isToggleableOn
     ? cydColorToCss((sensor as { colorOn?: string }).colorOn ?? '0xFFA500')
-    : 'transparent';
+    : isPressed
+      ? 'rgba(255,255,255,0.12)'
+      : 'transparent';
   const onFgCss = isToggleableOn ? readableColor(onBgCss) : cydColorToCss(iconColorRaw);
   const iconColor = onFgCss;
 
@@ -181,6 +186,8 @@ function SensorCell({
       ? formatValueWithFormat(effectiveNumericValue, sensor.format)
       : sensor.type === 'text'
         ? 'Sample'
+        : sensor.type === 'action'
+          ? (sensor.actionText ?? 'Run')
         : isOn
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
@@ -190,7 +197,7 @@ function SensorCell({
       ? isToggleableOn ? onFgCss : DEVICE.label
       : DEVICE.label;
   const valueColor =
-    sensor.type === 'sensor' || sensor.type === 'text'
+    sensor.type === 'sensor' || sensor.type === 'text' || sensor.type === 'action'
       ? DEVICE.value
       : isToggleableOn
         ? onFgCss
@@ -208,11 +215,22 @@ function SensorCell({
     setIsEditing(false);
   };
 
+  const handleActionClick = () => {
+    setIsPressed(true);
+    window.setTimeout(() => setIsPressed(false), 150);
+  };
+
+  const handleCellClick = () => {
+    if (canToggle) onToggle?.();
+    else if (isAction) handleActionClick();
+    else if (sensor.type === 'sensor') handleNumericClick();
+  };
+
   return (
     <div
       className={[
         'flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]',
-        canToggle ? 'cursor-pointer' : '',
+        isClickable ? 'cursor-pointer' : '',
         sensor.type === 'sensor' ? 'cursor-text' : '',
       ].filter(Boolean).join(' ')}
       style={{
@@ -221,7 +239,7 @@ function SensorCell({
         // so 1cqmin ≈ 3 ESPHome pixels → divide px radius by 3 to get cqmin.
         borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',
       }}
-      onClick={canToggle ? onToggle : sensor.type === 'sensor' ? handleNumericClick : undefined}
+      onClick={handleCellClick}
     >
       <span
         className={`${getIconFontClass(iconSet)} shrink-0 inline-flex items-center justify-center opacity-90`}

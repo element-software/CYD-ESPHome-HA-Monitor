@@ -164,7 +164,18 @@
       "binary": "Sensor Binário",
       "light": "Luz",
       "switch": "Interruptor",
-      "input_boolean": "Boolean de entrada"
+      "input_boolean": "Boolean de entrada",
+      "action": "Ação"
+    },
+    "actionField": "Ação",
+    "actionTextField": "Texto do botão",
+    "actionTextPlaceholder": "Executar",
+    "actionPermissionHint": "Ative \"Permitir que este dispositivo execute ações do Home Assistant\" no dispositivo ESPHome no Home Assistant (Definições → Dispositivos → o seu dispositivo → Configurar).",
+    "actionKinds": {
+      "script": "Executar script",
+      "automation": "Acionar automatização",
+      "scene": "Ativar cena",
+      "input_button": "Premir botão de entrada"
     },
     "typeLabel": "Tipo",
     "labelField": "Rótulo",

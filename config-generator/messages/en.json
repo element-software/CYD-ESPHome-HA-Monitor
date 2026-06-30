@@ -164,7 +164,18 @@
       "binary": "Binary Sensor",
       "light": "Light",
       "switch": "Switch",
-      "input_boolean": "Input Boolean"
+      "input_boolean": "Input Boolean",
+      "action": "Action"
+    },
+    "actionField": "Action",
+    "actionTextField": "Button text",
+    "actionTextPlaceholder": "Run",
+    "actionPermissionHint": "Enable \"Allow this device to perform Home Assistant actions\" on the ESPHome device in Home Assistant (Settings → Devices → your device → Configure).",
+    "actionKinds": {
+      "script": "Run script",
+      "automation": "Trigger automation",
+      "scene": "Activate scene",
+      "input_button": "Press input button"
     },
     "typeLabel": "Type",
     "labelField": "Label",

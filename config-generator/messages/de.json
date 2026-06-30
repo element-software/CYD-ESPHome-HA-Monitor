@@ -164,7 +164,18 @@
       "binary": "Binärsensor",
       "light": "Licht",
       "switch": "Schalter",
-      "input_boolean": "Eingabe Boolean"
+      "input_boolean": "Eingabe Boolean",
+      "action": "Aktion"
+    },
+    "actionField": "Aktion",
+    "actionTextField": "Schaltflächentext",
+    "actionTextPlaceholder": "Ausführen",
+    "actionPermissionHint": "Aktivieren Sie „Gerät darf Home Assistant-Aktionen ausführen“ für das ESPHome-Gerät in Home Assistant (Einstellungen → Geräte → Ihr Gerät → Konfigurieren).",
+    "actionKinds": {
+      "script": "Skript ausführen",
+      "automation": "Automatisierung auslösen",
+      "scene": "Szene aktivieren",
+      "input_button": "Eingabetaste drücken"
     },
     "typeLabel": "Typ",
     "labelField": "Bezeichnung",

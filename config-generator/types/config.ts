@@ -83,8 +83,30 @@ export interface BinarySensorConfig extends BaseSensorConfig {
   colorOff?: string;
 }
 
+export type ActionKind =
+  | "script.turn_on"
+  | "automation.trigger"
+  | "scene.turn_on"
+  | "input_button.press";
+
+/** Tap-to-run button; calls a Home Assistant action on click. */
+export interface ActionSensorConfig extends BaseSensorConfig {
+  type: "action";
+  action: ActionKind;
+  actionText?: string;
+  icon: string;
+  iconColor: string;
+}
+
 /** Discriminated union of all sensor config types */
-export type SensorConfig = NumericSensorConfig | TextSensorConfig | BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig;
+export type SensorConfig =
+  | NumericSensorConfig
+  | TextSensorConfig
+  | BinarySensorConfig
+  | LightSensorConfig
+  | SwitchSensorConfig
+  | InputBooleanSensorConfig
+  | ActionSensorConfig;
 
 /** Keys that can be updated on any sensor (union of keys from all config types) */
 export type SensorConfigKey =
@@ -93,7 +115,8 @@ export type SensorConfigKey =
   | keyof BinarySensorConfig
   | keyof LightSensorConfig
   | keyof SwitchSensorConfig
-  | keyof InputBooleanSensorConfig;
+  | keyof InputBooleanSensorConfig
+  | keyof ActionSensorConfig;
 
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';

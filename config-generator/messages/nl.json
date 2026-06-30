@@ -164,7 +164,18 @@
       "binary": "Binaire sensor",
       "light": "Licht",
       "switch": "Schakelaar",
-      "input_boolean": "Invoer Boolean"
+      "input_boolean": "Invoer Boolean",
+      "action": "Actie"
+    },
+    "actionField": "Actie",
+    "actionTextField": "Knoptekst",
+    "actionTextPlaceholder": "Uitvoeren",
+    "actionPermissionHint": "Schakel \"Sta dit apparaat toe Home Assistant-acties uit te voeren\" in voor het ESPHome-apparaat in Home Assistant (Instellingen → Apparaten → uw apparaat → Configureren).",
+    "actionKinds": {
+      "script": "Script uitvoeren",
+      "automation": "Automatisering activeren",
+      "scene": "Scène activeren",
+      "input_button": "Invoerknop indrukken"
     },
     "typeLabel": "Type",
     "labelField": "Label",

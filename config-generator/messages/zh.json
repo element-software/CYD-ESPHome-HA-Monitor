@@ -164,7 +164,18 @@
       "binary": "二元传感器",
       "light": "灯光",
       "switch": "开关",
-      "input_boolean": "输入布尔值"
+      "input_boolean": "输入布尔值",
+      "action": "操作"
+    },
+    "actionField": "操作",
+    "actionTextField": "按钮文字",
+    "actionTextPlaceholder": "运行",
+    "actionPermissionHint": "在 Home Assistant 中为 ESPHome 设备启用“允许此设备执行 Home Assistant 操作”（设置 → 设备 → 您的设备 → 配置）。",
+    "actionKinds": {
+      "script": "运行脚本",
+      "automation": "触发自动化",
+      "scene": "激活场景",
+      "input_button": "按下输入按钮"
     },
     "typeLabel": "类型",
     "labelField": "标签",

@@ -1,5 +1,31 @@
 import type { SensorConfig } from "@/types/config";
 
+function getOnClickBlock(sensor: SensorConfig): string {
+  if (sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean") {
+    const toggleAction =
+      sensor.type === "light"
+        ? "light.toggle"
+        : sensor.type === "input_boolean"
+          ? "input_boolean.toggle"
+          : "switch.toggle";
+    return `
+            on_click:
+              - homeassistant.action:
+                  action: ${toggleAction}
+                  data:
+                    entity_id: "${sensor.entity}"`;
+  }
+  if (sensor.type === "action") {
+    return `
+            on_click:
+              - homeassistant.action:
+                  action: \${${sensor.id}_action}
+                  data:
+                    entity_id: "\${${sensor.id}_entity}"`;
+  }
+  return "";
+}
+
 export function generateLvglWidget(
   sensor: SensorConfig | undefined,
   row: number,
@@ -11,22 +37,14 @@ export function generateLvglWidget(
 
   const xPos = col === 1 ? 2 : 121;
   const yPos = hideClock ? 6 + (row - 1) * 78 : 100 + (row - 1) * 70;
-  const isToggleable = sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean";
-  const toggleAction =
-    sensor.type === "light"
-      ? "light.toggle"
-      : sensor.type === "input_boolean"
-        ? "input_boolean.toggle"
-        : "switch.toggle";
-
-  const onClickBlock = isToggleable
-    ? `
-            on_click:
-              - homeassistant.action:
-                  action: ${toggleAction}
-                  data:
-                    entity_id: "${sensor.entity}"`
-    : "";
+  const isClickable =
+    sensor.type === "light" ||
+    sensor.type === "switch" ||
+    sensor.type === "input_boolean" ||
+    sensor.type === "action";
+  const onClickBlock = getOnClickBlock(sensor);
+  const valueText =
+    sensor.type === "action" ? `"\${${sensor.id}_action_text}"` : '"--"';
 
   return `
         - button:
@@ -39,7 +57,7 @@ export function generateLvglWidget(
             border_width: 0
             shadow_width: 0
             radius: ${buttonRadius}
-            scrollbar_mode: "OFF"${isToggleable ? onClickBlock : ""}
+            scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}
             widgets:
               - label:
                   id: icon_${sensor.id}
@@ -60,7 +78,7 @@ export function generateLvglWidget(
                   clickable: false
               - label:
                   id: val_${sensor.id}
-                  text: "--"
+                  text: ${valueText}
                   text_font: state_font
                   text_color: 0xFFFFFF
                   align: LEFT_MID

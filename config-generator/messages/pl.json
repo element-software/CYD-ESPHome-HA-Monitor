@@ -164,7 +164,18 @@
       "binary": "Czujnik binarny",
       "light": "Światło",
       "switch": "Przełącznik",
-      "input_boolean": "Boolean wejściowy"
+      "input_boolean": "Boolean wejściowy",
+      "action": "Akcja"
+    },
+    "actionField": "Akcja",
+    "actionTextField": "Tekst przycisku",
+    "actionTextPlaceholder": "Uruchom",
+    "actionPermissionHint": "Włącz „Zezwól temu urządzeniu na wykonywanie akcji Home Assistant” na urządzeniu ESPHome w Home Assistant (Ustawienia → Urządzenia → twoje urządzenie → Konfiguruj).",
+    "actionKinds": {
+      "script": "Uruchom skrypt",
+      "automation": "Wyzwól automatyzację",
+      "scene": "Aktywuj scenę",
+      "input_button": "Naciśnij przycisk wejściowy"
     },
     "typeLabel": "Typ",
     "labelField": "Etykieta",
