@@ -176,6 +176,20 @@ substitutions:
   r1c1_color_thresh_low: "1000"                    # Amber threshold
 ```
 
+### Troubleshooting
+
+**Display rotated or only 4 sensors visible with blank space**
+
+Some CYD board variants need a different display orientation. In your ESPHome YAML, under `display:` → `transform:`, change `swap_xy` from `true` to `false`, then re-flash (USB or OTA):
+
+```yaml
+display:
+  transform:
+    swap_xy: false
+```
+
+If you use the [web config generator](https://cheapyellowdisplay.co.uk/), open **Display Settings** and turn off **Swap X/Y axes**, then copy the updated YAML.
+
 ## 🎨 How to Change Icons
 
 This project supports two icon sets that you can choose between in the YAML generator:

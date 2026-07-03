@@ -5,6 +5,7 @@ export const defaultConfig: ConfigData = {
   deviceName: 'hamon',
   friendlyName: 'HAMon',
   hideClock: false,
+  displaySwapXy: true,
   deviceVariant: 'spi_touch',
   devicePins: { ...SPI_TOUCH_PINS },
   sensors: [

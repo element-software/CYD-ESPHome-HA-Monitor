@@ -89,6 +89,8 @@
     "displaySettings": "显示设置",
     "clockWith": "显示时钟",
     "clockWithout": "不显示时钟",
+    "swapXyOn": "交换 XY：开",
+    "swapXyOff": "交换 XY：关",
     "radius": "圆角 {value}",
     "variants": {
       "spi_touch": "SPI 触摸",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "显示设置",
     "subtitle": "设备显示屏的视觉和布局选项。",
+    "swapXy": {
+      "label": "交换 X/Y 轴",
+      "description": "大多数 CYD 板请保持启用。若显示旋转错误或仅显示 4 个传感器且有大片空白，请关闭此选项。"
+    },
     "hideClock": {
       "label": "隐藏时钟",
       "description": "额外增加一行，形成 4×2 传感器网格。"

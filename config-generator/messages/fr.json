@@ -89,6 +89,8 @@
     "displaySettings": "Paramètres d'affichage",
     "clockWith": "Avec horloge",
     "clockWithout": "Sans horloge",
+    "swapXyOn": "Swap XY : Oui",
+    "swapXyOff": "Swap XY : Non",
     "radius": "Rayon {value}",
     "variants": {
       "spi_touch": "Tactile SPI",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Paramètres d'affichage",
     "subtitle": "Options visuelles et de mise en page pour l'affichage de l'appareil.",
+    "swapXy": {
+      "label": "Inverser les axes X/Y",
+      "description": "Activé pour la plupart des cartes CYD. Désactivez si l'écran est pivoté ou si seuls 4 capteurs sont visibles avec un espace vide."
+    },
     "hideClock": {
       "label": "Masquer l'horloge",
       "description": "Ajoute une ligne supplémentaire pour une grille de capteurs 4×2."

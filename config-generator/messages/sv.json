@@ -89,6 +89,8 @@
     "displaySettings": "Displayinställningar",
     "clockWith": "Med klocka",
     "clockWithout": "Utan klocka",
+    "swapXyOn": "Swap XY: På",
+    "swapXyOff": "Swap XY: Av",
     "radius": "Radie {value}",
     "variants": {
       "spi_touch": "SPI-pek",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Displayinställningar",
     "subtitle": "Visuella alternativ och layoutalternativ för enhetsdisplayen.",
+    "swapXy": {
+      "label": "Byt X/Y-axlar",
+      "description": "Aktivera för de flesta CYD-kort. Inaktivera om displayen är roterad eller bara 4 sensorer syns med tomt utrymme."
+    },
     "hideClock": {
       "label": "Dölj klocka",
       "description": "Lägger till en extra rad för ett 4×2-sensornät."

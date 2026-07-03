@@ -74,6 +74,26 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
       </div>
 
       <div className="p-4 overflow-y-auto max-h-[70vh] space-y-5">
+        {/* Swap X/Y */}
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('swapXy.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('swapXy.description')}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+            <input
+              type="checkbox"
+              checked={config.displaySwapXy ?? true}
+              onChange={(e) => update('displaySwapXy', e.target.checked)}
+              className="sr-only peer"
+              aria-label={t('swapXy.label')}
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+        </div>
+
+        <hr className="border-gray-100" />
+
         {/* Hide Clock */}
         <div className="flex items-center justify-between gap-4">
           <div>

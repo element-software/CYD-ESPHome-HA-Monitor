@@ -89,6 +89,8 @@
     "displaySettings": "Ustawienia wyświetlacza",
     "clockWith": "Z zegarem",
     "clockWithout": "Bez zegara",
+    "swapXyOn": "Swap XY: Wł.",
+    "swapXyOff": "Swap XY: Wył.",
     "radius": "Promień {value}",
     "variants": {
       "spi_touch": "Dotyk SPI",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Ustawienia wyświetlacza",
     "subtitle": "Opcje wizualne i układu dla wyświetlacza urządzenia.",
+    "swapXy": {
+      "label": "Zamień osie X/Y",
+      "description": "Włącz dla większości płytek CYD. Wyłącz, jeśli wyświetlacz jest obrócony lub widoczne są tylko 4 czujniki z pustym obszarem."
+    },
     "hideClock": {
       "label": "Ukryj zegar",
       "description": "Dodaje dodatkowy wiersz dla siatki czujników 4×2."

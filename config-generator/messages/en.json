@@ -89,6 +89,8 @@
     "displaySettings": "Display Settings",
     "clockWith": "With clock",
     "clockWithout": "No clock",
+    "swapXyOn": "Swap XY: On",
+    "swapXyOff": "Swap XY: Off",
     "radius": "Radius {value}",
     "variants": {
       "spi_touch": "SPI touch",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Display Settings",
     "subtitle": "Visual and layout options for the device display.",
+    "swapXy": {
+      "label": "Swap X/Y axes",
+      "description": "Enable for most CYD boards. Disable if the display is rotated or only 4 sensors are visible with blank space."
+    },
     "hideClock": {
       "label": "Hide Clock",
       "description": "Adds an extra row for a 4×2 sensor grid."

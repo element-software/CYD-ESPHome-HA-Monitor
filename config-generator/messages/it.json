@@ -89,6 +89,8 @@
     "displaySettings": "Impostazioni display",
     "clockWith": "Con orologio",
     "clockWithout": "Senza orologio",
+    "swapXyOn": "Swap XY: Sì",
+    "swapXyOff": "Swap XY: No",
     "radius": "Raggio {value}",
     "variants": {
       "spi_touch": "Touch SPI",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Impostazioni display",
     "subtitle": "Opzioni visive e di layout per il display del dispositivo.",
+    "swapXy": {
+      "label": "Scambia assi X/Y",
+      "description": "Attiva per la maggior parte delle schede CYD. Disattiva se il display è ruotato o sono visibili solo 4 sensori con spazio vuoto."
+    },
     "hideClock": {
       "label": "Nascondi orologio",
       "description": "Aggiunge una riga extra per una griglia sensori 4×2."

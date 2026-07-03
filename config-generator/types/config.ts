@@ -147,6 +147,8 @@ export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  /** Display transform swap_xy. Default true matches most CYD boards. Set false for alternate rotation variants. */
+  displaySwapXy?: boolean;
   /** Corner radius for sensor buttons (px). 0 = square corners. Max useful value is 34. */
   buttonRadius?: number;
   /** @deprecated Use devicePins.backlightPin. Kept for migration. */

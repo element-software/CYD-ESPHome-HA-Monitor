@@ -89,6 +89,8 @@
     "displaySettings": "Configuración de pantalla",
     "clockWith": "Con reloj",
     "clockWithout": "Sin reloj",
+    "swapXyOn": "Swap XY: Sí",
+    "swapXyOff": "Swap XY: No",
     "radius": "Radio {value}",
     "variants": {
       "spi_touch": "Táctil SPI",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Configuración de pantalla",
     "subtitle": "Opciones visuales y de diseño para la pantalla del dispositivo.",
+    "swapXy": {
+      "label": "Intercambiar ejes X/Y",
+      "description": "Actívalo en la mayoría de placas CYD. Desactívalo si la pantalla está rotada o solo se ven 4 sensores con espacio en blanco."
+    },
     "hideClock": {
       "label": "Ocultar reloj",
       "description": "Añade una fila adicional para una cuadrícula de sensores 4×2."

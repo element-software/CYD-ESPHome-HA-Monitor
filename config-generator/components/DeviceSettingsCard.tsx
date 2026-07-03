@@ -34,6 +34,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
 
   const displaySummary = [
     config.hideClock ? t('clockWithout') : t('clockWith'),
+    (config.displaySwapXy ?? true) ? t('swapXyOn') : t('swapXyOff'),
     t('radius', { value: config.buttonRadius ?? 0 }),
     iconSetLabel,
   ].join(' · ');

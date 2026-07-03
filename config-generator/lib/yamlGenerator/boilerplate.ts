@@ -3,6 +3,7 @@ import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
 
 export function generateBoilerplate(config: ConfigData): string {
   const { deviceName, friendlyName, hideClock } = config;
+  const swapXy = config.displaySwapXy !== false;
   const p = getEffectivePins(config);
   const useSpiTouch = isSpiTouch(p);
   const useI2cTouch = isI2cTouch(p);
@@ -127,7 +128,7 @@ display:
       width: 240
       height: 320
     transform:
-      swap_xy: true
+      swap_xy: ${swapXy}
       mirror_y: true
       mirror_x: true
 ${touchscreenBlock}

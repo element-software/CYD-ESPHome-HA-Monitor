@@ -89,6 +89,8 @@
     "displaySettings": "Anzeigeeinstellungen",
     "clockWith": "Mit Uhr",
     "clockWithout": "Ohne Uhr",
+    "swapXyOn": "Swap XY: Ein",
+    "swapXyOff": "Swap XY: Aus",
     "radius": "Radius {value}",
     "variants": {
       "spi_touch": "SPI-Touch",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Anzeigeeinstellungen",
     "subtitle": "Visuelle und Layout-Optionen für die Geräteanzeige.",
+    "swapXy": {
+      "label": "X/Y-Achsen tauschen",
+      "description": "Für die meisten CYD-Boards aktiviert lassen. Deaktivieren, wenn die Anzeige gedreht ist oder nur 4 Sensoren mit leerem Bereich sichtbar sind."
+    },
     "hideClock": {
       "label": "Uhr ausblenden",
       "description": "Fügt eine zusätzliche Reihe für ein 4×2-Sensor-Raster hinzu."

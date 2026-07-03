@@ -89,6 +89,8 @@
     "displaySettings": "Displayinstellingen",
     "clockWith": "Met klok",
     "clockWithout": "Zonder klok",
+    "swapXyOn": "Swap XY: Aan",
+    "swapXyOff": "Swap XY: Uit",
     "radius": "Radius {value}",
     "variants": {
       "spi_touch": "SPI-touch",
@@ -131,6 +133,10 @@
   "displayModal": {
     "title": "Displayinstellingen",
     "subtitle": "Visuele en indelingsopties voor het apparaatdisplay.",
+    "swapXy": {
+      "label": "X/Y-assen wisselen",
+      "description": "Inschakelen voor de meeste CYD-boards. Uitschakelen als het display gedraaid is of slechts 4 sensoren zichtbaar zijn met lege ruimte."
+    },
     "hideClock": {
       "label": "Klok verbergen",
       "description": "Voegt een extra rij toe voor een 4×2-sensorenraster."
