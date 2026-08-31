@@ -82,8 +82,8 @@ export default function ConfigForm({
       <DeviceSettingsCard config={config} onChange={onChange} />
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="flex items-stretch border-b border-gray-200 bg-gray-50/50">
-          <div className="flex min-w-0 flex-1 overflow-x-auto">
+        <div className="flex flex-wrap items-center gap-1 border-b border-gray-200 bg-gray-50/50 px-2">
+          <div className="flex flex-wrap min-w-0 flex-1">
             {screens.map((screen, idx) => {
               const isActive = idx === activeScreenIndex;
               return (
@@ -91,7 +91,7 @@ export default function ConfigForm({
                   key={screen.id}
                   type="button"
                   onClick={() => onActiveScreenChange(idx)}
-                  className={`py-3 px-6 font-semibold text-sm border-b-2 transition-all -mb-px outline-none shrink-0 ${
+                  className={`py-3 px-4 font-semibold text-sm border-b-2 -mb-px outline-none ${
                     isActive
                       ? 'border-blue-600 text-blue-600 bg-white'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-300 dark:hover:text-white'
@@ -102,7 +102,7 @@ export default function ConfigForm({
               );
             })}
           </div>
-          <div className="flex items-center gap-1 shrink-0 px-2 border-l border-gray-200">
+          <div className="flex items-center gap-1 shrink-0 py-1">
             <button
               type="button"
               onClick={addScreen}
@@ -127,7 +127,7 @@ export default function ConfigForm({
           </div>
         </div>
 
-        <div className="p-6 border-t border-gray-100">
+        <div className="p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             <div className="min-w-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1.5">
