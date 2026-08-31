@@ -16,14 +16,14 @@ const ESPHOME_MIPI_RELEASE_NOTES = 'https://esphome.io/changelog/2025.5.0/';
 const esphomeNoticeRich = {
   strong: (c: ReactNode) => <strong>{c}</strong>,
   code: (c: ReactNode) => (
-    <code className="bg-gray-100 px-1 rounded text-[0.9em]">{c}</code>
+    <code className="bg-gray-100 dark:bg-slate-950 px-1 rounded text-[0.9em] text-gray-900 dark:text-slate-100">{c}</code>
   ),
   link: (c: ReactNode) => (
     <a
       href={ESPHOME_MIPI_RELEASE_NOTES}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-blue-700 hover:text-blue-800 font-medium underline underline-offset-2"
+      className="text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 font-medium underline underline-offset-2"
     >
       {c}
     </a>
@@ -95,7 +95,7 @@ export default function ConfigGeneratorClient() {
   return (
     <>
       <div
-        className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed"
+        className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed dark:border-blue-700 dark:bg-blue-950 dark:text-slate-100"
         role="note"
       >
         {t.rich('esphomeNotice', esphomeNoticeRich)}

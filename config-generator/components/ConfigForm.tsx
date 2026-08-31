@@ -72,7 +72,7 @@ export default function ConfigForm({
                 className={`py-3 px-6 font-semibold text-sm border-b-2 transition-all -mb-px outline-none ${
                   isActive
                     ? 'border-blue-600 text-blue-600 bg-white'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-300 dark:hover:text-white'
                 }`}
               >
                 {screenName}
