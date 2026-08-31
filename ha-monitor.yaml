@@ -177,6 +177,10 @@ display:
     dimensions:
       width: 240
       height: 320
+      offset_width: 0
+      offset_height: 0
+      pad_width: 0
+      pad_height: 0
     # If the display is rotated or only 4 sensors show with blank space, try swap_xy: false
     transform:
       swap_xy: true

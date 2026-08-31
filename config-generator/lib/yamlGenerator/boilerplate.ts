@@ -136,6 +136,10 @@ display:
     dimensions:
       width: 240
       height: 320
+      offset_width: 0
+      offset_height: 0
+      pad_width: 0
+      pad_height: 0
     transform:
       swap_xy: ${swapXy}
       mirror_y: ${mirrorY}

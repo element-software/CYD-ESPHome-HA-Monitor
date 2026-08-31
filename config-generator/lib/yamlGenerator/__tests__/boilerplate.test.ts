@@ -37,4 +37,12 @@ describe("generateBoilerplate web_server and colour options", () => {
       "web_server:",
     );
   });
+
+  it("emits dimension offsets and padding so ESPHome 2026.6+ accepts ILI9341 + swap_xy", () => {
+    const yaml = generateBoilerplate(defaultConfig);
+    expect(yaml).toContain("offset_width: 0");
+    expect(yaml).toContain("offset_height: 0");
+    expect(yaml).toContain("pad_width: 0");
+    expect(yaml).toContain("pad_height: 0");
+  });
 });
