@@ -51,6 +51,7 @@ describe("action LVGL generation", () => {
   it("generates on_click with homeassistant.action", () => {
     const result = generateLvglWidget(baseAction, 2, 2, false, 0);
     expect(result).toContain("on_click:");
+    expect(result).toContain("press_lock: false");
     expect(result).toContain("homeassistant.action:");
     expect(result).toContain("action: ${r2c2_action}");
     expect(result).toContain('entity_id: "${r2c2_entity}"');

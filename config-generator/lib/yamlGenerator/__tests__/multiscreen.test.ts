@@ -58,6 +58,7 @@ describe("generateYaml multi-page", () => {
     expect(yaml).toContain("id: page_s1");
     expect(yaml).not.toContain("id: page_s2");
     expect(yaml).not.toContain("on_swipe_left:");
+    expect(yaml).not.toContain("lv_indev_wait_release");
     expect(yaml).toContain("s1_r1c1_entity:");
     expect(yaml).toContain("s1_bg_color:");
     expect(yaml).not.toContain("id: main_page");
@@ -78,6 +79,7 @@ describe("generateYaml multi-page", () => {
     expect(yaml).toContain("on_swipe_left:");
     expect(yaml).toContain("id: page_s2");
     expect(yaml).toContain("animation: MOVE_LEFT");
+    expect(yaml).toContain("lv_indev_wait_release(lv_indev_get_act());");
   });
 
   it("skips disabled slots in substitutions and widgets", () => {

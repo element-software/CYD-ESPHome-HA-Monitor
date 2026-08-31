@@ -61,6 +61,7 @@ export function generateLvglWidget(
             border_width: 0
             shadow_width: 0
             radius: ${buttonRadius}
+            press_lock: false
             scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}
             widgets:
               - label:
@@ -178,10 +179,12 @@ export function generateLvglConfig(
         ? ""
         : `
       on_swipe_left:
+        - lambda: lv_indev_wait_release(lv_indev_get_act());
         - lvgl.page.show:
             id: page_${pages[(index + 1) % pageCount].id}
             animation: MOVE_LEFT
       on_swipe_right:
+        - lambda: lv_indev_wait_release(lv_indev_get_act());
         - lvgl.page.show:
             id: page_${pages[(index - 1 + pageCount) % pageCount].id}
             animation: MOVE_RIGHT`;
