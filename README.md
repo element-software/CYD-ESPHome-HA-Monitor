@@ -3,7 +3,7 @@
 A clean, compact clock and sensor dashboard for the **ESP32-2432S028** (the "Cheap Yellow Display" or CYD), built with **ESPHome** and **LVGL**.
 Try out the new [YAML generator](https://cheapyellowdisplay.co.uk/) - please note: it's not perfect and is a work in progress!
 
-Monitor 6 or 8 Home Assistant entities at a glance — binary sensors (doors, motion), numeric sensors (energy, temperature), and text sensors — with dynamic colour-coded status indicators and an optional clock with the date. 
+Monitor Home Assistant entities on one required screen, then add extra swipeable pages as needed — binary sensors (doors, motion), numeric sensors (energy, temperature), text sensors, lights, switches, and tap actions — with per-page colours, optional background images, and an optional clock on page 1. 
 
 | | | |
 |:---:|:---:|:---:|
@@ -18,7 +18,11 @@ Monitor 6 or 8 Home Assistant entities at a glance — binary sensors (doors, mo
 
 - **YAML Generator Visual Editor:** The [YAML generator](https://cheapyellowdisplay.co.uk/) makes it super easy to configure your CYD, without you having to modify YAML files!
 - **Clock & Date Header:** Large time display with day and date, synced from Home Assistant.
-- **6 Customisable Sensor Slots:** 2 numeric sensors + 4 binary sensors in a compact 3×2 grid layout.
+- **Swipeable extra pages:** Screen 1 is required. Add up to five extra screens (six total), each pre-filled with sample entities. With the clock, Screen 1 has 6 slots and extra screens have 8; hide the clock for 8 on Screen 1 as well. Swipe left/right on the CYD when more than one screen is configured.
+- **Per-page themes:** Background colour, font colour, named theme presets, and optional background images compiled into flash.
+- **Enable/disable slots:** Leave unused blocks empty without generating unused Home Assistant subscriptions.
+- **On-device web UI:** Optional ESPHome `web_server` v3 so you can open the device IP to view entities and set backlight brightness.
+- **Display tweaks:** Swap X/Y (default on), invert colours, RGB/BGR, and mirror X/Y — stock CYD defaults stay as they were.
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
 - **Easy Configuration:** All entities, icons, labels, colours, and state messages are defined in the `substitutions:` block — no need to touch any code.
 - **Instant State:** Binary sensors display their current state immediately on boot using `publish_initial_state`.
@@ -260,13 +264,17 @@ Planned features for future releases:
 
 - [ ] **Choose Orientation:** Switch between landscape and portrait modes via a substitution toggle.
 - [ ] **Tap to Open Page:** Tap any sensor icon to open a detailed LVGL page with history, graphs, or controls.
-- [ ] **Swipe & Gestures:** Swipe between multiple dashboard pages with gesture navigation.
+- [x] **Swipe & Gestures:** Swipe between multiple dashboard pages with gesture navigation.
 - [ ] **External LED Control:** Drive addressable LEDs (e.g., WS2812B) to reflect sensor states — flash red on door open, glow green when all clear, etc.
 
 
 ## 🤝 Contributing
 
 Feel free to fork this project and submit pull requests! See the [Roadmap](#%EF%B8%8F-roadmap) above for planned features.
+
+Multi-page swipe, per-page themes, background images, and the on-device web server were contributed from work by [jchisholm59](https://github.com/jchisholm59). The hand-written [`ha-monitor.yaml`](ha-monitor.yaml) remains a simple 6-slot reference; use the [YAML generator](https://cheapyellowdisplay.co.uk/) for 3-page configs.
+
+**Background images:** pick a file in the generator (or type a path such as `images/bg_home.png`). The same file must exist on your ESPHome host at compile time, typically `/config/esphome/images/`. Images are resized to 240×320 and compiled into flash — they are not fetched from Home Assistant at runtime.
 
 ## 📄 License
 

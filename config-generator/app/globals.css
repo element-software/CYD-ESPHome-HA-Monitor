@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 
 /* Material Symbols loaded via layout.tsx link; family name is "Material Symbols Outlined" */
@@ -54,4 +55,149 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark,
+html.dark body {
+  background-color: #0a0a0c;
+  color: #e8eaed;
+}
+
+html.dark main {
+  background-color: #0a0a0c;
+}
+
+/* Panels — do not force text colour here; that painted light text onto light chips/banners. */
+html.dark .bg-white,
+html.dark header,
+html.dark footer {
+  background-color: #131316 !important;
+  border-color: #27272a !important;
+}
+
+html.dark .bg-gray-50,
+html.dark .bg-gray-50\/50 {
+  background-color: #18181b !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #27272a !important;
+}
+
+html.dark .hover\:bg-gray-50:hover,
+html.dark .hover\:bg-gray-100:hover,
+html.dark .hover\:bg-gray-200:hover,
+html.dark .has-\[\:checked\]\:bg-blue-50\/50:has(:checked) {
+  background-color: #27272a !important;
+}
+
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-slate-700,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f4f4f7 !important;
+}
+
+html.dark .text-gray-500,
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .border-gray-200,
+html.dark .border-gray-300,
+html.dark .border-gray-100 {
+  border-color: #3f3f46 !important;
+}
+
+/* Light tinted banners must keep readable text */
+html.dark .bg-blue-50,
+html.dark .bg-blue-50\/90 {
+  background-color: #172554 !important;
+  color: #e2e8f0 !important;
+  border-color: #1d4ed8 !important;
+}
+
+html.dark .border-blue-100 {
+  border-color: #1d4ed8 !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-amber-50\/50 {
+  background-color: #422006 !important;
+  color: #fde68a !important;
+}
+
+html.dark .text-amber-700 {
+  color: #fcd34d !important;
+}
+
+html.dark .border-amber-200 {
+  border-color: #854d0e !important;
+}
+
+html.dark code {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+
+html.dark .hover\:text-blue-800:hover {
+  color: #bfdbfe !important;
+}
+
+html.dark input[type="text"],
+html.dark input[type="number"],
+html.dark select,
+html.dark textarea {
+  background-color: #0a0a0c !important;
+  color: #f4f4f7 !important;
+  border-color: #3f3f46 !important;
+}
+
+html.dark input[type="text"]::placeholder,
+html.dark input[type="number"]::placeholder,
+html.dark textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+html.dark input[type="text"]:focus,
+html.dark input[type="number"]:focus,
+html.dark select:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25) !important;
+}
+
+html.dark dialog {
+  background-color: #131316 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #e8eaed !important;
+}
+
+html.dark .bg-gray-900 {
+  background-color: #050507 !important;
+}
+
+html.dark .bg-blue-600 {
+  background-color: #2563eb !important;
+}
+
+html.dark .text-blue-600,
+html.dark .text-amber-600 {
+  color: #93c5fd !important;
+}
+
+html.dark hr {
+  border-color: #27272a !important;
 }

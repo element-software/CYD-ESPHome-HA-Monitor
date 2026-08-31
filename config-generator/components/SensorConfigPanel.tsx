@@ -41,6 +41,8 @@ const UNIT_OPTIONS: { value: string; label: string }[] = [
   { value: "mg", label: "mg" },
   { value: "l/min", label: "l/min" },
   { value: "ml/min", label: "ml/min" },
+  { value: "mm", label: "mm" },
+  { value: "mm/hr", label: "mm/hr" },
   { value: "custom", label: "Custom" },
 ];
 
@@ -134,7 +136,7 @@ export default function SensorConfigPanel({
     }
   }, [sensor.type, sensor.type === "sensor" ? sensor.format : undefined]);
 
-  const updateField = (field: SensorConfigKey, value: string) => {
+  const updateField = (field: SensorConfigKey, value: string | boolean) => {
     onChange({ ...sensor, [field]: value } as SensorConfig);
   };
 
@@ -322,6 +324,18 @@ export default function SensorConfigPanel({
 
       {isExpanded && (
         <div className="p-3 space-y-2 bg-white">
+          <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+            <input
+              type="checkbox"
+              id={`enable-${sensor.id}`}
+              checked={sensor.enabled !== false}
+              onChange={(e) => updateField("enabled", e.target.checked)}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+            />
+            <label htmlFor={`enable-${sensor.id}`} className="text-sm font-medium text-gray-700 cursor-pointer select-none">
+              {t("enabled")}
+            </label>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-0.5">

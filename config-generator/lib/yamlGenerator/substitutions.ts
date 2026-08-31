@@ -1,7 +1,8 @@
 import type { ConfigData, SensorConfig } from "@/types/config";
 import { iconCodeToHexEscape } from "@/lib/icons";
 import { sortThresholdsDesc } from "@/lib/yamlGenerator/numericSensors";
-import { cydReadableColor } from "@/lib/colorUtils";
+import { cydReadableColor, cssToCydColor } from "@/lib/colorUtils";
+import { DEFAULT_SCREEN_BG, DEFAULT_SCREEN_FG } from "@/lib/defaultConfig";
 
 export function collectUniqueIconGlyphs(sensors: SensorConfig[]): string {
   const allIconCodes = sensors.flatMap((s) => {
@@ -26,6 +27,7 @@ export function generateSensorSubstitutions(
   position: string,
 ): string {
   if (!sensor) return "";
+  if (sensor.enabled === false) return "";
 
   const lines: string[] = [];
   lines.push(`  # --- ${position} ---`);
@@ -39,7 +41,6 @@ export function generateSensorSubstitutions(
     lines.push(`  ${sensor.id}_format: '${sensor.format || "%.0f"}'`);
 
     if (sensor.thresholds && sensor.thresholds.length > 0) {
-      // Sort descending so indices match the lambda order in numericSensors.ts
       const sorted = sortThresholdsDesc(sensor.thresholds);
       const hasIcons = sorted.some((t) => t.icon);
       sorted.forEach((t, i) => {
@@ -105,38 +106,96 @@ export function generateSensorSubstitutions(
   return lines.join("\n");
 }
 
+export function getAllPrefixedSensors(config: ConfigData): SensorConfig[] {
+  const screens = config.screens?.length
+    ? config.screens
+    : [
+        {
+          id: "s1",
+          name: "Screen 1",
+          backgroundColor: DEFAULT_SCREEN_BG,
+          fontColor: DEFAULT_SCREEN_FG,
+          sensors: config.sensors,
+        },
+      ];
+
+  const allSensors: SensorConfig[] = [];
+  screens.forEach((screen, screenIdx) => {
+    const hideClock = config.hideClock ?? false;
+    const showClock = screenIdx === 0 && !hideClock;
+    const count = showClock ? 6 : 8;
+
+    screen.sensors.slice(0, count).forEach((sensor) => {
+      allSensors.push({
+        ...sensor,
+        id: `${screen.id}_${sensor.id}`,
+      });
+    });
+  });
+
+  return allSensors;
+}
+
 export function generateSubstitutions(
   config: ConfigData,
-  sensors: SensorConfig[],
-  getSensor: (id: string) => SensorConfig | undefined,
+  _sensors?: SensorConfig[],
+  _getSensor?: (id: string) => SensorConfig | undefined,
 ): string {
-  const { deviceName, friendlyName, hideClock } = config;
-  const uniqueIcons = collectUniqueIconGlyphs(sensors);
+  const { deviceName, friendlyName } = config;
+  const allPrefixedSensors = getAllPrefixedSensors(config);
+  const uniqueIcons = collectUniqueIconGlyphs(allPrefixedSensors);
 
-  return `substitutions:
-  # --- Device ---
-  device_name: "${deviceName}"
-  friendly_name: "${friendlyName}"
+  const screens = config.screens?.length
+    ? config.screens
+    : [
+        {
+          id: "s1",
+          name: "Screen 1",
+          backgroundColor: DEFAULT_SCREEN_BG,
+          fontColor: DEFAULT_SCREEN_FG,
+          sensors: config.sensors,
+        },
+      ];
 
-  # --- Icon Glyphs ---
-  # List each unique icon ONCE here. If you use the same icon multiple times below,
-  # only include it once in this list to avoid "duplicate glyph" errors.
-  icon_glyphs: "${uniqueIcons}"
+  const lines: string[] = [];
+  lines.push(`substitutions:`);
+  lines.push(`  # --- Device ---`);
+  lines.push(`  device_name: "${deviceName}"`);
+  lines.push(`  friendly_name: "${friendlyName}"`);
+  lines.push(``);
+  lines.push(`  # --- Icon Glyphs ---`);
+  lines.push(`  # List each unique icon ONCE here. If you use the same icon multiple times below,`);
+  lines.push(`  # only include it once in this list to avoid "duplicate glyph" errors.`);
+  lines.push(`  icon_glyphs: "${uniqueIcons}"`);
+  lines.push(``);
 
-${generateSensorSubstitutions(getSensor("r1c1"), "Row 1, Column 1")}
+  screens.forEach((s) => {
+    lines.push(`  # --- Color theme for ${s.name} ---`);
+    lines.push(`  ${s.id}_bg_color: "${cssToCydColor(s.backgroundColor || DEFAULT_SCREEN_BG)}"`);
+    lines.push(`  ${s.id}_font_color: "${cssToCydColor(s.fontColor || DEFAULT_SCREEN_FG)}"`);
+    lines.push(``);
+  });
 
-${generateSensorSubstitutions(getSensor("r1c2"), "Row 1, Column 2")}
+  screens.forEach((s, sIdx) => {
+    lines.push(`  # ==============================================================================`);
+    lines.push(`  # Substitutions for ${s.name}`);
+    lines.push(`  # ==============================================================================`);
+    const hideClock = config.hideClock ?? false;
+    const showClock = sIdx === 0 && !hideClock;
+    const count = showClock ? 6 : 8;
 
-${generateSensorSubstitutions(getSensor("r2c1"), "Row 2, Column 1")}
+    s.sensors.slice(0, count).forEach((sensor) => {
+      const prefixed: SensorConfig = {
+        ...sensor,
+        id: `${s.id}_${sensor.id}`,
+      };
+      const block = generateSensorSubstitutions(prefixed, `${s.name}, ${sensor.id.toUpperCase()}`);
+      if (block) {
+        lines.push(block);
+        lines.push(``);
+      }
+    });
+  });
 
-${generateSensorSubstitutions(getSensor("r2c2"), "Row 2, Column 2")}
-
-${generateSensorSubstitutions(getSensor("r3c1"), "Row 3, Column 1")}
-
-${generateSensorSubstitutions(getSensor("r3c2"), "Row 3, Column 2")}
-${hideClock ? `
-${generateSensorSubstitutions(getSensor("r4c1"), "Row 4, Column 1")}
-
-${generateSensorSubstitutions(getSensor("r4c2"), "Row 4, Column 2")}
-` : ""}`;
+  return lines.join("\n").trim() + "\n";
 }

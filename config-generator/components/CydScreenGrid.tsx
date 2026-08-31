@@ -1,9 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, type CSSProperties } from 'react';
 import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
 import { cydColorToCss, readableColor } from '@/lib/colorUtils';
 import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
+import { previewImageCache } from '@/lib/previewImageCache';
+import { DEFAULT_SCREEN_BG, DEFAULT_SCREEN_FG } from '@/lib/defaultConfig';
 import CydClock from './CydClock';
 
 /** Device-matching colors (dark blue/black bg, cyan labels, white values) */
@@ -24,6 +26,7 @@ const FONT = {
 
 interface CydScreenGridProps {
   config: ConfigData;
+  activeScreenIndex?: number;
 }
 
 /** Sample values per unit type for preview (format suffix hint). */
@@ -55,6 +58,8 @@ const SAMPLE_BY_SUFFIX: Record<string, number> = {
   'mg': 500,
   'l/min': 8.5,
   'ml/min': 120,
+  'mm': 12,
+  'mm/hr': 4.2,
 };
 const SAMPLE_DEFAULT = 12.34;
 
@@ -130,6 +135,7 @@ function SensorCell({
   buttonRadius = 0,
   previewValue,
   onPreviewValueChange,
+  fontColor = DEVICE.label,
 }: {
   sensor: SensorConfig;
   isOn: boolean;
@@ -138,10 +144,22 @@ function SensorCell({
   buttonRadius?: number;
   previewValue?: string;
   onPreviewValueChange?: (value: string) => void;
+  fontColor?: string;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  if (sensor.enabled === false) {
+    return (
+      <div
+        className="p-[1.8cqmin] min-h-0"
+        style={{
+          borderRadius: buttonRadius > 0 ? `${(buttonRadius / 3).toFixed(2)}cqmin` : '0',
+        }}
+      />
+    );
+  }
 
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean';
   const isAction = sensor.type === 'action';
@@ -194,11 +212,11 @@ function SensorCell({
 
   const labelColor =
     sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean'
-      ? isToggleableOn ? onFgCss : DEVICE.label
-      : DEVICE.label;
+      ? isToggleableOn ? onFgCss : fontColor
+      : fontColor;
   const valueColor =
     sensor.type === 'sensor' || sensor.type === 'text' || sensor.type === 'action'
-      ? DEVICE.value
+      ? fontColor
       : isToggleableOn
         ? onFgCss
         : sensor.type === 'binary'
@@ -286,7 +304,7 @@ function SensorCell({
   );
 }
 
-export default function CydScreenGrid({ config }: CydScreenGridProps) {
+export default function CydScreenGrid({ config, activeScreenIndex = 0 }: CydScreenGridProps) {
   const [toggledOn, setToggledOn] = useState<Set<string>>(() => new Set());
   const [previewValues, setPreviewValues] = useState<Record<string, string>>({});
 
@@ -301,19 +319,42 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
   const setPreviewValue = (id: string, value: string) =>
     setPreviewValues((prev) => ({ ...prev, [id]: value }));
 
-  const rows = config.hideClock ? 4 : 3;
-  const visibleSensors = config.sensors.slice(0, rows * 2);
+  const currentScreen = config.screens?.[activeScreenIndex] || {
+    sensors: config.sensors,
+    backgroundColor: DEFAULT_SCREEN_BG,
+    fontColor: DEFAULT_SCREEN_FG,
+  };
+
+  const showClockOnThisScreen = !config.hideClock && activeScreenIndex === 0;
+  const rows = showClockOnThisScreen ? 3 : 4;
+  const visibleSensors = currentScreen.sensors.slice(0, rows * 2);
+
+  const screenBg = currentScreen.backgroundColor || DEFAULT_SCREEN_BG;
+  const screenFont = currentScreen.fontColor || DEFAULT_SCREEN_FG;
+
+  let bgStyle: CSSProperties = { backgroundColor: screenBg };
+  const bgImgPath = 'backgroundImage' in currentScreen ? currentScreen.backgroundImage : undefined;
+  if (bgImgPath && bgImgPath.trim() !== '') {
+    const resolvedUrl = previewImageCache.get(bgImgPath) || bgImgPath;
+    bgStyle = {
+      ...bgStyle,
+      backgroundImage: `url(${resolvedUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    };
+  }
 
   return (
     <div
       className="flex flex-col h-full w-full overflow-hidden"
-      style={{ backgroundColor: DEVICE.bg }}
+      style={bgStyle}
     >
-      {!config.hideClock && <CydClock />}
+      {showClockOnThisScreen && <CydClock fontColor={screenFont} />}
 
       <div
-        className={`grid grid-cols-2 ${config.hideClock ? 'grid-rows-4' : 'grid-rows-3'} flex-1 min-h-0 w-full gap-[1.2cqmin]`}
-        style={{ padding: '2cqmin', paddingTop: config.hideClock ? '2cqmin' : '1cqmin' }}
+        className={`grid grid-cols-2 ${showClockOnThisScreen ? 'grid-rows-3' : 'grid-rows-4'} flex-1 min-h-0 w-full gap-[1.2cqmin]`}
+        style={{ padding: '2cqmin', paddingTop: showClockOnThisScreen ? '1cqmin' : '2cqmin' }}
       >
         {visibleSensors.map((sensor) => (
           <SensorCell
@@ -325,6 +366,7 @@ export default function CydScreenGrid({ config }: CydScreenGridProps) {
             buttonRadius={config.buttonRadius ?? 0}
             previewValue={previewValues[sensor.id]}
             onPreviewValueChange={(val) => setPreviewValue(sensor.id, val)}
+            fontColor={screenFont}
           />
         ))}
       </div>

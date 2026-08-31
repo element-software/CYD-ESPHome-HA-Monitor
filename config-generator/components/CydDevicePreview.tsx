@@ -6,6 +6,7 @@ import CydScreenGrid from "./CydScreenGrid";
 
 interface CydDevicePreviewProps {
   config: ConfigData;
+  activeScreenIndex?: number;
 }
 
 /**
@@ -13,7 +14,7 @@ interface CydDevicePreviewProps {
  * Add your device frame to public/cyd-device.png. When you have an image with the
  * screen area transparent, use that so the grid content shows through the cutout.
  */
-export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
+export default function CydDevicePreview({ config, activeScreenIndex = 0 }: CydDevicePreviewProps) {
   const [imageError, setImageError] = useState(false);
 
   return (
@@ -29,7 +30,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: "size",
-            backgroundColor: "#0f1419",
+            backgroundColor: config.screens?.[activeScreenIndex]?.backgroundColor || "#0f1419",
             top: "22%",
             right: "24%",
             bottom: "27%",
@@ -37,7 +38,7 @@ export default function CydDevicePreview({ config }: CydDevicePreviewProps) {
           }}
           aria-hidden
         >
-          <CydScreenGrid config={config} />
+          <CydScreenGrid config={config} activeScreenIndex={activeScreenIndex} />
         </div>
         {/* Device frame on top: rotated 90° so device appears in portrait */}
         {!imageError ? (

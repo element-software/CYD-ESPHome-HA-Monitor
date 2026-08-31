@@ -74,7 +74,7 @@ export function generateNumericSensor(sensor: SensorConfig): string {
             id: val_${sensor.id}
             text: !lambda |-
               return str_sprintf("\${${sensor.id}_format}", x);
-        - lvgl.label.update:
+        - lvgl.widget.update:
             id: icon_${sensor.id}
             text_color: !lambda |-
 ${colorLambda}${iconLambda}`;

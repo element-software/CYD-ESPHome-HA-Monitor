@@ -18,7 +18,8 @@
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
     "starOnGithub": "Stjärnmärk på GitHub",
-    "githubStars": "GitHub-stjärnor"
+    "githubStars": "GitHub-stjärnor",
+    "toggleTheme": "Toggle dark mode"
   },
   "footer": {
     "tagline": "CYD-konfigurationsverktyg och info · ESPHome / Home Assistant",
@@ -156,6 +157,26 @@
         "label": "Material Symbols",
         "description": "Google Fonts-ikoner (fonts.google.com/icons)"
       }
+    },
+    "invertColors": {
+      "label": "Invert colours",
+      "description": "Use if colours look inverted or negative on your panel."
+    },
+    "colorOrder": {
+      "label": "Colour order",
+      "description": "RGB or BGR. Use BGR if reds and blues are swapped."
+    },
+    "mirrorX": {
+      "label": "Mirror X",
+      "description": "Default on for most CYD boards. Turn off if the image is flipped horizontally."
+    },
+    "mirrorY": {
+      "label": "Mirror Y",
+      "description": "Default on for most CYD boards. Turn off if the image is flipped vertically."
+    },
+    "webServer": {
+      "label": "On-device web server",
+      "description": "Adds ESPHome web_server v3 so you can open the device IP to view entities and set backlight brightness."
     }
   },
   "sensorList": {
@@ -210,10 +231,24 @@
     "onPlaceholderBinary": "Öppen",
     "offPlaceholderBinary": "Stängd",
     "onPlaceholderLight": "På",
-    "offPlaceholderLight": "Av"
+    "offPlaceholderLight": "Av",
+    "enabled": "Enabled"
   },
   "yamlModal": {
     "title": "Genererad YAML"
+  },
+  "whatsNewModal": {
+    "title": "What’s new",
+    "intro": "The config generator can now build multi-page dashboards with themes and extra display options.",
+    "features": {
+      "screens": "Optional extra screens (up to 6) with swipe between pages",
+      "themes": "Per-page colours, themes, and optional background images",
+      "slots": "Enable or disable individual slots",
+      "display": "Invert colours, BGR, mirrors, and an optional ESPHome web server",
+      "darkMode": "Dark mode for this generator"
+    },
+    "thanks": "Thank you to <link>jchisholm59</link> for contributing these features.",
+    "dismiss": "Got it"
   },
   "iconPicker": {
     "label": "Ikon",
@@ -439,5 +474,24 @@
     "confirm": "Ladda konfiguration",
     "invalidFile": "Den valda filen är inte en giltig HAMon-konfiguration.",
     "errorReading": "Det gick inte att läsa filen."
+  },
+  "screenSettings": {
+    "name": "Screen name",
+    "theme": "Colour theme",
+    "themes": {
+      "default": "Default Dark",
+      "frigate": "Frigate Dark",
+      "ha": "HA Dark Slate",
+      "light": "Light",
+      "custom": "Custom colours"
+    },
+    "backgroundColor": "Background colour",
+    "fontColor": "Font colour",
+    "backgroundImage": "Background image path (optional)",
+    "chooseImage": "Choose image",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "addScreen": "Add screen",
+    "removeScreen": "Remove screen",
+    "addScreenLimit": "You can add up to {max} screens"
   }
 }

@@ -8,18 +8,40 @@ import SensorConfigPanel from './SensorConfigPanel';
 interface SensorListProps {
   config: ConfigData;
   onChange: (config: ConfigData) => void;
+  activeScreenIndex: number;
 }
 
-export default function SensorList({ config, onChange }: SensorListProps) {
+export default function SensorList({ config, onChange, activeScreenIndex }: SensorListProps) {
   const t = useTranslations('sensorList');
-  const rows = config.hideClock ? 4 : 3;
-  const visibleSensors = config.sensors.slice(0, rows * 2);
+
+  const showClock = activeScreenIndex === 0 && !config.hideClock;
+  const rows = showClock ? 3 : 4;
+
+  const currentScreen = config.screens?.[activeScreenIndex] || { sensors: config.sensors };
+  const visibleSensors = currentScreen.sensors.slice(0, rows * 2);
 
   const [expandedRows, setExpandedRows] = useState<boolean[]>(
     () => Array(4).fill(false)
   );
 
   const updateSensor = (index: number, sensor: SensorConfig) => {
+    const newScreens = [...(config.screens || [])];
+    if (newScreens[activeScreenIndex]) {
+      const newSensors = [...newScreens[activeScreenIndex].sensors];
+      newSensors[index] = sensor;
+      newScreens[activeScreenIndex] = {
+        ...newScreens[activeScreenIndex],
+        sensors: newSensors,
+      };
+
+      onChange({
+        ...config,
+        screens: newScreens,
+        sensors: activeScreenIndex === 0 ? newSensors : config.sensors,
+      });
+      return;
+    }
+
     const newSensors = [...config.sensors];
     newSensors[index] = sensor;
     onChange({ ...config, sensors: newSensors });
@@ -36,14 +58,14 @@ export default function SensorList({ config, onChange }: SensorListProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <h2 className="text-lg font-semibold mb-3 text-gray-800">
-        {t('title')}
+        {t('title')} ({config.screens?.[activeScreenIndex]?.name || `Screen ${activeScreenIndex + 1}`})
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {visibleSensors.map((sensor, index) => {
           const rowIndex = Math.floor(index / 2);
           return (
             <SensorConfigPanel
-              key={sensor.id}
+              key={`${activeScreenIndex}_${sensor.id}`}
               sensor={sensor}
               index={index}
               isExpanded={expandedRows[rowIndex]}

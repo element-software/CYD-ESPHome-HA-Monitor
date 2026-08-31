@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
 import ImportConfigModal from '@/components/ImportConfigModal';
+import WhatsNewModal from '@/components/WhatsNewModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
 import { ConfigData } from '@/types/config';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
@@ -16,14 +17,14 @@ const ESPHOME_MIPI_RELEASE_NOTES = 'https://esphome.io/changelog/2025.5.0/';
 const esphomeNoticeRich = {
   strong: (c: ReactNode) => <strong>{c}</strong>,
   code: (c: ReactNode) => (
-    <code className="bg-gray-100 px-1 rounded text-[0.9em]">{c}</code>
+    <code className="bg-gray-100 dark:bg-slate-950 px-1 rounded text-[0.9em] text-gray-900 dark:text-slate-100">{c}</code>
   ),
   link: (c: ReactNode) => (
     <a
       href={ESPHOME_MIPI_RELEASE_NOTES}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-blue-700 hover:text-blue-800 font-medium underline underline-offset-2"
+      className="text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 font-medium underline underline-offset-2"
     >
       {c}
     </a>
@@ -34,6 +35,9 @@ export default function ConfigGeneratorClient() {
   const t = useTranslations('configGeneratorPage');
   const tImport = useTranslations('importConfigModal');
   const [config, setConfig] = useLocalStorageConfig();
+  const [activeScreenIndex, setActiveScreenIndex] = useState(0);
+  const screenCount = config.screens?.length ?? 1;
+  const safeScreenIndex = Math.min(activeScreenIndex, Math.max(0, screenCount - 1));
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [pendingConfig, setPendingConfig] = useState<ConfigData | null>(null);
@@ -94,17 +98,17 @@ export default function ConfigGeneratorClient() {
   return (
     <>
       <div
-        className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed"
+        className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed dark:border-blue-700 dark:bg-blue-950 dark:text-slate-100"
         role="note"
       >
         {t.rich('esphomeNotice', esphomeNoticeRich)}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="space-y-6 min-w-0 col-span-2">
-          <ConfigForm config={config} onChange={setConfig} />
+          <ConfigForm config={config} onChange={setConfig} activeScreenIndex={safeScreenIndex} onActiveScreenChange={setActiveScreenIndex} />
         </div>
         <div className="lg:sticky lg:top-8 w-full min-w-0 col-span-2 lg:col-span-1 flex flex-col gap-4 p-4 border border-gray-200 rounded-lg bg-white">
-          <CydDevicePreview config={config} />
+          <CydDevicePreview config={config} activeScreenIndex={safeScreenIndex} />
           <button
             type="button"
             onClick={() => setYamlModalOpen(true)}
@@ -151,6 +155,7 @@ export default function ConfigGeneratorClient() {
         onConfirm={handleImportConfirm}
         onClose={handleImportClose}
       />
+      <WhatsNewModal />
     </>
   );
 }
