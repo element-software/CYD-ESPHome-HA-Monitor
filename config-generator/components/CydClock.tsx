@@ -10,29 +10,38 @@ const FONT = {
   date: `${((CLOCK_CQMIN * ESPHOME.date) / ESPHOME.clock).toFixed(2)}cqmin`,
 };
 const TEXT_COLOR = '#ffffff';
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+const PLACEHOLDER = { time: '--:--', date: '-- --/--' } as const;
+
+function pad2(n: number) {
+  return n.toString().padStart(2, '0');
+}
 
 function formatTime(date: Date) {
-  return date.toLocaleTimeString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
+  return `${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
 }
 
 function formatDate(date: Date) {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  return `${days[date.getDay()]} ${d.toString().padStart(2, '0')}/${m.toString().padStart(2, '0')}`;
+  return `${DAYS[date.getDay()]} ${pad2(date.getDate())}/${pad2(date.getMonth() + 1)}`;
+}
+
+/** Null date yields a stable placeholder so static HTML and the first client render match. */
+export function getClockTexts(now: Date | null): { time: string; date: string } {
+  if (!now) return { ...PLACEHOLDER };
+  return { time: formatTime(now), date: formatDate(now) };
 }
 
 export default function CydClock({ fontColor = TEXT_COLOR }: { fontColor?: string }) {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
+    const tick = () => setNow(new Date());
+    tick();
+    const t = setInterval(tick, 1000);
     return () => clearInterval(t);
   }, []);
+
+  const { time, date } = getClockTexts(now);
 
   return (
     <div
@@ -43,13 +52,13 @@ export default function CydClock({ fontColor = TEXT_COLOR }: { fontColor?: strin
         className="font-bold tracking-tight"
         style={{ color: fontColor, fontSize: FONT.clock }}
       >
-        {formatTime(now)}
+        {time}
       </div>
       <div
         className="font-normal -mt-3"
         style={{ color: fontColor, fontSize: FONT.date, opacity: 0.95 }}
       >
-        {formatDate(now)}
+        {date}
       </div>
     </div>
   );
