@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
 import YamlModal from '@/components/YamlModal';
 import ImportConfigModal from '@/components/ImportConfigModal';
+import WhatsNewModal from '@/components/WhatsNewModal';
 import CydDevicePreview from '@/components/CydDevicePreview';
 import { ConfigData } from '@/types/config';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
@@ -154,6 +155,7 @@ export default function ConfigGeneratorClient() {
         onConfirm={handleImportConfirm}
         onClose={handleImportClose}
       />
+      <WhatsNewModal />
     </>
   );
 }

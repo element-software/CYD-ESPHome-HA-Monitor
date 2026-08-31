@@ -237,6 +237,19 @@
   "yamlModal": {
     "title": "YAML generato"
   },
+  "whatsNewModal": {
+    "title": "What’s new",
+    "intro": "The config generator can now build multi-page dashboards with themes and extra display options.",
+    "features": {
+      "screens": "Optional extra screens (up to 6) with swipe between pages",
+      "themes": "Per-page colours, themes, and optional background images",
+      "slots": "Enable or disable individual slots",
+      "display": "Invert colours, BGR, mirrors, and an optional ESPHome web server",
+      "darkMode": "Dark mode for this generator"
+    },
+    "thanks": "Thank you to <link>jchisholm59</link> for contributing these features.",
+    "dismiss": "Got it"
+  },
   "iconPicker": {
     "label": "Icona",
     "title": "Scegli icona",
