@@ -41,10 +41,25 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
   }, [onClose]);
 
   const update = (field: keyof ConfigData, value: string | boolean | IconSet | number) => {
-    if (field === 'hideClock' && value === true && config.sensors.length < 8) {
-      const extra = 8 - config.sensors.length;
-      const newSensors = [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)];
-      onChange({ ...config, hideClock: true, sensors: newSensors });
+    if (field === 'hideClock' && value === true) {
+      const extra = Math.max(0, 8 - config.sensors.length);
+      const newSensors = extra
+        ? [...config.sensors, ...ROW4_DEFAULT_SENSORS.slice(0, extra)]
+        : config.sensors;
+      const screens = config.screens ? [...config.screens] : undefined;
+      if (screens?.[0] && screens[0].sensors.length < 8) {
+        const screenExtra = 8 - screens[0].sensors.length;
+        screens[0] = {
+          ...screens[0],
+          sensors: [...screens[0].sensors, ...ROW4_DEFAULT_SENSORS.slice(0, screenExtra)],
+        };
+      }
+      onChange({
+        ...config,
+        hideClock: true,
+        sensors: screens?.[0]?.sensors ?? newSensors,
+        screens,
+      });
       return;
     }
     onChange({ ...config, [field]: value });
@@ -107,6 +122,99 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
               onChange={(e) => update('hideClock', e.target.checked)}
               className="sr-only peer"
               aria-label={t('hideClock.label')}
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('invertColors.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('invertColors.description')}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+            <input
+              type="checkbox"
+              checked={config.displayInvertColors ?? false}
+              onChange={(e) => update('displayInvertColors', e.target.checked)}
+              className="sr-only peer"
+              aria-label={t('invertColors.label')}
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('colorOrder.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('colorOrder.description')}</p>
+          </div>
+          <select
+            value={config.displayColorOrder ?? 'RGB'}
+            onChange={(e) => update('displayColorOrder', e.target.value)}
+            className="px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="RGB">RGB</option>
+            <option value="BGR">BGR</option>
+          </select>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('mirrorX.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('mirrorX.description')}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+            <input
+              type="checkbox"
+              checked={config.displayMirrorX ?? true}
+              onChange={(e) => update('displayMirrorX', e.target.checked)}
+              className="sr-only peer"
+              aria-label={t('mirrorX.label')}
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('mirrorY.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('mirrorY.description')}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+            <input
+              type="checkbox"
+              checked={config.displayMirrorY ?? true}
+              onChange={(e) => update('displayMirrorY', e.target.checked)}
+              className="sr-only peer"
+              aria-label={t('mirrorY.label')}
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
+          </label>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">{t('webServer.label')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('webServer.description')}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+            <input
+              type="checkbox"
+              checked={config.enableWebServer !== false}
+              onChange={(e) => update('enableWebServer', e.target.checked)}
+              className="sr-only peer"
+              aria-label={t('webServer.label')}
             />
             <div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
           </label>

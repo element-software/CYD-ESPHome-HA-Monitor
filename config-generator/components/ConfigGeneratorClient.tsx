@@ -34,6 +34,7 @@ export default function ConfigGeneratorClient() {
   const t = useTranslations('configGeneratorPage');
   const tImport = useTranslations('importConfigModal');
   const [config, setConfig] = useLocalStorageConfig();
+  const [activeScreenIndex, setActiveScreenIndex] = useState(0);
   const [yamlModalOpen, setYamlModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [pendingConfig, setPendingConfig] = useState<ConfigData | null>(null);
@@ -101,10 +102,10 @@ export default function ConfigGeneratorClient() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="space-y-6 min-w-0 col-span-2">
-          <ConfigForm config={config} onChange={setConfig} />
+          <ConfigForm config={config} onChange={setConfig} activeScreenIndex={activeScreenIndex} onActiveScreenChange={setActiveScreenIndex} />
         </div>
         <div className="lg:sticky lg:top-8 w-full min-w-0 col-span-2 lg:col-span-1 flex flex-col gap-4 p-4 border border-gray-200 rounded-lg bg-white">
-          <CydDevicePreview config={config} />
+          <CydDevicePreview config={config} activeScreenIndex={activeScreenIndex} />
           <button
             type="button"
             onClick={() => setYamlModalOpen(true)}

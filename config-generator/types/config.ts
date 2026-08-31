@@ -3,6 +3,8 @@ export interface BaseSensorConfig {
   id: string;
   entity: string;
   label: string;
+  /** When false the slot is omitted from generated YAML and preview. Default true. */
+  enabled?: boolean;
 }
 
 export interface LightSensorConfig extends BaseSensorConfig {
@@ -143,12 +145,31 @@ export interface DevicePins {
   touchReset?: string;
 }
 
+export interface ScreenConfig {
+  id: string;
+  name: string;
+  backgroundColor?: string;
+  backgroundImage?: string;
+  fontColor?: string;
+  sensors: SensorConfig[];
+}
+
 export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
   /** Display transform swap_xy. Default true matches most CYD boards. Set false for alternate rotation variants. */
   displaySwapXy?: boolean;
+  /** Invert display colours. Default false. */
+  displayInvertColors?: boolean;
+  /** Display colour order. Default RGB. */
+  displayColorOrder?: 'RGB' | 'BGR';
+  /** Display transform mirror_x. Default true matches stock CYD YAML. */
+  displayMirrorX?: boolean;
+  /** Display transform mirror_y. Default true matches stock CYD YAML. */
+  displayMirrorY?: boolean;
+  /** Emit ESPHome web_server v3. Default true. */
+  enableWebServer?: boolean;
   /** Corner radius for sensor buttons (px). 0 = square corners. Max useful value is 34. */
   buttonRadius?: number;
   /** @deprecated Use devicePins.backlightPin. Kept for migration. */
@@ -159,5 +180,7 @@ export interface ConfigData {
   deviceVariant?: DeviceVariant;
   /** Full pin map; used for YAML and for custom variant. */
   devicePins?: DevicePins;
+  /** Screen 1 sensors. Kept in sync with screens[0].sensors for older saved configs. */
   sensors: SensorConfig[];
+  screens?: ScreenConfig[];
 }

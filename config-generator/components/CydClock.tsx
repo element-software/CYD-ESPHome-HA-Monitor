@@ -26,7 +26,7 @@ function formatDate(date: Date) {
   return `${days[date.getDay()]} ${d.toString().padStart(2, '0')}/${m.toString().padStart(2, '0')}`;
 }
 
-export default function CydClock() {
+export default function CydClock({ fontColor = TEXT_COLOR }: { fontColor?: string }) {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -41,13 +41,13 @@ export default function CydClock() {
     >
       <div
         className="font-bold tracking-tight"
-        style={{ color: TEXT_COLOR, fontSize: FONT.clock }}
+        style={{ color: fontColor, fontSize: FONT.clock }}
       >
         {formatTime(now)}
       </div>
       <div
         className="font-normal -mt-3"
-        style={{ color: TEXT_COLOR, fontSize: FONT.date, opacity: 0.95 }}
+        style={{ color: fontColor, fontSize: FONT.date, opacity: 0.95 }}
       >
         {formatDate(now)}
       </div>

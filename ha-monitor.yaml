@@ -25,6 +25,10 @@
 #  THE SOFTWARE.
 # ==============================================================================
 #
+#  This file is a simple 6-slot single-page reference.
+#  For 3 swipeable pages, themes, background images, and extra slots,
+#  use the config generator: https://cheapyellowdisplay.co.uk/
+#
 #  SUBSTITUTIONS - Customise your dashboard by editing the values below.
 #  Passwords and keys should be stored in your secrets.yaml file.
 #

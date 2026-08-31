@@ -18,7 +18,8 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "starOnGithub": "Étoiler sur GitHub",
-    "githubStars": "Étoiles GitHub"
+    "githubStars": "Étoiles GitHub",
+    "toggleTheme": "Toggle dark mode"
   },
   "footer": {
     "tagline": "Outils de config CYD & infos · ESPHome / Home Assistant",
@@ -156,6 +157,26 @@
         "label": "Material Symbols",
         "description": "Icônes Google Fonts (fonts.google.com/icons)"
       }
+    },
+    "invertColors": {
+      "label": "Invert colours",
+      "description": "Use if colours look inverted or negative on your panel."
+    },
+    "colorOrder": {
+      "label": "Colour order",
+      "description": "RGB or BGR. Use BGR if reds and blues are swapped."
+    },
+    "mirrorX": {
+      "label": "Mirror X",
+      "description": "Default on for most CYD boards. Turn off if the image is flipped horizontally."
+    },
+    "mirrorY": {
+      "label": "Mirror Y",
+      "description": "Default on for most CYD boards. Turn off if the image is flipped vertically."
+    },
+    "webServer": {
+      "label": "On-device web server",
+      "description": "Adds ESPHome web_server v3 so you can open the device IP to view entities and set backlight brightness."
     }
   },
   "sensorList": {
@@ -210,7 +231,8 @@
     "onPlaceholderBinary": "Ouvert",
     "offPlaceholderBinary": "Fermé",
     "onPlaceholderLight": "Allumé",
-    "offPlaceholderLight": "Éteint"
+    "offPlaceholderLight": "Éteint",
+    "enabled": "Enabled"
   },
   "yamlModal": {
     "title": "YAML généré"
@@ -439,5 +461,21 @@
     "confirm": "Charger la configuration",
     "invalidFile": "Le fichier sélectionné n’est pas une configuration HAMon valide.",
     "errorReading": "Impossible de lire le fichier."
+  },
+  "screenSettings": {
+    "name": "Screen name",
+    "theme": "Colour theme",
+    "themes": {
+      "default": "Default Dark",
+      "frigate": "Frigate Dark",
+      "ha": "HA Dark Slate",
+      "light": "Light",
+      "custom": "Custom colours"
+    },
+    "backgroundColor": "Background colour",
+    "fontColor": "Font colour",
+    "backgroundImage": "Background image path (optional)",
+    "chooseImage": "Choose image",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320."
   }
 }

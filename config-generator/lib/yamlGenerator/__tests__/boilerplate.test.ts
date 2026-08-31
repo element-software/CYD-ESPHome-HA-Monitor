@@ -26,3 +26,15 @@ describe("generateBoilerplate display swap_xy", () => {
     expect(getDisplaySwapXy(generateBoilerplate(config))).toBe(false);
   });
 });
+
+describe("generateBoilerplate web_server and colour options", () => {
+  it("emits web_server when enableWebServer is omitted", () => {
+    expect(generateBoilerplate(defaultConfig)).toContain("web_server:");
+  });
+
+  it("omits web_server when enableWebServer is false", () => {
+    expect(generateBoilerplate({ ...defaultConfig, enableWebServer: false })).not.toContain(
+      "web_server:",
+    );
+  });
+});

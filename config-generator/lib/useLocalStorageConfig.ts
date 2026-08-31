@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { ConfigData } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
 import { isValidConfig } from '@/lib/configValidation';
+import { migrateConfig } from '@/lib/migrateConfig';
 
 const STORAGE_KEY = 'hamon-config';
 const SAVE_DEBOUNCE_MS = 300;
 
 export function useLocalStorageConfig(): [ConfigData, (config: ConfigData) => void] {
-  const [config, setConfigState] = useState<ConfigData>(defaultConfig);
+  const [config, setConfigState] = useState<ConfigData>(() => migrateConfig(defaultConfig));
   const [initialized, setInitialized] = useState(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -19,7 +20,7 @@ export function useLocalStorageConfig(): [ConfigData, (config: ConfigData) => vo
       if (stored) {
         const parsed: unknown = JSON.parse(stored);
         if (isValidConfig(parsed)) {
-          setConfigState(parsed);
+          setConfigState(migrateConfig(parsed));
         }
       }
     } catch {
@@ -47,5 +48,9 @@ export function useLocalStorageConfig(): [ConfigData, (config: ConfigData) => vo
     };
   }, [config, initialized]);
 
-  return [config, setConfigState];
+  const setConfig = (newConfig: ConfigData) => {
+    setConfigState(migrateConfig(newConfig));
+  };
+
+  return [config, setConfig];
 }

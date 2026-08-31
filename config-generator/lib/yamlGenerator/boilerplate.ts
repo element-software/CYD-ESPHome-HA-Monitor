@@ -4,6 +4,11 @@ import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
 export function generateBoilerplate(config: ConfigData): string {
   const { deviceName, friendlyName, hideClock } = config;
   const swapXy = config.displaySwapXy !== false;
+  const invertColors = config.displayInvertColors ?? false;
+  const colorOrder = config.displayColorOrder ?? "RGB";
+  const mirrorX = config.displayMirrorX !== false;
+  const mirrorY = config.displayMirrorY !== false;
+  const enableWebServer = config.enableWebServer !== false;
   const p = getEffectivePins(config);
   const useSpiTouch = isSpiTouch(p);
   const useI2cTouch = isI2cTouch(p);
@@ -101,7 +106,11 @@ wifi:
     password: !secret ${deviceName}_ap_password
 
 captive_portal:
-
+${enableWebServer ? `
+web_server:
+  port: 80
+  version: 3
+` : ""}
 output:
   - platform: ledc
     pin: ${p.backlightPin}
@@ -122,15 +131,15 @@ display:
     cs_pin: ${p.tftCs}
     dc_pin: ${p.tftDc}
     auto_clear_enabled: false
-    invert_colors: false
-    color_order: RGB
+    invert_colors: ${invertColors}
+    color_order: ${colorOrder}
     dimensions:
       width: 240
       height: 320
     transform:
       swap_xy: ${swapXy}
-      mirror_y: true
-      mirror_x: true
+      mirror_y: ${mirrorY}
+      mirror_x: ${mirrorX}
 ${touchscreenBlock}
 
 # --- FONTS ---
