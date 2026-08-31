@@ -163,13 +163,34 @@ export function generateLvglConfig(
   buttonRadius: number = 0,
   screens?: ScreenConfig[],
 ): string {
-  const s1 = screens?.find((s) => s.id === "s1");
-  const s2 = screens?.find((s) => s.id === "s2");
-  const s3 = screens?.find((s) => s.id === "s3");
+  const pages = screens?.length
+    ? screens
+    : [{ id: "s1", name: "Screen 1", sensors: [] }];
+  const pageCount = pages.length;
 
-  const s1BgImg = s1?.backgroundImage?.trim() ? `\n      bg_image_src: s1_bg_image` : "";
-  const s2BgImg = s2?.backgroundImage?.trim() ? `\n      bg_image_src: s2_bg_image` : "";
-  const s3BgImg = s3?.backgroundImage?.trim() ? `\n      bg_image_src: s3_bg_image` : "";
+  const pageBlocks = pages.map((screen, index) => {
+    const bgImg = screen.backgroundImage?.trim()
+      ? `\n      bg_image_src: ${screen.id}_bg_image`
+      : "";
+    const showClock = index === 0 && !hideClock;
+    const swipe =
+      pageCount < 2
+        ? ""
+        : `
+      on_swipe_left:
+        - lvgl.page.show:
+            id: page_${pages[(index + 1) % pageCount].id}
+            animation: MOVE_LEFT
+      on_swipe_right:
+        - lvgl.page.show:
+            id: page_${pages[(index - 1 + pageCount) % pageCount].id}
+            animation: MOVE_RIGHT`;
+
+    return `    - id: page_${screen.id}
+      bg_color: \${${screen.id}_bg_color}${bgImg}${swipe}
+      widgets:
+${generateScreenWidgets(screen.id, showClock, getSensor, buttonRadius)}`;
+  });
 
   return `
 # --- DISPLAY PAGE CONFIG ---
@@ -179,43 +200,6 @@ lvgl:
   touchscreens:
     - my_touchscreen
   pages:
-    - id: page_s1
-      bg_color: \${s1_bg_color}${s1BgImg}
-      on_swipe_left:
-        - lvgl.page.show:
-            id: page_s2
-            animation: MOVE_LEFT
-      on_swipe_right:
-        - lvgl.page.show:
-            id: page_s3
-            animation: MOVE_RIGHT
-      widgets:
-${generateScreenWidgets("s1", !hideClock, getSensor, buttonRadius)}
-
-    - id: page_s2
-      bg_color: \${s2_bg_color}${s2BgImg}
-      on_swipe_left:
-        - lvgl.page.show:
-            id: page_s3
-            animation: MOVE_LEFT
-      on_swipe_right:
-        - lvgl.page.show:
-            id: page_s1
-            animation: MOVE_RIGHT
-      widgets:
-${generateScreenWidgets("s2", false, getSensor, buttonRadius)}
-
-    - id: page_s3
-      bg_color: \${s3_bg_color}${s3BgImg}
-      on_swipe_left:
-        - lvgl.page.show:
-            id: page_s1
-            animation: MOVE_LEFT
-      on_swipe_right:
-        - lvgl.page.show:
-            id: page_s2
-            animation: MOVE_RIGHT
-      widgets:
-${generateScreenWidgets("s3", false, getSensor, buttonRadius)}
+${pageBlocks.join("\n\n")}
 `;
 }

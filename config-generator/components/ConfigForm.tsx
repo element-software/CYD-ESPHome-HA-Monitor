@@ -2,7 +2,8 @@
 
 import { ConfigData, ScreenConfig } from '@/types/config';
 import { previewImageCache } from '@/lib/previewImageCache';
-import { DEFAULT_SCREEN_BG, DEFAULT_SCREEN_FG } from '@/lib/defaultConfig';
+import { cloneSampleSensors, DEFAULT_SCREEN_BG, DEFAULT_SCREEN_FG, MAX_SCREENS } from '@/lib/defaultConfig';
+import { createScreen, reindexScreens } from '@/lib/migrateConfig';
 import DeviceSettingsCard from './DeviceSettingsCard';
 import SensorList from './SensorList';
 import { useTranslations } from 'next-intl';
@@ -53,32 +54,77 @@ export default function ConfigForm({
     });
   };
 
-  const activeScreen = config.screens?.[activeScreenIndex];
+  const screens = config.screens?.length ? config.screens : [];
+  const activeScreen = screens[activeScreenIndex];
+  const canAddScreen = screens.length < MAX_SCREENS;
+  const canRemoveScreen = activeScreenIndex > 0 && screens.length > 1;
+
+  const addScreen = () => {
+    if (!canAddScreen) return;
+    const next = [...screens, createScreen(screens.length, cloneSampleSensors())];
+    onChange({ ...config, screens: next });
+    onActiveScreenChange(next.length - 1);
+  };
+
+  const removeScreen = () => {
+    if (!canRemoveScreen) return;
+    const next = reindexScreens(screens.filter((_, i) => i !== activeScreenIndex));
+    onChange({
+      ...config,
+      screens: next,
+      sensors: next[0]?.sensors ?? config.sensors,
+    });
+    onActiveScreenChange(Math.max(0, activeScreenIndex - 1));
+  };
 
   return (
     <div className="space-y-6">
       <DeviceSettingsCard config={config} onChange={onChange} />
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="flex border-b border-gray-200 bg-gray-50/50">
-          {[0, 1, 2].map((idx) => {
-            const isActive = idx === activeScreenIndex;
-            const screenName = config.screens?.[idx]?.name || `Screen ${idx + 1}`;
-            return (
+        <div className="flex items-stretch border-b border-gray-200 bg-gray-50/50">
+          <div className="flex min-w-0 flex-1 overflow-x-auto">
+            {screens.map((screen, idx) => {
+              const isActive = idx === activeScreenIndex;
+              return (
+                <button
+                  key={screen.id}
+                  type="button"
+                  onClick={() => onActiveScreenChange(idx)}
+                  className={`py-3 px-6 font-semibold text-sm border-b-2 transition-all -mb-px outline-none shrink-0 ${
+                    isActive
+                      ? 'border-blue-600 text-blue-600 bg-white'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-300 dark:hover:text-white'
+                  }`}
+                >
+                  {screen.name || `Screen ${idx + 1}`}
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex items-center gap-1 shrink-0 px-2 border-l border-gray-200">
+            <button
+              type="button"
+              onClick={addScreen}
+              disabled={!canAddScreen}
+              title={canAddScreen ? t('addScreen') : t('addScreenLimit', { max: MAX_SCREENS })}
+              aria-label={t('addScreen')}
+              className="px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              + {t('addScreen')}
+            </button>
+            {canRemoveScreen && (
               <button
-                key={idx}
                 type="button"
-                onClick={() => onActiveScreenChange(idx)}
-                className={`py-3 px-6 font-semibold text-sm border-b-2 transition-all -mb-px outline-none ${
-                  isActive
-                    ? 'border-blue-600 text-blue-600 bg-white'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-300 dark:hover:text-white'
-                }`}
+                onClick={removeScreen}
+                title={t('removeScreen')}
+                aria-label={t('removeScreen')}
+                className="px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md"
               >
-                {screenName}
+                {t('removeScreen')}
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
 
         <div className="p-6 border-t border-gray-100">
@@ -91,7 +137,7 @@ export default function ConfigForm({
                 type="text"
                 value={activeScreen?.name || ''}
                 onChange={(e) => updateScreen({ name: e.target.value })}
-                className="w-full h-10 px-3.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="w-full h-11 box-border px-3.5 text-sm leading-5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             <div className="min-w-0">
@@ -106,7 +152,7 @@ export default function ConfigForm({
                   updateScreen({ backgroundColor: colors.bg, fontColor: colors.fg });
                 }}
                 value={themeValue(activeScreen)}
-                className="h-10 w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white cursor-pointer"
+                className="h-11 w-full box-border px-3 text-sm leading-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white cursor-pointer"
               >
                 <option value="default">{t('themes.default')}</option>
                 <option value="frigate">{t('themes.frigate')}</option>
@@ -124,13 +170,13 @@ export default function ConfigForm({
                   type="color"
                   value={activeScreen?.backgroundColor || DEFAULT_SCREEN_BG}
                   onChange={(e) => updateScreen({ backgroundColor: e.target.value })}
-                  className="w-10 h-10 p-0 border border-gray-300 rounded-md cursor-pointer shrink-0"
+                  className="w-10 h-11 p-0 border border-gray-300 rounded-md cursor-pointer shrink-0"
                 />
                 <input
                   type="text"
                   value={activeScreen?.backgroundColor || DEFAULT_SCREEN_BG}
                   onChange={(e) => updateScreen({ backgroundColor: e.target.value })}
-                  className="min-w-0 flex-1 px-2 py-2 h-10 border border-gray-300 rounded-md text-sm uppercase text-center font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="min-w-0 flex-1 box-border px-2 h-11 text-sm leading-5 uppercase text-center font-mono border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -143,13 +189,13 @@ export default function ConfigForm({
                   type="color"
                   value={activeScreen?.fontColor || DEFAULT_SCREEN_FG}
                   onChange={(e) => updateScreen({ fontColor: e.target.value })}
-                  className="w-10 h-10 p-0 border border-gray-300 rounded-md cursor-pointer shrink-0"
+                  className="w-10 h-11 p-0 border border-gray-300 rounded-md cursor-pointer shrink-0"
                 />
                 <input
                   type="text"
                   value={activeScreen?.fontColor || DEFAULT_SCREEN_FG}
                   onChange={(e) => updateScreen({ fontColor: e.target.value })}
-                  className="min-w-0 flex-1 px-2 py-2 h-10 border border-gray-300 rounded-md text-sm uppercase text-center font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="min-w-0 flex-1 box-border px-2 h-11 text-sm leading-5 uppercase text-center font-mono border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -163,9 +209,9 @@ export default function ConfigForm({
                   placeholder="e.g. images/bg_home.png"
                   value={activeScreen?.backgroundImage || ''}
                   onChange={(e) => updateScreen({ backgroundImage: e.target.value })}
-                  className="min-w-0 flex-1 px-3 h-10 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="min-w-0 flex-1 px-3 h-11 box-border text-sm leading-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <label className="inline-flex items-center justify-center px-4 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors text-sm border border-gray-300 cursor-pointer shrink-0">
+                <label className="inline-flex items-center justify-center px-4 h-11 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors text-sm border border-gray-300 cursor-pointer shrink-0">
                   {t('chooseImage')}
                   <input
                     type="file"

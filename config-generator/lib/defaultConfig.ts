@@ -4,6 +4,12 @@ import { SPI_TOUCH_PINS } from './devicePresets';
 export const DEFAULT_SCREEN_BG = '#0f1419';
 export const DEFAULT_SCREEN_FG = '#ffffff';
 
+export const MAX_SCREENS = 6;
+
+export function cloneSampleSensors(): SensorConfig[] {
+  return JSON.parse(JSON.stringify(defaultSensors)) as SensorConfig[];
+}
+
 export const createEmptySensors = (): SensorConfig[] => [
   { id: 'r1c1', type: 'text', entity: '', label: 'Unconfigured', icon: '\\ue8b6', iconColor: '0x888888', enabled: false },
   { id: 'r1c2', type: 'text', entity: '', label: 'Unconfigured', icon: '\\ue8b6', iconColor: '0x888888', enabled: false },
@@ -140,20 +146,6 @@ export const defaultConfig: ConfigData = {
       backgroundColor: DEFAULT_SCREEN_BG,
       fontColor: DEFAULT_SCREEN_FG,
       sensors: defaultSensors,
-    },
-    {
-      id: 's2',
-      name: 'Screen 2',
-      backgroundColor: DEFAULT_SCREEN_BG,
-      fontColor: DEFAULT_SCREEN_FG,
-      sensors: createEmptySensors(),
-    },
-    {
-      id: 's3',
-      name: 'Screen 3',
-      backgroundColor: DEFAULT_SCREEN_BG,
-      fontColor: DEFAULT_SCREEN_FG,
-      sensors: createEmptySensors(),
     },
   ],
 };

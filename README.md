@@ -3,7 +3,7 @@
 A clean, compact clock and sensor dashboard for the **ESP32-2432S028** (the "Cheap Yellow Display" or CYD), built with **ESPHome** and **LVGL**.
 Try out the new [YAML generator](https://cheapyellowdisplay.co.uk/) - please note: it's not perfect and is a work in progress!
 
-Monitor up to 22 Home Assistant entities (24 with the clock hidden) across three swipeable pages — binary sensors (doors, motion), numeric sensors (energy, temperature), text sensors, lights, switches, and tap actions — with per-page colours, optional background images, and an optional clock on page 1. 
+Monitor Home Assistant entities on one required screen, then add extra swipeable pages as needed — binary sensors (doors, motion), numeric sensors (energy, temperature), text sensors, lights, switches, and tap actions — with per-page colours, optional background images, and an optional clock on page 1. 
 
 | | | |
 |:---:|:---:|:---:|
@@ -18,7 +18,7 @@ Monitor up to 22 Home Assistant entities (24 with the clock hidden) across three
 
 - **YAML Generator Visual Editor:** The [YAML generator](https://cheapyellowdisplay.co.uk/) makes it super easy to configure your CYD, without you having to modify YAML files!
 - **Clock & Date Header:** Large time display with day and date, synced from Home Assistant.
-- **Three swipeable pages:** Up to 22 entities with the clock (6 + 8 + 8) or 24 with the clock hidden. Swipe left/right on the CYD to change page.
+- **Swipeable extra pages:** Screen 1 is required. Add up to five extra screens (six total), each pre-filled with sample entities. With the clock, Screen 1 has 6 slots and extra screens have 8; hide the clock for 8 on Screen 1 as well. Swipe left/right on the CYD when more than one screen is configured.
 - **Per-page themes:** Background colour, font colour, named theme presets, and optional background images compiled into flash.
 - **Enable/disable slots:** Leave unused blocks empty without generating unused Home Assistant subscriptions.
 - **On-device web UI:** Optional ESPHome `web_server` v3 so you can open the device IP to view entities and set backlight brightness.

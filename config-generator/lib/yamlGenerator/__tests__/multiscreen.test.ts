@@ -1,7 +1,7 @@
 import { generateYaml } from "../index";
 import { generateBoilerplate } from "../boilerplate";
 import { migrateConfig } from "@/lib/migrateConfig";
-import { defaultConfig, createEmptySensors } from "@/lib/defaultConfig";
+import { defaultConfig, createEmptySensors, cloneSampleSensors } from "@/lib/defaultConfig";
 import type { ConfigData, SensorConfig } from "@/types/config";
 
 const sampleSensor: SensorConfig = {
@@ -22,7 +22,7 @@ function configWithScreens(partial: Partial<ConfigData> = {}): ConfigData {
 }
 
 describe("migrateConfig", () => {
-  it("wraps a legacy 8-slot config into three screens without losing screen 1 entities", () => {
+  it("wraps a legacy 8-slot config into a single required screen", () => {
     const legacy: ConfigData = {
       deviceName: "hamon",
       friendlyName: "HAMon",
@@ -30,36 +30,63 @@ describe("migrateConfig", () => {
       sensors: defaultConfig.sensors,
     };
     const migrated = migrateConfig(legacy);
-    expect(migrated.screens).toHaveLength(3);
+    expect(migrated.screens).toHaveLength(1);
     expect(migrated.screens?.[0].sensors.map((s) => s.entity)).toEqual(
       defaultConfig.sensors.map((s) => s.entity),
     );
     expect(migrated.sensors.map((s) => s.entity)).toEqual(
       defaultConfig.sensors.map((s) => s.entity),
     );
-    expect(migrated.screens?.[1].sensors.every((s) => s.enabled === false)).toBe(true);
-    expect(migrated.screens?.[2].sensors.every((s) => s.enabled === false)).toBe(true);
+  });
+
+  it("keeps extra screens that already exist on a saved config", () => {
+    const saved = migrateConfig({
+      ...defaultConfig,
+      screens: [
+        { id: "s1", name: "Screen 1", sensors: cloneSampleSensors() },
+        { id: "s2", name: "Kitchen", sensors: cloneSampleSensors() },
+      ],
+    });
+    expect(saved.screens).toHaveLength(2);
+    expect(saved.screens?.[1].name).toBe("Kitchen");
   });
 });
 
 describe("generateYaml multi-page", () => {
-  it("emits three swipeable LVGL pages with prefixed substitutions", () => {
+  it("emits a single page with no swipe when only screen 1 exists", () => {
     const yaml = generateYaml(configWithScreens());
     expect(yaml).toContain("id: page_s1");
-    expect(yaml).toContain("id: page_s2");
-    expect(yaml).toContain("id: page_s3");
-    expect(yaml).toContain("on_swipe_left:");
-    expect(yaml).toContain("on_swipe_right:");
-    expect(yaml).toContain("animation: MOVE_LEFT");
+    expect(yaml).not.toContain("id: page_s2");
+    expect(yaml).not.toContain("on_swipe_left:");
     expect(yaml).toContain("s1_r1c1_entity:");
     expect(yaml).toContain("s1_bg_color:");
-    expect(yaml).toContain("s1_font_color:");
     expect(yaml).not.toContain("id: main_page");
   });
 
+  it("emits swipeable pages only for configured screens", () => {
+    const yaml = generateYaml(
+      configWithScreens({
+        screens: [
+          { id: "s1", name: "Screen 1", sensors: cloneSampleSensors() },
+          { id: "s2", name: "Screen 2", sensors: cloneSampleSensors() },
+        ],
+      }),
+    );
+    expect(yaml).toContain("id: page_s1");
+    expect(yaml).toContain("id: page_s2");
+    expect(yaml).not.toContain("id: page_s3");
+    expect(yaml).toContain("on_swipe_left:");
+    expect(yaml).toContain("id: page_s2");
+    expect(yaml).toContain("animation: MOVE_LEFT");
+  });
+
   it("skips disabled slots in substitutions and widgets", () => {
-    const config = configWithScreens();
-    config.screens![1].sensors = createEmptySensors();
+    const config = configWithScreens({
+      screens: [
+        { id: "s1", name: "Screen 1", sensors: cloneSampleSensors() },
+        { id: "s2", name: "Screen 2", sensors: createEmptySensors() },
+      ],
+    });
     config.screens![1].sensors[0] = { ...sampleSensor, enabled: true };
     const yaml = generateYaml(config);
     expect(yaml).toContain("s2_r1c1_entity: \"sensor.rain\"");

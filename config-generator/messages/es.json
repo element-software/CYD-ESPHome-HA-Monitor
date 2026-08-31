@@ -476,6 +476,9 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320."
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "addScreen": "Add screen",
+    "removeScreen": "Remove screen",
+    "addScreenLimit": "You can add up to {max} screens"
   }
 }
