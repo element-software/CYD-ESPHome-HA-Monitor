@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
+const BUY_NOW_URL = 'https://link.amazon/B0gmviK3S';
 
 function CydLink({ children }: { children: React.ReactNode }) {
   return (

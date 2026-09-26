@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const BUY_NOW_URL = 'https://amzn.to/3ZEIfdV';
+const BUY_NOW_URL = 'https://link.amazon/B0gmviK3S';
 const GITHUB_REPO = 'element-software/CYD-ESPHome-HA-Monitor';
 const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
 const GITHUB_STARS_BADGE = `https://img.shields.io/github/stars/${GITHUB_REPO}?style=social`;

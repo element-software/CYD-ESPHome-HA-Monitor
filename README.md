@@ -37,7 +37,7 @@ The board, display and touch are all one item - the CYD! This is listed out belo
 | Component | Details |
 |-----------|---------|
 | **Board** | ESP32-2432S028 (CYD) |
-| **Display** | [2.8" ILI9341 CYD Board (USB-C)](https://amzn.to/3ZEIfdV) |
+| **Display** | [2.8" ILI9341 CYD Board (USB-C)](https://link.amazon/B0gmviK3S) |
 | **Touch** | XPT2046 (resistive, onboard) |
 | **Case** | [Aura Smart Display Case (USB-C variant)](https://makerworld.com/en/models/1382304-aura-smart-weather-forecast-display#profileId-1430951) |
 | **Adapter** | [USB-C 90° Right Angle Adapter](https://amzn.to/409Eayt) |
