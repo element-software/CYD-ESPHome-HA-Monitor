@@ -71,6 +71,16 @@ describe("action LVGL generation", () => {
     const subs = generateSensorSubstitutions(sensor, "Row 2, Column 2");
     expect(subs).toContain('r2c2_action: "automation.trigger"');
   });
+
+  it("supports scene.turn_on action kind", () => {
+    const sensor: ActionSensorConfig = {
+      ...baseAction,
+      entity: "scene.movie_mode",
+      action: "scene.turn_on",
+    };
+    const subs = generateSensorSubstitutions(sensor, "Row 2, Column 2");
+    expect(subs).toContain('r2c2_action: "scene.turn_on"');
+  });
 });
 
 describe("action has no HA state subscription", () => {
