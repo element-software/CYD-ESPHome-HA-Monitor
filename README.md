@@ -3,7 +3,7 @@
 A clean, compact clock and sensor dashboard for the **ESP32-2432S028** (the "Cheap Yellow Display" or CYD), built with **ESPHome** and **LVGL**.
 Try out the new [YAML generator](https://cheapyellowdisplay.co.uk/) - please note: it's not perfect and is a work in progress!
 
-Monitor Home Assistant entities on one required screen, then add extra swipeable pages as needed — binary sensors (doors, motion), numeric sensors (energy, temperature), text sensors, lights, switches, and tap actions — with per-page colours, optional background images, and an optional clock on page 1. 
+Monitor Home Assistant entities on one required screen, then add extra swipeable pages as needed — binary sensors (doors, motion), numeric sensors (energy, temperature), text sensors, lights, switches, and tap actions (scripts, automations, scenes) — with per-page colours, optional background images, and an optional clock on page 1. 
 
 | | | |
 |:---:|:---:|:---:|
@@ -21,6 +21,7 @@ Monitor Home Assistant entities on one required screen, then add extra swipeable
 - **Swipeable extra pages:** Screen 1 is required. Add up to five extra screens (six total), each pre-filled with sample entities. With the clock, Screen 1 has 6 slots and extra screens have 8; hide the clock for 8 on Screen 1 as well. Swipe left/right on the CYD when more than one screen is configured.
 - **Per-page themes:** Background colour, font colour, named theme presets, and optional background images compiled into flash.
 - **Enable/disable slots:** Leave unused blocks empty without generating unused Home Assistant subscriptions.
+- **Action buttons:** Trigger a script, fire an automation, activate a scene, or press an `input_button` with a single tap.
 - **On-device web UI:** Optional ESPHome `web_server` v3 so you can open the device IP to view entities and set backlight brightness.
 - **Display tweaks:** Swap X/Y (default on), invert colours, RGB/BGR, and mirror X/Y — stock CYD defaults stay as they were.
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
