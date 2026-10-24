@@ -2,6 +2,7 @@ import { generateYaml } from "../index";
 import { generateBoilerplate } from "../boilerplate";
 import { getLayout } from "../lvgl";
 import { defaultConfig } from "@/lib/defaultConfig";
+import { I2C_TOUCH_PINS } from "@/lib/devicePresets";
 import type { ConfigData } from "@/types/config";
 
 function landscapeConfig(partial: Partial<ConfigData> = {}): ConfigData {
@@ -37,7 +38,8 @@ describe("landscape YAML", () => {
   });
 
   it("keeps portrait 240x320 and swap_xy true when orientation is omitted", () => {
-    const yaml = generateYaml(defaultConfig);
+    const { orientation: _omitted, ...rest } = defaultConfig;
+    const yaml = generateYaml(rest as ConfigData);
     expect(yaml).toContain("width: 240");
     expect(yaml).toContain("height: 320");
     expect(displaySwapXy(yaml)).toBe(true);
@@ -90,6 +92,30 @@ describe("landscape YAML", () => {
   it("sets SPI touch swap_xy true in landscape", () => {
     expect(touchSwapXy(generateBoilerplate(landscapeConfig()))).toBe(true);
     expect(touchSwapXy(generateBoilerplate(defaultConfig))).toBe(false);
+  });
+
+  it("uses 4×2 packing when the clock is hidden", () => {
+    const yaml = generateYaml(landscapeConfig({ hideClock: true }));
+    expect(yaml).toContain("x: 81");
+    expect(yaml).toContain("x: 160");
+    expect(yaml).toContain("x: 239");
+    expect(yaml).toContain("y: 6");
+    expect(yaml).toContain("y: 123");
+    expect(yaml).toContain("width: 77");
+    expect(yaml).toContain("height: 110");
+    expect(yaml).not.toContain("id: clock_font");
+  });
+
+  it("leaves I2C CST816 bound to the display with swap_xy false", () => {
+    const yaml = generateBoilerplate(
+      landscapeConfig({
+        deviceVariant: "i2c_touch",
+        devicePins: { ...I2C_TOUCH_PINS },
+      }),
+    );
+    expect(yaml).toContain("platform: cst816");
+    expect(yaml).toContain("display: my_display");
+    expect(touchSwapXy(yaml)).toBe(false);
   });
 });
 
