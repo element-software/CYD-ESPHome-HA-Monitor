@@ -7,6 +7,7 @@ import type {
 
 export function generateOnOffSensor(
   sensor: BinarySensorConfig | LightSensorConfig | SwitchSensorConfig | InputBooleanSensorConfig,
+  enableAudio = false,
 ): string {
   const isToggleable = sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean";
   const iconColorOnExpr = isToggleable
@@ -30,6 +31,16 @@ export function generateOnOffSensor(
                   bg_opa: TRANSP`
     : "";
 
+  const beepOnAlertAction =
+    enableAudio && sensor.beepOnAlert
+      ? `
+        - if:
+            condition:
+              lambda: return id(ha_${sensor.id}).state;
+            then:
+              - script.execute: beep`
+      : "";
+
   const onStateActions = `
       then:
         - lvgl.label.update:
@@ -51,7 +62,7 @@ export function generateOnOffSensor(
             id: val_${sensor.id}
             text_color: !lambda |-
               if (id(ha_${sensor.id}).state) return ${iconColorOnExpr};
-              return ${iconColorOffExpr};${buttonBgUpdate}`;
+              return ${iconColorOffExpr};${buttonBgUpdate}${beepOnAlertAction}`;
 
   const triggerInitial =
     sensor.type === "switch"
@@ -70,25 +81,27 @@ export function generateBinarySensorConfig(
   binarySensors: BinarySensorConfig[],
   lightSensors: LightSensorConfig[],
   inputBooleanSensors: InputBooleanSensorConfig[],
+  enableAudio = false,
 ): string {
   const all = [...binarySensors, ...lightSensors, ...inputBooleanSensors];
   if (all.length === 0) return "";
   return `
 # --- BINARY SENSOR, LIGHT & INPUT BOOLEAN ENTITY STATE ---
 # Binary sensors, HA light entities, and input_boolean helpers (on/off state); icon color follows state (color_on / color_off).
-binary_sensor:${all.map((s) => generateOnOffSensor(s)).join("\n")}
+binary_sensor:${all.map((s) => generateOnOffSensor(s, enableAudio)).join("\n")}
 
 `;
 }
 
 export function generateSwitchSensorConfig(
   switchSensors: SwitchSensorConfig[],
+  enableAudio = false,
 ): string {
   if (switchSensors.length === 0) return "";
   return `
 # --- SWITCH ENTITY STATE ---
 # HA switch entities (on/off state with tap-to-toggle).
-switch:${switchSensors.map((s) => generateOnOffSensor(s)).join("\n")}
+switch:${switchSensors.map((s) => generateOnOffSensor(s, enableAudio)).join("\n")}
 
 `;
 }

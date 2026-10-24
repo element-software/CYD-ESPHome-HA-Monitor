@@ -101,7 +101,11 @@
     "iconSets": {
       "material_symbols": "Material Symbols",
       "material_design_icons": "Material Design Icons"
-    }
+    },
+    "audioSettings": "Audio",
+    "audioOff": "Audio off",
+    "audioI2sSummary": "I2S speaker",
+    "audioRtttlSummary": "RTTTL buzzer"
   },
   "gpioModal": {
     "title": "Device GPIO config",
@@ -179,6 +183,27 @@
       }
     }
   },
+  "audioModal": {
+    "title": "Audio / Beep",
+    "subtitle": "Optional speaker or buzzer. Off by default so existing flashes stay unchanged.",
+    "enable": {
+      "label": "Enable audio",
+      "description": "Adds a Beep button in Home Assistant and lets sensors play a short tone on alert."
+    },
+    "hardware": {
+      "label": "Hardware",
+      "description": "I2S DAC on the CYD audio connector, or a piezo buzzer driven by RTTTL.",
+      "i2s": "I2S DAC (speaker)",
+      "rtttl": "RTTTL buzzer (piezo)"
+    },
+    "pins": {
+      "dout": "I2S DOUT",
+      "bclk": "I2S BCLK",
+      "lrclk": "I2S LRCLK",
+      "rtttl": "Buzzer pin"
+    },
+    "pinCollision": "This pin is already used by display, touch, or backlight."
+  },
   "screenSettings": {
     "name": "Screen name",
     "theme": "Colour theme",
@@ -251,7 +276,8 @@
     "onPlaceholderBinary": "Open",
     "offPlaceholderBinary": "Closed",
     "onPlaceholderLight": "On",
-    "offPlaceholderLight": "Off"
+    "offPlaceholderLight": "Off",
+    "beepOnAlert": "Beep on alert"
   },
   "yamlModal": {
     "title": "Generated YAML"

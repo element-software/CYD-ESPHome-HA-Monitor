@@ -111,6 +111,7 @@ interface SensorConfigPanelProps {
   onToggle: () => void;
   onChange: (sensor: SensorConfig) => void;
   iconSet?: IconSet;
+  enableAudio?: boolean;
 }
 
 function getDefaultColorOn(type: SensorConfig["type"]): string {
@@ -126,6 +127,7 @@ export default function SensorConfigPanel({
   onToggle,
   onChange,
   iconSet,
+  enableAudio = false,
 }: SensorConfigPanelProps) {
   const t = useTranslations("sensorPanel");
   const [formatUnitForceCustom, setFormatUnitForceCustom] = useState(false);
@@ -696,6 +698,17 @@ export default function SensorConfigPanel({
                   </div>
                 </div>
               </div>
+              {enableAudio && (
+                <label className="flex items-center gap-2 cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    checked={sensor.beepOnAlert === true}
+                    onChange={(e) => updateField("beepOnAlert", e.target.checked)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-700">{t("beepOnAlert")}</span>
+                </label>
+              )}
             </>
           ) : null}
         </div>

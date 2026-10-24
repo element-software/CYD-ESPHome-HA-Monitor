@@ -16,6 +16,7 @@ import {
 } from "./onOffSensors";
 import { generateNumericSensorConfig, generateTextValueSensorConfig } from "./numericSensors";
 import { generateLightConfig } from "./light";
+import { generateAudioConfig } from "./audio";
 import { migrateConfig } from "@/lib/migrateConfig";
 
 function generateImageConfig(config: ConfigData): string {
@@ -74,9 +75,15 @@ export function generateYaml(config: ConfigData): string {
       migrated.buttonRadius ?? 0,
       migrated.screens,
     ) +
-    generateBinarySensorConfig(binarySensors, lightSensors, inputBooleanSensors) +
-    generateSwitchSensorConfig(switchSensors) +
+    generateBinarySensorConfig(
+      binarySensors,
+      lightSensors,
+      inputBooleanSensors,
+      migrated.enableAudio === true,
+    ) +
+    generateSwitchSensorConfig(switchSensors, migrated.enableAudio === true) +
     generateLightConfig() +
+    generateAudioConfig(migrated) +
     generateTextValueSensorConfig(activeSensors) +
     generateNumericSensorConfig(activeSensors)
   );
