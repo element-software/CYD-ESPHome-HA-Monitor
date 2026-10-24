@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "Displayinställningar",
     "subtitle": "Visuella alternativ och layoutalternativ för enhetsdisplayen.",
+    "orientation": {
+      "label": "Orientering",
+      "description": "Instrumentpanelens layout på CYD. Oberoende av Byt X/Y.",
+      "portrait": "Stående",
+      "landscape": "Liggande"
+    },
     "swapXy": {
       "label": "Byt X/Y-axlar",
-      "description": "Aktivera för de flesta CYD-kort. Inaktivera om displayen är roterad eller bara 4 sensorer syns med tomt utrymme."
+      "description": "Används fortfarande om bilden ligger på sidan eller bara 4 sensorer syns med tomt utrymme. Panelvariant, inte stående/liggande."
     },
     "hideClock": {
       "label": "Dölj klocka",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

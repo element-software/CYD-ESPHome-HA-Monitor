@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "Anzeigeeinstellungen",
     "subtitle": "Visuelle und Layout-Optionen für die Geräteanzeige.",
+    "orientation": {
+      "label": "Ausrichtung",
+      "description": "Dashboard-Layout auf dem CYD. Unabhängig von X/Y tauschen.",
+      "portrait": "Hochformat",
+      "landscape": "Querformat"
+    },
     "swapXy": {
       "label": "X/Y-Achsen tauschen",
-      "description": "Für die meisten CYD-Boards aktiviert lassen. Deaktivieren, wenn die Anzeige gedreht ist oder nur 4 Sensoren mit leerem Bereich sichtbar sind."
+      "description": "Weiterhin nutzen, wenn das Bild seitlich liegt oder nur 4 Sensoren mit leerem Bereich sichtbar sind. Das ist eine Panel-Variante, nicht Hoch-/Querformat."
     },
     "hideClock": {
       "label": "Uhr ausblenden",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

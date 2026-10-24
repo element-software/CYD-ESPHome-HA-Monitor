@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "Ustawienia wyświetlacza",
     "subtitle": "Opcje wizualne i układu dla wyświetlacza urządzenia.",
+    "orientation": {
+      "label": "Orientacja",
+      "description": "Układ pulpitu na CYD. Niezależne od Zamiany X/Y.",
+      "portrait": "Pionowa",
+      "landscape": "Pozioma"
+    },
     "swapXy": {
       "label": "Zamień osie X/Y",
-      "description": "Włącz dla większości płytek CYD. Wyłącz, jeśli wyświetlacz jest obrócony lub widoczne są tylko 4 czujniki z pustym obszarem."
+      "description": "Nadal używane, gdy obraz jest na boku lub widać tylko 4 czujniki z pustym obszarem. To ustawienie wariantu panelu, nie pion/poziom."
     },
     "hideClock": {
       "label": "Ukryj zegar",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

@@ -124,13 +124,13 @@ describe("input_boolean ESPHome binary_sensor generation", () => {
 
 describe("input_boolean LVGL widget generation", () => {
   it("generates input_boolean.toggle action for input_boolean type", () => {
-    const result = generateLvglWidget(baseInputBoolean, 1, 1, false);
+    const result = generateLvglWidget(baseInputBoolean, 2, 100, 117, 68);
     expect(result).toContain("input_boolean.toggle");
     expect(result).toContain("on_click:");
   });
 
   it("does not generate switch.toggle for input_boolean type", () => {
-    const result = generateLvglWidget(baseInputBoolean, 1, 1, false);
+    const result = generateLvglWidget(baseInputBoolean, 2, 100, 117, 68);
     expect(result).not.toContain("switch.toggle");
   });
 });

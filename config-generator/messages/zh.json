@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "显示设置",
     "subtitle": "设备显示屏的视觉和布局选项。",
+    "orientation": {
+      "label": "方向",
+      "description": "CYD 上的仪表盘布局。与交换 X/Y 无关。",
+      "portrait": "竖屏",
+      "landscape": "横屏"
+    },
     "swapXy": {
       "label": "交换 X/Y 轴",
-      "description": "大多数 CYD 板请保持启用。若显示旋转错误或仅显示 4 个传感器且有大片空白，请关闭此选项。"
+      "description": "图像横置或只显示 4 个传感器且有大片空白时仍用此项。这是面板型号设置，不是横竖屏。"
     },
     "hideClock": {
       "label": "隐藏时钟",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

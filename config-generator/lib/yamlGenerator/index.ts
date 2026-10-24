@@ -1,10 +1,11 @@
-import type {
-  ConfigData,
-  SensorConfig,
-  BinarySensorConfig,
-  InputBooleanSensorConfig,
-  LightSensorConfig,
-  SwitchSensorConfig,
+import {
+  getDisplayOrientation,
+  type ConfigData,
+  type SensorConfig,
+  type BinarySensorConfig,
+  type InputBooleanSensorConfig,
+  type LightSensorConfig,
+  type SwitchSensorConfig,
 } from "@/types/config";
 import { generateHeader } from "./header";
 import { generateSubstitutions, getAllPrefixedSensors } from "./substitutions";
@@ -33,7 +34,9 @@ function generateImageConfig(config: ConfigData): string {
     lines.push(`  - platform: file`);
     lines.push(`    file: "${s.backgroundImage!.trim()}"`);
     lines.push(`    id: ${s.id}_bg_image`);
-    lines.push(`    resize: 240x320`);
+    lines.push(
+      `    resize: ${getDisplayOrientation(config) === "landscape" ? "320x240" : "240x320"}`,
+    );
     lines.push(`    type: RGB565`);
   });
   lines.push(``);
@@ -73,6 +76,7 @@ export function generateYaml(config: ConfigData): string {
       hideClock ?? false,
       migrated.buttonRadius ?? 0,
       migrated.screens,
+      getDisplayOrientation(migrated),
     ) +
     generateBinarySensorConfig(binarySensors, lightSensors, inputBooleanSensors) +
     generateSwitchSensorConfig(switchSensors) +

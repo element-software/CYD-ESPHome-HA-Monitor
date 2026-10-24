@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "Paramètres d'affichage",
     "subtitle": "Options visuelles et de mise en page pour l'affichage de l'appareil.",
+    "orientation": {
+      "label": "Orientation",
+      "description": "Disposition du tableau de bord sur le CYD. Indépendant de l'inversion X/Y.",
+      "portrait": "Portrait",
+      "landscape": "Paysage"
+    },
     "swapXy": {
       "label": "Inverser les axes X/Y",
-      "description": "Activé pour la plupart des cartes CYD. Désactivez si l'écran est pivoté ou si seuls 4 capteurs sont visibles avec un espace vide."
+      "description": "Toujours utilisé si l'image est de travers ou si seuls 4 capteurs sont visibles avec un espace vide. Réglage de variante de dalle, pas portrait/paysage."
     },
     "hideClock": {
       "label": "Masquer l'horloge",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

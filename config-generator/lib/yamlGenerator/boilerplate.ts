@@ -1,9 +1,16 @@
-import type { ConfigData } from "@/types/config";
+import { getDisplayOrientation, type ConfigData } from "@/types/config";
 import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
 
 export function generateBoilerplate(config: ConfigData): string {
   const { deviceName, friendlyName, hideClock } = config;
-  const swapXy = config.displaySwapXy !== false;
+  const isLandscape = getDisplayOrientation(config) === "landscape";
+  const userSwapXy = config.displaySwapXy !== false;
+  // Landscape inverts swap_xy relative to the user/panel setting. Portrait uses it as-is.
+  const swapXy = isLandscape ? !userSwapXy : userSwapXy;
+  const displayWidth = isLandscape ? 320 : 240;
+  const displayHeight = isLandscape ? 240 : 320;
+  const clockFontSize = isLandscape ? 32 : 48;
+  const dateFontSize = isLandscape ? 16 : 20;
   const invertColors = config.displayInvertColors ?? false;
   const colorOrder = config.displayColorOrder ?? "RGB";
   const mirrorX = config.displayMirrorX !== false;
@@ -45,7 +52,7 @@ touchscreen:
     y_min: 394
     y_max: 3749
   transform:
-    swap_xy: false
+    swap_xy: ${isLandscape}
     mirror_x: true
     mirror_y: false
   on_touch:
@@ -134,8 +141,8 @@ display:
     invert_colors: ${invertColors}
     color_order: ${colorOrder}
     dimensions:
-      width: 240
-      height: 320
+      width: ${displayWidth}
+      height: ${displayHeight}
       offset_width: 0
       offset_height: 0
       pad_width: 0
@@ -150,11 +157,11 @@ ${touchscreenBlock}
 font:${hideClock ? "" : `
   - file: "gfonts://Roboto"
     id: clock_font
-    size: 48
+    size: ${clockFontSize}
     glyphs: '0123456789: '
   - file: "gfonts://Roboto"
     id: date_font
-    size: 20
+    size: ${dateFontSize}
     glyphs: "0123456789/- abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`}
   - file: "gfonts://${config.iconSet === 'material_symbols' ? 'Material Symbols' : 'Material Icons'}"
     id: icon_font

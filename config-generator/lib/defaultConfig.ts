@@ -130,6 +130,7 @@ export const defaultConfig: ConfigData = {
   deviceName: 'hamon',
   friendlyName: 'HAMon',
   hideClock: false,
+  orientation: 'portrait',
   displaySwapXy: true,
   displayInvertColors: false,
   displayColorOrder: 'RGB',

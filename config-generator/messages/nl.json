@@ -134,9 +134,15 @@
   "displayModal": {
     "title": "Displayinstellingen",
     "subtitle": "Visuele en indelingsopties voor het apparaatdisplay.",
+    "orientation": {
+      "label": "Oriëntatie",
+      "description": "Dashboardindeling op de CYD. Onafhankelijk van X/Y wisselen.",
+      "portrait": "Staand",
+      "landscape": "Liggend"
+    },
     "swapXy": {
       "label": "X/Y-assen wisselen",
-      "description": "Inschakelen voor de meeste CYD-boards. Uitschakelen als het display gedraaid is of slechts 4 sensoren zichtbaar zijn met lege ruimte."
+      "description": "Nog steeds gebruiken als het beeld op zijn kant staat of slechts 4 sensoren zichtbaar zijn met lege ruimte. Dit is een paneelvariant, niet staand/liggend."
     },
     "hideClock": {
       "label": "Klok verbergen",
@@ -489,7 +495,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"
