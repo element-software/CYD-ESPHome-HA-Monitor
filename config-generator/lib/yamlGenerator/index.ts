@@ -63,7 +63,7 @@ export function generateYaml(config: ConfigData): string {
   );
 
   return (
-    generateHeader() +
+    generateHeader(migrated.friendlyName, migrated.deviceName) +
     generateSubstitutions(migrated, allSensors, getSensor) +
     generateImageConfig(migrated) +
     generateBoilerplate(migrated) +

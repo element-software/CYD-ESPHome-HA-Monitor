@@ -73,7 +73,7 @@
     }
   },
   "pageHeader": {
-    "title": "CYD HAMon Config Generator",
+    "title": "CYD {name} Config",
     "subtitle": "配置您的 Cheap Yellow Display Home Assistant 监控器"
   },
   "configGeneratorPage": {
@@ -235,7 +235,8 @@
     "enabled": "Enabled"
   },
   "yamlModal": {
-    "title": "生成的 YAML"
+    "title": "生成的 YAML",
+    "download": "Download"
   },
   "whatsNewModal": {
     "title": "What’s new",

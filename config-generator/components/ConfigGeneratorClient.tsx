@@ -3,6 +3,7 @@
 import { useState, useRef, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import ConfigForm from '@/components/ConfigForm';
+import PageHeader from '@/components/PageHeader';
 import YamlModal from '@/components/YamlModal';
 import ImportConfigModal from '@/components/ImportConfigModal';
 import WhatsNewModal from '@/components/WhatsNewModal';
@@ -10,6 +11,7 @@ import CydDevicePreview from '@/components/CydDevicePreview';
 import { ConfigData } from '@/types/config';
 import { useLocalStorageConfig } from '@/lib/useLocalStorageConfig';
 import { isValidConfig } from '@/lib/configValidation';
+import { jsonExportFilename } from '@/lib/exportFilename';
 
 /** mipi_spi display driver added in this release (replaces ili9xxx for new configs). */
 const ESPHOME_MIPI_RELEASE_NOTES = 'https://esphome.io/changelog/2025.5.0/';
@@ -50,7 +52,7 @@ export default function ConfigGeneratorClient() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'hamon-config.json';
+    a.download = jsonExportFilename(config);
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -97,6 +99,7 @@ export default function ConfigGeneratorClient() {
 
   return (
     <>
+      <PageHeader name={config.friendlyName || config.deviceName} />
       <div
         className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed dark:border-blue-700 dark:bg-blue-950 dark:text-slate-100"
         role="note"
