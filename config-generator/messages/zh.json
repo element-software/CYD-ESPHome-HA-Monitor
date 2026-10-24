@@ -142,6 +142,11 @@
       "label": "隐藏时钟",
       "description": "额外增加一行，形成 4×2 传感器网格。"
     },
+    "clockTargetScreen": {
+      "label": "点击时钟打开",
+      "description": "点击时钟时切换到另一个屏幕。",
+      "none": "无"
+    },
     "buttonRadius": {
       "label": "按钮圆角半径",
       "help": "0 = 直角，34 = 完全圆角。"
@@ -192,8 +197,14 @@
       "light": "灯光",
       "switch": "开关",
       "input_boolean": "输入布尔值",
-      "action": "操作"
+      "action": "操作",
+      "label": "文本标签"
     },
+    "targetScreen": "切换屏幕",
+    "targetScreenNone": "无",
+    "targetScreenCurrent": "当前屏幕",
+    "valueTextField": "值文本",
+    "valueTextPlaceholder": "可选",
     "actionField": "操作",
     "actionTextField": "按钮文字",
     "actionTextPlaceholder": "运行",

@@ -108,7 +108,11 @@ export default function ConfigGeneratorClient() {
           <ConfigForm config={config} onChange={setConfig} activeScreenIndex={safeScreenIndex} onActiveScreenChange={setActiveScreenIndex} />
         </div>
         <div className="lg:sticky lg:top-8 w-full min-w-0 col-span-2 lg:col-span-1 flex flex-col gap-4 p-4 border border-gray-200 rounded-lg bg-white">
-          <CydDevicePreview config={config} activeScreenIndex={safeScreenIndex} />
+          <CydDevicePreview
+            config={config}
+            activeScreenIndex={safeScreenIndex}
+            onNavigateScreen={setActiveScreenIndex}
+          />
           <button
             type="button"
             onClick={() => setYamlModalOpen(true)}

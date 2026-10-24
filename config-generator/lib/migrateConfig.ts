@@ -1,4 +1,4 @@
-import type { ConfigData, ScreenConfig } from '@/types/config';
+import type { ConfigData, ScreenConfig, SensorConfig } from '@/types/config';
 import {
   cloneSampleSensors,
   createEmptySensors,
@@ -17,11 +17,44 @@ export function createScreen(index: number, sensors = cloneSampleSensors()): Scr
   };
 }
 
+function remapTargetScreen(
+  target: string | undefined,
+  idMap: Map<string, string>,
+): string | undefined {
+  if (!target) return undefined;
+  return idMap.get(target);
+}
+
+function remapSensorTargets(
+  sensors: SensorConfig[],
+  idMap: Map<string, string>,
+): SensorConfig[] {
+  return sensors.map((sensor) => ({
+    ...sensor,
+    targetScreen: remapTargetScreen(sensor.targetScreen, idMap),
+  }));
+}
+
 export function reindexScreens(screens: ScreenConfig[]): ScreenConfig[] {
+  const idMap = new Map(screens.map((s, i) => [s.id, `s${i + 1}`]));
   return screens.map((screen, index) => ({
     ...screen,
     id: `s${index + 1}`,
+    sensors: remapSensorTargets(screen.sensors, idMap),
   }));
+}
+
+/** Reindex screen ids and remap sensor/clock navigation targets. Deleted targets are cleared. */
+export function remapNavigationTargets(config: ConfigData): ConfigData {
+  const screens = config.screens ?? [];
+  const idMap = new Map(screens.map((s, i) => [s.id, `s${i + 1}`]));
+  const reindexed = reindexScreens(screens);
+  return {
+    ...config,
+    screens: reindexed,
+    sensors: reindexed[0]?.sensors ?? config.sensors,
+    clockTargetScreen: remapTargetScreen(config.clockTargetScreen, idMap),
+  };
 }
 
 function normalizeScreen(screen: ScreenConfig, index: number): ScreenConfig {
@@ -40,11 +73,11 @@ export function migrateConfig(config: ConfigData): ConfigData {
 
   if (existing.length >= 1) {
     const screens = existing.map((screen, index) => normalizeScreen(screen, index));
-    return {
+    return remapNavigationTargets({
       ...config,
       screens,
       sensors: screens[0].sensors,
-    };
+    });
   }
 
   const s1Sensors =
@@ -54,9 +87,9 @@ export function migrateConfig(config: ConfigData): ConfigData {
 
   const screens: ScreenConfig[] = [createScreen(0, s1Sensors)];
 
-  return {
+  return remapNavigationTargets({
     ...config,
     screens,
     sensors: screens[0].sensors,
-  };
+  });
 }

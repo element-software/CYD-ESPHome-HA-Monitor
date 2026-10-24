@@ -142,6 +142,11 @@
       "label": "Ukryj zegar",
       "description": "Dodaje dodatkowy wiersz dla siatki czujników 4×2."
     },
+    "clockTargetScreen": {
+      "label": "Dotknięcie zegara otwiera",
+      "description": "Przechodzi do innego ekranu po dotknięciu zegara.",
+      "none": "Brak"
+    },
     "buttonRadius": {
       "label": "Promień narożników przycisków",
       "help": "0 = ostre narożniki, 34 = w pełni zaokrąglone."
@@ -192,8 +197,14 @@
       "light": "Światło",
       "switch": "Przełącznik",
       "input_boolean": "Boolean wejściowy",
-      "action": "Akcja"
+      "action": "Akcja",
+      "label": "Etykieta tekstowa"
     },
+    "targetScreen": "Zmień ekran",
+    "targetScreenNone": "Brak",
+    "targetScreenCurrent": "ten ekran",
+    "valueTextField": "Tekst wartości",
+    "valueTextPlaceholder": "Opcjonalne",
     "actionField": "Akcja",
     "actionTextField": "Tekst przycisku",
     "actionTextPlaceholder": "Uruchom",

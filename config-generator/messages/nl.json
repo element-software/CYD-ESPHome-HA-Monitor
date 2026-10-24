@@ -142,6 +142,11 @@
       "label": "Klok verbergen",
       "description": "Voegt een extra rij toe voor een 4×2-sensorenraster."
     },
+    "clockTargetScreen": {
+      "label": "Tik op klok opent",
+      "description": "Navigeer naar een ander scherm wanneer op de klok wordt getikt.",
+      "none": "Geen"
+    },
     "buttonRadius": {
       "label": "Hoekradius knoppen",
       "help": "0 = rechte hoeken, 34 = volledig afgerond."
@@ -192,8 +197,14 @@
       "light": "Licht",
       "switch": "Schakelaar",
       "input_boolean": "Invoer Boolean",
-      "action": "Actie"
+      "action": "Actie",
+      "label": "Tekstlabel"
     },
+    "targetScreen": "Scherm wijzigen",
+    "targetScreenNone": "Geen",
+    "targetScreenCurrent": "dit scherm",
+    "valueTextField": "Waardetekst",
+    "valueTextPlaceholder": "Optioneel",
     "actionField": "Actie",
     "actionTextField": "Knoptekst",
     "actionTextPlaceholder": "Uitvoeren",

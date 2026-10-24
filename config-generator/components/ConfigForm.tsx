@@ -3,7 +3,7 @@
 import { ConfigData, ScreenConfig } from '@/types/config';
 import { previewImageCache } from '@/lib/previewImageCache';
 import { cloneSampleSensors, DEFAULT_SCREEN_BG, DEFAULT_SCREEN_FG, MAX_SCREENS } from '@/lib/defaultConfig';
-import { createScreen, reindexScreens } from '@/lib/migrateConfig';
+import { createScreen, remapNavigationTargets } from '@/lib/migrateConfig';
 import DeviceSettingsCard from './DeviceSettingsCard';
 import SensorList from './SensorList';
 import { useTranslations } from 'next-intl';
@@ -68,12 +68,11 @@ export default function ConfigForm({
 
   const removeScreen = () => {
     if (!canRemoveScreen) return;
-    const next = reindexScreens(screens.filter((_, i) => i !== activeScreenIndex));
-    onChange({
+    const next = remapNavigationTargets({
       ...config,
-      screens: next,
-      sensors: next[0]?.sensors ?? config.sensors,
+      screens: screens.filter((_, i) => i !== activeScreenIndex),
     });
+    onChange(next);
     onActiveScreenChange(Math.max(0, activeScreenIndex - 1));
   };
 

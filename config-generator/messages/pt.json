@@ -142,6 +142,11 @@
       "label": "Ocultar Relógio",
       "description": "Adiciona uma linha extra para uma grade de sensores 4×2."
     },
+    "clockTargetScreen": {
+      "label": "Toque no relógio abre",
+      "description": "Navega para outro ecrã ao tocar no relógio.",
+      "none": "Nenhum"
+    },
     "buttonRadius": {
       "label": "Raio dos Cantos dos Botões",
       "help": "0 = cantos retos, 34 = totalmente arredondados."
@@ -192,8 +197,14 @@
       "light": "Luz",
       "switch": "Interruptor",
       "input_boolean": "Boolean de entrada",
-      "action": "Ação"
+      "action": "Ação",
+      "label": "Rótulo de texto"
     },
+    "targetScreen": "Mudar ecrã",
+    "targetScreenNone": "Nenhum",
+    "targetScreenCurrent": "este ecrã",
+    "valueTextField": "Texto do valor",
+    "valueTextPlaceholder": "Opcional",
     "actionField": "Ação",
     "actionTextField": "Texto do botão",
     "actionTextPlaceholder": "Executar",
