@@ -127,7 +127,7 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
           </label>
         </div>
 
-        {(config.screens?.length ?? 0) >= 2 && (
+        {(config.screens?.length ?? 0) >= 2 && !config.hideClock && (
           <>
             <hr className="border-gray-100" />
             <div className="flex items-center justify-between gap-4">
