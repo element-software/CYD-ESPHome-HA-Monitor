@@ -16,6 +16,7 @@ import {
 } from "./onOffSensors";
 import { generateNumericSensorConfig, generateTextValueSensorConfig } from "./numericSensors";
 import { generateLightConfig } from "./light";
+import { generateAudioConfig } from "./audio";
 import { migrateConfig } from "@/lib/migrateConfig";
 
 function generateImageConfig(config: ConfigData): string {
@@ -63,7 +64,7 @@ export function generateYaml(config: ConfigData): string {
   );
 
   return (
-    generateHeader() +
+    generateHeader(migrated.friendlyName, migrated.deviceName) +
     generateSubstitutions(migrated, allSensors, getSensor) +
     generateImageConfig(migrated) +
     generateBoilerplate(migrated) +
@@ -75,9 +76,15 @@ export function generateYaml(config: ConfigData): string {
       migrated.screens,
       migrated.clockTargetScreen,
     ) +
-    generateBinarySensorConfig(binarySensors, lightSensors, inputBooleanSensors) +
-    generateSwitchSensorConfig(switchSensors) +
+    generateBinarySensorConfig(
+      binarySensors,
+      lightSensors,
+      inputBooleanSensors,
+      migrated.enableAudio === true,
+    ) +
+    generateSwitchSensorConfig(switchSensors, migrated.enableAudio === true) +
     generateLightConfig() +
+    generateAudioConfig(migrated) +
     generateTextValueSensorConfig(activeSensors) +
     generateNumericSensorConfig(activeSensors)
   );

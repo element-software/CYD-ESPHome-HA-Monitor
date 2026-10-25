@@ -74,6 +74,7 @@ export default function SensorList({ config, onChange, activeScreenIndex }: Sens
               iconSet={config.iconSet}
               screens={config.screens}
               currentScreenId={config.screens?.[activeScreenIndex]?.id}
+              enableAudio={config.enableAudio === true}
             />
           );
         })}
