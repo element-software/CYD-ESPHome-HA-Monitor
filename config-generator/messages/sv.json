@@ -73,7 +73,7 @@
     }
   },
   "pageHeader": {
-    "title": "CYD HAMon Config Generator",
+    "title": "CYD {name} Config",
     "subtitle": "Konfigurera din Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
@@ -235,7 +235,8 @@
     "enabled": "Enabled"
   },
   "yamlModal": {
-    "title": "Genererad YAML"
+    "title": "Genererad YAML",
+    "download": "Download"
   },
   "whatsNewModal": {
     "title": "What’s new",
