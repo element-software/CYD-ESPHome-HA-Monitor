@@ -147,21 +147,40 @@ export function generateLvglWidget(
 
   const screenId = sensor.id.includes("_") ? sensor.id.split("_")[0] : "s1";
   const fontColorSub = `\${${screenId}_font_color}`;
-
-  return `
-        - button:
-            x: ${x}
-            y: ${y}
-            id: button_${sensor.id}
-            width: ${width}
-            height: ${height}
-            bg_opa: TRANSP
-            border_width: 0
-            shadow_width: 0
-            radius: ${buttonRadius}
-            press_lock: false
-            scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}
-            widgets:
+  const stacked = width < 90;
+  const childWidgets = stacked
+    ? `
+              - label:
+                  id: icon_${sensor.id}
+                  text: "\${${sensor.id}_icon}"
+                  text_font: icon_font
+                  text_color: \${${sensor.id}_icon_color}
+                  align: TOP_MID
+                  y: 8
+                  clickable: false
+              - label:
+                  id: lbl_${sensor.id}
+                  text: "\${${sensor.id}_label}"
+                  text_font: label_font
+                  text_color: ${fontColorSub}
+                  align: TOP_MID
+                  y: 40
+                  width: ${width - 8}
+                  text_align: CENTER
+                  long_mode: DOT
+                  clickable: false
+              - label:
+                  id: val_${sensor.id}
+                  text: ${valueText}
+                  text_font: state_font
+                  text_color: ${fontColorSub}
+                  align: TOP_MID
+                  y: 58
+                  width: ${width - 8}
+                  text_align: CENTER
+                  long_mode: DOT
+                  clickable: false`
+    : `
               - label:
                   id: icon_${sensor.id}
                   text: "\${${sensor.id}_icon}"
@@ -188,6 +207,20 @@ export function generateLvglWidget(
                   x: 32
                   y: 10
                   clickable: false`;
+
+  return `
+        - button:
+            x: ${x}
+            y: ${y}
+            id: button_${sensor.id}
+            width: ${width}
+            height: ${height}
+            bg_opa: TRANSP
+            border_width: 0
+            shadow_width: 0
+            radius: ${buttonRadius}
+            press_lock: false
+            scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}${childWidgets}`;
 }
 
 function getClockWidgets(

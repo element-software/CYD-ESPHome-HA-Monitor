@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Hide Clock",
-      "description": "Adds an extra row for a 4×2 sensor grid on Screen 1."
+      "description": "Adds slots r4c1 and r4c2 on Screen 1 (portrait extra row, landscape extra columns)."
     },
     "invertColors": {
       "label": "Invert colours",

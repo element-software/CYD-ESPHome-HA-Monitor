@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Ocultar reloj",
-      "description": "Añade una fila adicional para una cuadrícula de sensores 4×2."
+      "description": "Añade las ranuras r4c1 y r4c2 en la Pantalla 1 (fila extra en vertical, columnas extra en horizontal)."
     },
     "buttonRadius": {
       "label": "Radio de esquina de los botones",

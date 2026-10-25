@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Masquer l'horloge",
-      "description": "Ajoute une ligne supplémentaire pour une grille de capteurs 4×2."
+      "description": "Ajoute les emplacements r4c1 et r4c2 sur l'écran 1 (ligne extra en portrait, colonnes extra en paysage)."
     },
     "buttonRadius": {
       "label": "Rayon des coins des boutons",

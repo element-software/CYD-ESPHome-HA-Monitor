@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "隐藏时钟",
-      "description": "额外增加一行，形成 4×2 传感器网格。"
+      "description": "在屏幕 1 上增加 r4c1 和 r4c2 插槽（竖屏为额外一行，横屏为额外列）。"
     },
     "buttonRadius": {
       "label": "按钮圆角半径",

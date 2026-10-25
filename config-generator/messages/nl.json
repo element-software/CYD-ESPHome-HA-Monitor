@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Klok verbergen",
-      "description": "Voegt een extra rij toe voor een 4×2-sensorenraster."
+      "description": "Voegt slots r4c1 en r4c2 toe op Scherm 1 (extra rij in staand, extra kolommen in liggend)."
     },
     "buttonRadius": {
       "label": "Hoekradius knoppen",

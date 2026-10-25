@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Ukryj zegar",
-      "description": "Dodaje dodatkowy wiersz dla siatki czujników 4×2."
+      "description": "Dodaje sloty r4c1 i r4c2 na Ekranie 1 (dodatkowy wiersz w pionie, dodatkowe kolumny w poziomie)."
     },
     "buttonRadius": {
       "label": "Promień narożników przycisków",

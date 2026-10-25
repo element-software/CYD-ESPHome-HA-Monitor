@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Nascondi orologio",
-      "description": "Aggiunge una riga extra per una griglia sensori 4×2."
+      "description": "Aggiunge gli slot r4c1 e r4c2 sulla Schermata 1 (riga extra in verticale, colonne extra in orizzontale)."
     },
     "buttonRadius": {
       "label": "Raggio angoli pulsanti",

@@ -26,16 +26,15 @@ export default function CydDevicePreview({ config, activeScreenIndex = 0 }: CydD
       <p className="text-sm text-center w-full text-gray-500">
         Click binary/light/switch sensors to toggle state. Click a numeric sensor value to enter a test number and see how thresholds affect the icon and colour.
       </p>
-      <div className={`relative w-full overflow-hidden ${isLandscape ? "aspect-4/3" : "aspect-3/4"}`}>
+      <div className={`relative w-full overflow-hidden ${isLandscape ? "aspect-[654/382]" : "aspect-3/4"}`}>
         <div
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: "size",
             backgroundColor: config.screens?.[activeScreenIndex]?.backgroundColor || "#0f1419",
-            top: "22%",
-            right: "24%",
-            bottom: "27%",
-            left: "24%",
+            ...(isLandscape
+              ? { top: "5.5%", right: "13.6%", bottom: "7.6%", left: "19.6%" }
+              : { top: "22%", right: "24%", bottom: "27%", left: "24%" }),
           }}
           aria-hidden
         >

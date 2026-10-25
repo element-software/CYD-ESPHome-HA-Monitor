@@ -103,6 +103,8 @@ describe("landscape YAML", () => {
     expect(yaml).toContain("y: 123");
     expect(yaml).toContain("width: 77");
     expect(yaml).toContain("height: 110");
+    expect(yaml).toContain("long_mode: DOT");
+    expect(yaml).toContain("align: TOP_MID");
     expect(yaml).not.toContain("id: clock_font");
   });
 

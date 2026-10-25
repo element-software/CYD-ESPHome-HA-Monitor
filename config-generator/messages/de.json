@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Uhr ausblenden",
-      "description": "Fügt eine zusätzliche Reihe für ein 4×2-Sensor-Raster hinzu."
+      "description": "Fügt die Slots r4c1 und r4c2 auf Bildschirm 1 hinzu (Hochformat extra Zeile, Querformat extra Spalten)."
     },
     "buttonRadius": {
       "label": "Schaltflächen-Eckenradius",

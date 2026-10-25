@@ -146,7 +146,7 @@
     },
     "hideClock": {
       "label": "Ocultar Relógio",
-      "description": "Adiciona uma linha extra para uma grade de sensores 4×2."
+      "description": "Adiciona os slots r4c1 e r4c2 no Ecrã 1 (linha extra em retrato, colunas extra em paisagem)."
     },
     "buttonRadius": {
       "label": "Raio dos Cantos dos Botões",
