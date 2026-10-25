@@ -40,6 +40,8 @@ The repository has two main parts:
 
 ## Development Setup (config-generator)
 
+Requires Node.js 24 (same as CI).
+
 ```bash
 cd config-generator
 npm install

@@ -2,6 +2,9 @@
   "name": "cyd-hamon-config-generator",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "homepage": "https://element-software.github.io/CYD-ESPHome-HA-Monitor",
   "scripts": {
     "test": "jest",

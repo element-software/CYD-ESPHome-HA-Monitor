@@ -33,7 +33,7 @@ npm run generate:icons # regenerate lib/icons.generated.ts (fetches from GitHub)
 npm run generate:og    # regenerate OG images into public/og/ (uses sharp)
 ```
 
-Node 22 is used in CI. Type-check via `npx tsc --noEmit` (there is no dedicated script).
+Node 24 is used in CI. Type-check via `npx tsc --noEmit` (there is no dedicated script).
 
 ## Directory structure
 
