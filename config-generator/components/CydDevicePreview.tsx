@@ -21,6 +21,7 @@ export default function CydDevicePreview({
   onNavigateScreen,
 }: CydDevicePreviewProps) {
   const [imageError, setImageError] = useState(false);
+  const isLandscape = config.orientation === "landscape";
 
   return (
     <div className="relative w-full min-w-0">
@@ -30,16 +31,15 @@ export default function CydDevicePreview({
       <p className="text-sm text-center w-full text-gray-500">
         Click binary/light/switch sensors to toggle state. Click a numeric sensor value to enter a test number and see how thresholds affect the icon and colour.
       </p>
-      <div className="relative aspect-3/4 w-full overflow-hidden">
+      <div className={`relative w-full overflow-hidden ${isLandscape ? "aspect-[654/382]" : "aspect-3/4"}`}>
         <div
           className="absolute z-1 rounded-sm overflow-hidden"
           style={{
             containerType: "size",
             backgroundColor: config.screens?.[activeScreenIndex]?.backgroundColor || "#0f1419",
-            top: "22%",
-            right: "24%",
-            bottom: "27%",
-            left: "24%",
+            ...(isLandscape
+              ? { top: "5.5%", right: "13.6%", bottom: "7.6%", left: "19.6%" }
+              : { top: "22%", right: "24%", bottom: "27%", left: "24%" }),
           }}
           aria-hidden
         >
@@ -49,16 +49,16 @@ export default function CydDevicePreview({
             onNavigateScreen={onNavigateScreen}
           />
         </div>
-        {/* Device frame on top: rotated 90° so device appears in portrait */}
+        {/* Portrait rotates the landscape device photo 90°. Landscape uses the photo as-is. */}
         {!imageError ? (
           <img
             src="/cyd-device.png"
             alt="CYD device preview"
-            className="absolute inset-0 w-full h-full object-contain z-0 pointer-events-none -rotate-90"
+            className={`absolute inset-0 w-full h-full object-contain z-0 pointer-events-none${isLandscape ? "" : " -rotate-90"}`}
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="absolute inset-0 z-10 rounded-lg border-4 border-amber-400/60 bg-amber-50/50 pointer-events-none rotate-90" />
+          <div className={`absolute inset-0 z-10 rounded-lg border-4 border-amber-400/60 bg-amber-50/50 pointer-events-none${isLandscape ? "" : " rotate-90"}`} />
         )}
       </div>
     </div>

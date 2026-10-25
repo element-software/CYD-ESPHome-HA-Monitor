@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import type { ConfigData, IconSet } from '@/types/config';
+import type { ConfigData, DisplayOrientation, IconSet } from '@/types/config';
 import { defaultConfig } from '@/lib/defaultConfig';
 
 /** Default sensors for row 4 when Hide Clock is enabled (r4c1, r4c2). */
@@ -40,7 +40,7 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
     return () => dialog.removeEventListener('close', handleClose);
   }, [onClose]);
 
-  const update = (field: keyof ConfigData, value: string | boolean | IconSet | number) => {
+  const update = (field: keyof ConfigData, value: string | boolean | IconSet | number | DisplayOrientation) => {
     if (field === 'hideClock' && value === true) {
       const extra = Math.max(0, 8 - config.sensors.length);
       const newSensors = extra
@@ -89,6 +89,33 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
       </div>
 
       <div className="p-4 overflow-y-auto max-h-[70vh] space-y-5">
+        {/* Orientation — independent of Swap X/Y (panel-variant knob) */}
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-gray-700">{t('orientation.label')}</p>
+          <p className="text-xs text-gray-500">{t('orientation.description')}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {(['portrait', 'landscape'] as const).map((val) => (
+              <label
+                key={val}
+                className="flex items-center justify-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50"
+              >
+                <input
+                  type="radio"
+                  name="displaySettingsOrientation"
+                  value={val}
+                  checked={(config.orientation ?? 'portrait') === val}
+                  onChange={() => update('orientation', val)}
+                  className="sr-only"
+                  aria-label={t(`orientation.${val}`)}
+                />
+                <span className="text-sm font-medium text-gray-800">{t(`orientation.${val}`)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-100" />
+
         {/* Swap X/Y */}
         <div className="flex items-center justify-between gap-4">
           <div>

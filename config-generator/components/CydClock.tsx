@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from 'react';
 
-/** ESPHome font sizes: clock 48, date 20. Scale in cqmin to match device preview. */
-const ESPHOME = { clock: 48, date: 20 } as const;
+/** ESPHome font sizes. Landscape uses compact 32/16; portrait 48/20. Scale in cqmin. */
+const PORTRAIT = { clock: 48, date: 20 } as const;
+const LANDSCAPE = { clock: 32, date: 16 } as const;
 const CLOCK_CQMIN = 16;
-const FONT = {
-  clock: `${CLOCK_CQMIN}cqmin`,
-  date: `${((CLOCK_CQMIN * ESPHOME.date) / ESPHOME.clock).toFixed(2)}cqmin`,
-};
+
+function clockFonts(compact: boolean) {
+  const sizes = compact ? LANDSCAPE : PORTRAIT;
+  return {
+    clock: `${((CLOCK_CQMIN * sizes.clock) / PORTRAIT.clock).toFixed(2)}cqmin`,
+    date: `${((CLOCK_CQMIN * sizes.date) / PORTRAIT.clock).toFixed(2)}cqmin`,
+  };
+}
 const TEXT_COLOR = '#ffffff';
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 const PLACEHOLDER = { time: '--:--', date: '-- --/--' } as const;
@@ -33,9 +38,11 @@ export function getClockTexts(now: Date | null): { time: string; date: string } 
 
 export default function CydClock({
   fontColor = TEXT_COLOR,
+  compact = false,
   onClick,
 }: {
   fontColor?: string;
+  compact?: boolean;
   onClick?: () => void;
 }) {
   const [now, setNow] = useState<Date | null>(null);
@@ -48,11 +55,13 @@ export default function CydClock({
   }, []);
 
   const { time, date } = getClockTexts(now);
+  const font = clockFonts(compact);
 
   return (
     <div
       className={[
-        'shrink-0 flex flex-col items-center justify-center pt-[3cqmin] pb-[2.5cqmin]',
+        'shrink-0 flex flex-col items-center justify-center',
+        compact ? 'pt-[1cqmin] pb-[0.5cqmin]' : 'pt-[3cqmin] pb-[2.5cqmin]',
         onClick ? 'cursor-pointer' : '',
       ]
         .filter(Boolean)
@@ -63,13 +72,13 @@ export default function CydClock({
     >
       <div
         className="font-bold tracking-tight"
-        style={{ color: fontColor, fontSize: FONT.clock }}
+        style={{ color: fontColor, fontSize: font.clock }}
       >
         {time}
       </div>
       <div
-        className="font-normal -mt-3"
-        style={{ color: fontColor, fontSize: FONT.date, opacity: 0.95 }}
+        className={`font-normal ${compact ? '-mt-1' : '-mt-3'}`}
+        style={{ color: fontColor, fontSize: font.date, opacity: 0.95 }}
       >
         {date}
       </div>

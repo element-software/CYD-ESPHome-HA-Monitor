@@ -68,7 +68,7 @@ function twoScreenConfig(overrides: Partial<ConfigData> = {}): ConfigData {
 describe("targetScreen LVGL on_click", () => {
   it("emits lvgl.page.show with page_s2 for a numeric sensor", () => {
     const sensor: NumericSensorConfig = { ...numeric, targetScreen: "s2" };
-    const result = generateLvglWidget(sensor, 1, 1, false, 0, ["s1", "s2"]);
+    const result = generateLvglWidget(sensor, 2, 100, 117, 68, 0, ["s1", "s2"]);
     expect(result).toContain("on_click:");
     expect(result).toContain("lvgl.page.show:");
     expect(result).toContain("id: page_s2");
@@ -77,7 +77,7 @@ describe("targetScreen LVGL on_click", () => {
 
   it("navigates only for a light with targetScreen and does not emit light.toggle", () => {
     const sensor: LightSensorConfig = { ...light, targetScreen: "s2" };
-    const result = generateLvglWidget(sensor, 1, 2, false, 0, ["s1", "s2"]);
+    const result = generateLvglWidget(sensor, 121, 100, 117, 68, 0, ["s1", "s2"]);
     expect(result).toContain("lvgl.page.show:");
     expect(result).toContain("id: page_s2");
     expect(result).not.toContain("light.toggle");
@@ -86,14 +86,14 @@ describe("targetScreen LVGL on_click", () => {
 
   it("omits on_click when a numeric targetScreen does not match a generated page", () => {
     const sensor: NumericSensorConfig = { ...numeric, targetScreen: "s3" };
-    const result = generateLvglWidget(sensor, 1, 1, false, 0, ["s1", "s2"]);
+    const result = generateLvglWidget(sensor, 2, 100, 117, 68, 0, ["s1", "s2"]);
     expect(result).not.toContain("on_click:");
     expect(result).not.toContain("lvgl.page.show:");
   });
 
   it("keeps light.toggle when a light's targetScreen is stale", () => {
     const sensor: LightSensorConfig = { ...light, targetScreen: "s9" };
-    const result = generateLvglWidget(sensor, 1, 2, false, 0, ["s1", "s2"]);
+    const result = generateLvglWidget(sensor, 121, 100, 117, 68, 0, ["s1", "s2"]);
     expect(result).toContain("light.toggle");
     expect(result).not.toContain("lvgl.page.show:");
   });
@@ -114,7 +114,7 @@ describe("label type", () => {
   });
 
   it("uses value_text as the widget value line", () => {
-    const result = generateLvglWidget(label, 2, 1, false, 0, ["s1", "s2"]);
+    const result = generateLvglWidget(label, 2, 170, 117, 68, 0, ["s1", "s2"]);
     expect(result).toContain('text: "${r2c1_value_text}"');
     expect(result).toContain("lvgl.page.show:");
     expect(result).toContain("id: page_s2");

@@ -345,8 +345,18 @@ export default function CydScreenGrid({
   };
 
   const showClockOnThisScreen = !config.hideClock && activeScreenIndex === 0;
-  const rows = showClockOnThisScreen ? 3 : 4;
-  const visibleSensors = currentScreen.sensors.slice(0, rows * 2);
+  const isLandscape = config.orientation === 'landscape';
+  // Portrait: 2×3 with clock, 2×4 without. Landscape: 3×2 with clock, 4×2 without.
+  // Sensors stay in r1c1…r4c2 order, matching YAML getLayout reading-order mapping.
+  const visibleCount = showClockOnThisScreen ? 6 : 8;
+  const visibleSensors = currentScreen.sensors.slice(0, visibleCount);
+  const gridClass = isLandscape
+    ? showClockOnThisScreen
+      ? 'grid-cols-3 grid-rows-2'
+      : 'grid-cols-4 grid-rows-2'
+    : showClockOnThisScreen
+      ? 'grid-cols-2 grid-rows-3'
+      : 'grid-cols-2 grid-rows-4';
   const screens = config.screens ?? [];
   const clockTargetIndex = config.clockTargetScreen
     ? screens.findIndex((s) => s.id === config.clockTargetScreen)
@@ -376,6 +386,7 @@ export default function CydScreenGrid({
       {showClockOnThisScreen && (
         <CydClock
           fontColor={screenFont}
+          compact={config.orientation === 'landscape'}
           onClick={
             clockTargetIndex >= 0 ? () => onNavigateScreen?.(clockTargetIndex) : undefined
           }
@@ -383,7 +394,7 @@ export default function CydScreenGrid({
       )}
 
       <div
-        className={`grid grid-cols-2 ${showClockOnThisScreen ? 'grid-rows-3' : 'grid-rows-4'} flex-1 min-h-0 w-full gap-[1.2cqmin]`}
+        className={`grid ${gridClass} flex-1 min-h-0 w-full gap-[1.2cqmin]`}
         style={{ padding: '2cqmin', paddingTop: showClockOnThisScreen ? '1cqmin' : '2cqmin' }}
       >
         {visibleSensors.map((sensor) => (

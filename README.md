@@ -24,7 +24,7 @@ Monitor Home Assistant entities on one required screen, then add extra swipeable
 - **Action buttons:** Trigger a script, fire an automation, activate a scene, or press an `input_button` with a single tap.
 - **On-device web UI:** Optional ESPHome `web_server` v3 so you can open the device IP to view entities and set backlight brightness.
 - **Optional beep / speaker:** Opt-in in the YAML generator. Use a small speaker on the CYD audio connector (I2S on GPIO26) or a piezo buzzer on GPIO26 (RTTTL). Off by default so existing flashes are unchanged.
-- **Display tweaks:** Swap X/Y (default on), invert colours, RGB/BGR, and mirror X/Y — stock CYD defaults stay as they were.
+- **Display tweaks:** Portrait or landscape orientation in the YAML generator, Swap X/Y (default on; panel-variant), invert colours, RGB/BGR, and mirror X/Y — stock CYD defaults stay as they were.
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
 - **Easy Configuration:** All entities, icons, labels, colours, and state messages are defined in the `substitutions:` block — no need to touch any code.
 - **Instant State:** Binary sensors display their current state immediately on boot using `publish_initial_state`.
@@ -196,6 +196,8 @@ display:
 
 If you use the [web config generator](https://cheapyellowdisplay.co.uk/), open **Display Settings** and turn off **Swap X/Y axes**, then copy the updated YAML.
 
+**Landscape vs portrait:** this is a generator setting (**Display Settings → Orientation**), not `swap_xy`. Landscape emits 320×240 dimensions, a 3×2 (clock on) or 4×2 (clock hidden) LVGL grid, compact clock fonts, and SPI touch `swap_xy: true`. Swap X/Y stays a panel-variant knob for boards where the image is sideways or only 4 sensors show. Do not use `display.rotation` for this — the LVGL widget coordinates are rewritten for the new size.
+
 ## 🎨 How to Change Icons
 
 This project supports two icon sets that you can choose between in the YAML generator:
@@ -264,7 +266,7 @@ The dashboard uses Google's **Roboto** font for text and **Material Icons** for 
 
 Planned features for future releases:
 
-- [ ] **Choose Orientation:** Switch between landscape and portrait modes via a substitution toggle.
+- [x] **Choose Orientation:** Portrait or landscape dashboard layout in the YAML generator (Display Settings). Independent of Swap X/Y; not a substitution toggle.
 - [ ] **Tap to Open Page:** Tap any sensor icon to open a detailed LVGL page with history, graphs, or controls.
 - [x] **Swipe & Gestures:** Swipe between multiple dashboard pages with gesture navigation.
 - [ ] **External LED Control:** Drive addressable LEDs (e.g., WS2812B) to reflect sensor states — flash red on door open, glow green when all clear, etc.
@@ -276,7 +278,7 @@ Feel free to fork this project and submit pull requests! See the [Roadmap](#%EF%
 
 Multi-page swipe, per-page themes, background images, and the on-device web server were contributed from work by [jchisholm59](https://github.com/jchisholm59). The hand-written [`ha-monitor.yaml`](ha-monitor.yaml) remains a simple 6-slot reference; use the [YAML generator](https://cheapyellowdisplay.co.uk/) for 3-page configs.
 
-**Background images:** pick a file in the generator (or type a path such as `images/bg_home.png`). The same file must exist on your ESPHome host at compile time, typically `/config/esphome/images/`. Images are resized to 240×320 and compiled into flash — they are not fetched from Home Assistant at runtime.
+**Background images:** pick a file in the generator (or type a path such as `images/bg_home.png`). The same file must exist on your ESPHome host at compile time, typically `/config/esphome/images/`. Images are resized to 240×320 (portrait) or 320×240 (landscape) and compiled into flash — they are not fetched from Home Assistant at runtime.
 
 ## 📄 License
 

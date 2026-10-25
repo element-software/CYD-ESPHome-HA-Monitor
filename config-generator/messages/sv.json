@@ -88,6 +88,8 @@
     "friendlyName": "Visningsnamn",
     "gpioConfig": "GPIO-konfiguration",
     "displaySettings": "Displayinställningar",
+    "orientationPortrait": "Stående",
+    "orientationLandscape": "Liggande",
     "clockWith": "Med klocka",
     "clockWithout": "Utan klocka",
     "swapXyOn": "Swap XY: På",
@@ -138,13 +140,19 @@
   "displayModal": {
     "title": "Displayinställningar",
     "subtitle": "Visuella alternativ och layoutalternativ för enhetsdisplayen.",
+    "orientation": {
+      "label": "Orientering",
+      "description": "Instrumentpanelens layout på CYD. Oberoende av Byt X/Y.",
+      "portrait": "Stående",
+      "landscape": "Liggande"
+    },
     "swapXy": {
       "label": "Byt X/Y-axlar",
-      "description": "Aktivera för de flesta CYD-kort. Inaktivera om displayen är roterad eller bara 4 sensorer syns med tomt utrymme."
+      "description": "Används fortfarande om bilden ligger på sidan eller bara 4 sensorer syns med tomt utrymme. Panelvariant, inte stående/liggande."
     },
     "hideClock": {
       "label": "Dölj klocka",
-      "description": "Lägger till en extra rad för ett 4×2-sensornät."
+      "description": "Lägger till slotarna r4c1 och r4c2 på Skärm 1 (extra rad i stående, extra kolumner i liggande)."
     },
     "clockTargetScreen": {
       "label": "Klocktryck öppnar",
@@ -528,7 +536,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

@@ -49,7 +49,7 @@ describe("action glyph collection", () => {
 
 describe("action LVGL generation", () => {
   it("generates on_click with homeassistant.action", () => {
-    const result = generateLvglWidget(baseAction, 2, 2, false, 0);
+    const result = generateLvglWidget(baseAction, 121, 170, 117, 68, 0);
     expect(result).toContain("on_click:");
     expect(result).toContain("press_lock: false");
     expect(result).toContain("homeassistant.action:");
@@ -58,7 +58,7 @@ describe("action LVGL generation", () => {
   });
 
   it("sets static action_text as value label", () => {
-    const result = generateLvglWidget(baseAction, 2, 2, false, 0);
+    const result = generateLvglWidget(baseAction, 121, 170, 117, 68, 0);
     expect(result).toContain('text: "${r2c2_action_text}"');
   });
 

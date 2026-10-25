@@ -15,10 +15,13 @@ export default function SensorList({ config, onChange, activeScreenIndex }: Sens
   const t = useTranslations('sensorList');
 
   const showClock = activeScreenIndex === 0 && !config.hideClock;
-  const rows = showClock ? 3 : 4;
+  // 6 slots with clock, 8 without — same count in portrait (3×2 / 4×2) and
+  // landscape (3×2 / 4×2). Landscape remaps r1c1…r4c2 onto a wider grid in YAML
+  // and the preview; this list stays in slot-id order.
+  const visibleCount = showClock ? 6 : 8;
 
   const currentScreen = config.screens?.[activeScreenIndex] || { sensors: config.sensors };
-  const visibleSensors = currentScreen.sensors.slice(0, rows * 2);
+  const visibleSensors = currentScreen.sensors.slice(0, visibleCount);
 
   const [expandedRows, setExpandedRows] = useState<boolean[]>(
     () => Array(4).fill(false)

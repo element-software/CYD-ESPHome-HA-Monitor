@@ -88,6 +88,8 @@
     "friendlyName": "Friendly Name",
     "gpioConfig": "GPIO Config",
     "displaySettings": "Display Settings",
+    "orientationPortrait": "Portrait",
+    "orientationLandscape": "Landscape",
     "clockWith": "With clock",
     "clockWithout": "No clock",
     "swapXyOn": "Swap XY: On",
@@ -138,13 +140,19 @@
   "displayModal": {
     "title": "Display Settings",
     "subtitle": "Visual and layout options for the device display.",
+    "orientation": {
+      "label": "Orientation",
+      "description": "Dashboard layout on the CYD. Independent of Swap X/Y.",
+      "portrait": "Portrait",
+      "landscape": "Landscape"
+    },
     "swapXy": {
       "label": "Swap X/Y axes",
-      "description": "Enable for most CYD boards. Disable if the display is rotated or only 4 sensors are visible with blank space."
+      "description": "Still used if the image is sideways or only 4 sensors are visible with blank space. This is a panel-variant setting, not landscape/portrait."
     },
     "hideClock": {
       "label": "Hide Clock",
-      "description": "Adds an extra row for a 4×2 sensor grid on Screen 1."
+      "description": "Adds slots r4c1 and r4c2 on Screen 1 (portrait extra row, landscape extra columns)."
     },
     "clockTargetScreen": {
       "label": "Clock tap opens",
@@ -224,7 +232,7 @@
     "fontColor": "Font colour",
     "backgroundImage": "Background image path (optional)",
     "chooseImage": "Choose image",
-    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320.",
+    "backgroundImageHelp": "The same file must also exist on your ESPHome host at compile time (typically /config/esphome/images/). Images are compiled into flash at 240×320 (portrait) or 320×240 (landscape).",
     "addScreen": "Add screen",
     "removeScreen": "Remove screen",
     "addScreenLimit": "You can add up to {max} screens"

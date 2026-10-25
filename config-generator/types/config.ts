@@ -144,6 +144,16 @@ export type SensorConfigKey =
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';
 
+/** Dashboard orientation. Independent of displaySwapXy (a panel-variant knob). */
+export type DisplayOrientation = 'portrait' | 'landscape';
+
+/** Omitted / unknown values are portrait so old localStorage configs keep working. */
+export function getDisplayOrientation(
+  config: { orientation?: DisplayOrientation } | undefined,
+): DisplayOrientation {
+  return config?.orientation === 'landscape' ? 'landscape' : 'portrait';
+}
+
 /** Board/variant: SPI touch (XPT2046), I2C touch (CST816), or custom pins. */
 export type DeviceVariant = 'spi_touch' | 'i2c_touch' | 'custom';
 
@@ -182,6 +192,12 @@ export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  /**
+   * Dashboard orientation. Default `'portrait'` for old saved configs.
+   * Landscape rewrites LVGL layout math (320×240) — it is not `display.rotation`
+   * and must not be overloaded onto displaySwapXy (that stays a panel-variant knob).
+   */
+  orientation?: DisplayOrientation;
   /** ScreenConfig.id to open when the clock is tapped (e.g. "s2"). */
   clockTargetScreen?: string;
   /** Display transform swap_xy. Default true matches most CYD boards. Set false for alternate rotation variants. */
