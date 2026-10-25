@@ -277,28 +277,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r1c1
-                  text: "${r1c1_icon}"
-                  text_font: icon_font
-                  text_color: ${r1c1_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r1c1_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r1c1
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r1c1
+                    text: "${r1c1_icon}"
+                    text_font: icon_font
+                    text_color: ${r1c1_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r1c1_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r1c1
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
         - obj:
             x: 121
@@ -309,28 +309,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r1c2
-                  text: "${r1c2_icon}"
-                  text_font: icon_font
-                  text_color: ${r1c2_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r1c2_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r1c2
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r1c2
+                    text: "${r1c2_icon}"
+                    text_font: icon_font
+                    text_color: ${r1c2_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r1c2_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r1c2
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
         # ====== ROW 2 ======
         - obj:
@@ -342,28 +342,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r2c1
-                  text: "${r2c1_icon}"
-                  text_font: icon_font
-                  text_color: ${r2c1_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r2c1_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r2c1
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r2c1
+                    text: "${r2c1_icon}"
+                    text_font: icon_font
+                    text_color: ${r2c1_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r2c1_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r2c1
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
         - obj:
             x: 121
@@ -374,28 +374,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r2c2
-                  text: "${r2c2_icon}"
-                  text_font: icon_font
-                  text_color: ${r2c2_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r2c2_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r2c2
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r2c2
+                    text: "${r2c2_icon}"
+                    text_font: icon_font
+                    text_color: ${r2c2_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r2c2_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r2c2
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
         # ====== ROW 3 ======
         - obj:
@@ -407,28 +407,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r3c1
-                  text: "${r3c1_icon}"
-                  text_font: icon_font
-                  text_color: ${r3c1_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r3c1_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r3c1
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r3c1
+                    text: "${r3c1_icon}"
+                    text_font: icon_font
+                    text_color: ${r3c1_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r3c1_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r3c1
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
         - obj:
             x: 121
@@ -439,28 +439,28 @@ lvgl:
             border_width: 0
             radius: 0
             widgets:
-              - label:
-                  id: icon_r3c2
-                  text: "${r3c2_icon}"
-                  text_font: icon_font
-                  text_color: ${r3c2_icon_color}
-                  align: LEFT_MID
-                  x: 0
-              - label:
-                  text: "${r3c2_label}"
-                  text_font: label_font
-                  text_color: 0xAAAAAA
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-              - label:
-                  id: val_r3c2
-                  text: "--"
-                  text_font: state_font
-                  text_color: 0xFFFFFF
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
+                - label:
+                    id: icon_r3c2
+                    text: "${r3c2_icon}"
+                    text_font: icon_font
+                    text_color: ${r3c2_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                - label:
+                    text: "${r3c2_label}"
+                    text_font: label_font
+                    text_color: 0xAAAAAA
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                - label:
+                    id: val_r3c2
+                    text: "--"
+                    text_font: state_font
+                    text_color: 0xFFFFFF
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
 
 # --- BINARY SENSOR CONFIG ---
 binary_sensor:

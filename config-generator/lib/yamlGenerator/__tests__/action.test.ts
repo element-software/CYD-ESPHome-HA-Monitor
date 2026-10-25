@@ -62,6 +62,17 @@ describe("action LVGL generation", () => {
     expect(result).toContain('text: "${r2c2_action_text}"');
   });
 
+  it("nests slot labels under widgets with extra indent so ESPHome accepts them", () => {
+    const result = generateLvglWidget(baseAction, 121, 170, 117, 68, 0);
+    expect(result).toContain("            widgets:\n                - label:");
+    const labelLine = result.split("\n").find((line) => line.includes("- label:"));
+    const idLine = result.split("\n").find((line) => line.includes("id: icon_"));
+    expect(labelLine).toBeDefined();
+    expect(idLine).toBeDefined();
+    expect(labelLine!.match(/^ */)![0].length).toBe(16);
+    expect(idLine!.indexOf("id:")).toBeGreaterThan(labelLine!.indexOf("label:"));
+  });
+
   it("supports automation.trigger action kind", () => {
     const sensor: ActionSensorConfig = {
       ...baseAction,

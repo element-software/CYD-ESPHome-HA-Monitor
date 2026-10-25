@@ -108,8 +108,8 @@ function getOnClickBlock(sensor: SensorConfig, validScreenIds: string[]): string
   if (target && isScreenId(target) && validScreenIds.includes(target)) {
     return `
             on_click:
-              - lvgl.page.show:
-                  id: page_${target}`;
+                - lvgl.page.show:
+                    id: page_${target}`;
   }
   if (sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean") {
     const toggleAction =
@@ -120,18 +120,18 @@ function getOnClickBlock(sensor: SensorConfig, validScreenIds: string[]): string
           : "switch.toggle";
     return `
             on_click:
-              - homeassistant.action:
-                  action: ${toggleAction}
-                  data:
-                    entity_id: "${sensor.entity}"`;
+                - homeassistant.action:
+                    action: ${toggleAction}
+                    data:
+                      entity_id: "${sensor.entity}"`;
   }
   if (sensor.type === "action") {
     return `
             on_click:
-              - homeassistant.action:
-                  action: \${${sensor.id}_action}
-                  data:
-                    entity_id: "\${${sensor.id}_entity}"`;
+                - homeassistant.action:
+                    action: \${${sensor.id}_action}
+                    data:
+                      entity_id: "\${${sensor.id}_entity}"`;
   }
   return "";
 }
@@ -162,63 +162,63 @@ export function generateLvglWidget(
   const stacked = width < 90;
   const childWidgets = stacked
     ? `
-              - label:
-                  id: icon_${sensor.id}
-                  text: "\${${sensor.id}_icon}"
-                  text_font: icon_font
-                  text_color: \${${sensor.id}_icon_color}
-                  align: TOP_MID
-                  y: 8
-                  clickable: false
-              - label:
-                  id: lbl_${sensor.id}
-                  text: "\${${sensor.id}_label}"
-                  text_font: label_font
-                  text_color: ${fontColorSub}
-                  align: TOP_MID
-                  y: 40
-                  width: ${width - 8}
-                  text_align: CENTER
-                  long_mode: DOT
-                  clickable: false
-              - label:
-                  id: val_${sensor.id}
-                  text: ${valueText}
-                  text_font: state_font
-                  text_color: ${fontColorSub}
-                  align: TOP_MID
-                  y: 58
-                  width: ${width - 8}
-                  text_align: CENTER
-                  long_mode: DOT
-                  clickable: false`
+                - label:
+                    id: icon_${sensor.id}
+                    text: "\${${sensor.id}_icon}"
+                    text_font: icon_font
+                    text_color: \${${sensor.id}_icon_color}
+                    align: TOP_MID
+                    y: 8
+                    clickable: false
+                - label:
+                    id: lbl_${sensor.id}
+                    text: "\${${sensor.id}_label}"
+                    text_font: label_font
+                    text_color: ${fontColorSub}
+                    align: TOP_MID
+                    y: 40
+                    width: ${width - 8}
+                    text_align: CENTER
+                    long_mode: DOT
+                    clickable: false
+                - label:
+                    id: val_${sensor.id}
+                    text: ${valueText}
+                    text_font: state_font
+                    text_color: ${fontColorSub}
+                    align: TOP_MID
+                    y: 58
+                    width: ${width - 8}
+                    text_align: CENTER
+                    long_mode: DOT
+                    clickable: false`
     : `
-              - label:
-                  id: icon_${sensor.id}
-                  text: "\${${sensor.id}_icon}"
-                  text_font: icon_font
-                  text_color: \${${sensor.id}_icon_color}
-                  align: LEFT_MID
-                  x: 0
-                  clickable: false
-              - label:
-                  id: lbl_${sensor.id}
-                  text: "\${${sensor.id}_label}"
-                  text_font: label_font
-                  text_color: ${fontColorSub}
-                  align: LEFT_MID
-                  x: 32
-                  y: -10
-                  clickable: false
-              - label:
-                  id: val_${sensor.id}
-                  text: ${valueText}
-                  text_font: state_font
-                  text_color: ${fontColorSub}
-                  align: LEFT_MID
-                  x: 32
-                  y: 10
-                  clickable: false`;
+                - label:
+                    id: icon_${sensor.id}
+                    text: "\${${sensor.id}_icon}"
+                    text_font: icon_font
+                    text_color: \${${sensor.id}_icon_color}
+                    align: LEFT_MID
+                    x: 0
+                    clickable: false
+                - label:
+                    id: lbl_${sensor.id}
+                    text: "\${${sensor.id}_label}"
+                    text_font: label_font
+                    text_color: ${fontColorSub}
+                    align: LEFT_MID
+                    x: 32
+                    y: -10
+                    clickable: false
+                - label:
+                    id: val_${sensor.id}
+                    text: ${valueText}
+                    text_font: state_font
+                    text_color: ${fontColorSub}
+                    align: LEFT_MID
+                    x: 32
+                    y: 10
+                    clickable: false`;
 
   return `
         - button:
@@ -232,7 +232,8 @@ export function generateLvglWidget(
             shadow_width: 0
             radius: ${buttonRadius}
             press_lock: false
-            scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}${childWidgets}`;
+            scrollbar_mode: "OFF"${isClickable ? onClickBlock : ""}
+            widgets:${childWidgets}`;
 }
 
 function getClockWidgets(
@@ -283,25 +284,25 @@ function getClockWidgets(
             pad_all: 0
             press_lock: false
             on_click:
-              - lvgl.page.show:
-                  id: page_${navTarget}
+                - lvgl.page.show:
+                    id: page_${navTarget}
             widgets:
-              - label:
-                  id: label_clock
-                  clickable: false
-                  text: "--:--"
-                  text_font: clock_font
-                  text_color: \${${screenId}_font_color}
-                  align: TOP_MID
-                  y: ${clockY}
-              - label:
-                  id: label_date
-                  clickable: false
-                  text: "--- --/--"
-                  text_font: date_font
-                  text_color: \${${screenId}_font_color}
-                  align: TOP_MID
-                  y: ${dateY}
+                - label:
+                    id: label_clock
+                    clickable: false
+                    text: "--:--"
+                    text_font: clock_font
+                    text_color: \${${screenId}_font_color}
+                    align: TOP_MID
+                    y: ${clockY}
+                - label:
+                    id: label_date
+                    clickable: false
+                    text: "--- --/--"
+                    text_font: date_font
+                    text_color: \${${screenId}_font_color}
+                    align: TOP_MID
+                    y: ${dateY}
 `;
 }
 
