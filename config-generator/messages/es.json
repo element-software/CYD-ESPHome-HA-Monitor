@@ -202,7 +202,8 @@
       "lrclk": "I2S LRCLK",
       "rtttl": "Buzzer pin"
     },
-    "pinCollision": "This pin is already used by display, touch, or backlight."
+    "pinCollision": "This pin is already used by display, touch, or backlight.",
+    "pinReuse": "I2S DOUT, BCLK y LRCLK deben ser tres pines distintos."
   },
   "sensorList": {
     "title": "Configuración de sensores"

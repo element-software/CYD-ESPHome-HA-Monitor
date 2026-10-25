@@ -36,7 +36,14 @@ export function generateOnOffSensor(
       ? `
         - if:
             condition:
-              lambda: return id(ha_${sensor.id}).state;
+              lambda: |-
+                static bool initialized = false;
+                static bool prev = false;
+                bool now = id(ha_${sensor.id}).state;
+                bool rising = initialized && !prev && now;
+                prev = now;
+                initialized = true;
+                return rising;
             then:
               - script.execute: beep`
       : "";

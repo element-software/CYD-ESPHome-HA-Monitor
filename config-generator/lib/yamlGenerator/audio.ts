@@ -7,6 +7,13 @@ export const AUDIO_DEFAULTS = {
   rtttl: "GPIO26",
 } as const;
 
+const GPIO_PIN_RE = /^GPIO([0-9]|[12][0-9]|3[0-9])$/;
+
+export function sanitizeGpioPin(pin: string | undefined, fallback: string): string {
+  const trimmed = pin?.trim() ?? "";
+  return GPIO_PIN_RE.test(trimmed) ? trimmed : fallback;
+}
+
 export function isAudioEnabled(config: ConfigData): boolean {
   return config.enableAudio === true;
 }
@@ -39,7 +46,7 @@ export function getBuzzerOutputYaml(config: ConfigData): string {
   if (!isAudioEnabled(config) || getAudioHardware(config) !== "rtttl") {
     return "";
   }
-  const pin = config.audioRtttlPin?.trim() || AUDIO_DEFAULTS.rtttl;
+  const pin = sanitizeGpioPin(config.audioRtttlPin, AUDIO_DEFAULTS.rtttl);
   return `  - platform: ledc
     pin: ${pin}
     id: buzzer_output
@@ -58,9 +65,9 @@ rtttl:
 ${generateBeepScriptAndButton()}`;
   }
 
-  const dout = config.audioDoutPin?.trim() || AUDIO_DEFAULTS.dout;
-  const bclk = config.audioBclkPin?.trim() || AUDIO_DEFAULTS.bclk;
-  const lrclk = config.audioLrclkPin?.trim() || AUDIO_DEFAULTS.lrclk;
+  const dout = sanitizeGpioPin(config.audioDoutPin, AUDIO_DEFAULTS.dout);
+  const bclk = sanitizeGpioPin(config.audioBclkPin, AUDIO_DEFAULTS.bclk);
+  const lrclk = sanitizeGpioPin(config.audioLrclkPin, AUDIO_DEFAULTS.lrclk);
 
   return `
 # --- AUDIO / BEEP (I2S speaker) ---

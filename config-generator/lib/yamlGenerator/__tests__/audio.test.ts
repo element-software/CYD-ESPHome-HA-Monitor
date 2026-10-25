@@ -45,6 +45,8 @@ describe("audio YAML generation", () => {
     expect(yaml).toContain("speaker:");
     expect(yaml).toContain("id: cyd_speaker");
     expect(yaml).toContain("i2s_dout_pin: GPIO26");
+    expect(yaml).toContain("dac_type: external");
+    expect(yaml).toContain("i2s_audio_id: cyd_i2s");
     expect(yaml).toContain("rtttl:");
     expect(yaml).toContain("speaker: cyd_speaker");
     expect(yaml).toContain("id: beep");
@@ -98,6 +100,23 @@ describe("audio YAML generation", () => {
     expect(rtttl).toContain("pin: GPIO4");
     expect(rtttl).toContain("id: buzzer_output");
   });
+
+  it("falls back to default pins when a stored pin is not a GPIO token", () => {
+    const yaml = generateYaml(
+      configWithAudio({
+        enableAudio: true,
+        audioDoutPin: "GPIO26\nlight:",
+        audioBclkPin: "not-a-pin",
+        audioLrclkPin: "GPIO99",
+      }),
+    );
+    expect(yaml).toContain("i2s_dout_pin: GPIO26");
+    expect(yaml).toContain("i2s_bclk_pin: GPIO17");
+    expect(yaml).toContain("i2s_lrclk_pin: GPIO16");
+    expect(yaml).not.toContain("not-a-pin");
+    expect(yaml).not.toContain("GPIO99");
+    expect(yaml).not.toContain("GPIO26\nlight:");
+  });
 });
 
 describe("beepOnAlert", () => {
@@ -105,7 +124,8 @@ describe("beepOnAlert", () => {
     const onState = generateOnOffSensor({ ...binarySensor, beepOnAlert: true }, true);
     expect(onState).toContain("on_state:");
     expect(onState).toContain("script.execute: beep");
-    expect(onState).toContain("lambda: return id(ha_r1c2).state;");
+    expect(onState).toContain("bool rising = initialized && !prev && now;");
+    expect(onState).not.toContain("lambda: return id(ha_r1c2).state;");
 
     const yaml = generateYaml(
       configWithAudio({
@@ -121,7 +141,7 @@ describe("beepOnAlert", () => {
       }),
     );
     expect(yaml).toContain("script.execute: beep");
-    expect(yaml).toContain("lambda: return id(ha_s1_r1c2).state;");
+    expect(yaml).toContain("bool rising = initialized && !prev && now;");
   });
 
   it("does not emit script.execute: beep in on_state without the beepOnAlert flag", () => {

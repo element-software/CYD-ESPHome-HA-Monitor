@@ -84,6 +84,7 @@ export default function AudioSettingsModal({ config, onChange, open, onClose }: 
   const bclkPin = config.audioBclkPin || AUDIO_DEFAULTS.bclk;
   const lrclkPin = config.audioLrclkPin || AUDIO_DEFAULTS.lrclk;
   const rtttlPin = config.audioRtttlPin || AUDIO_DEFAULTS.rtttl;
+  const i2sPinsCollide = hardware === 'i2s' && (doutPin === bclkPin || doutPin === lrclkPin || bclkPin === lrclkPin);
 
   const update = (patch: Partial<ConfigData>) => {
     onChange({ ...config, ...patch });
@@ -168,23 +169,26 @@ export default function AudioSettingsModal({ config, onChange, open, onClose }: 
                     label={t('pins.dout')}
                     value={doutPin}
                     onChange={(v) => update({ audioDoutPin: v })}
-                    collides={usedPins.has(doutPin)}
-                    collisionText={t('pinCollision')}
+                    collides={usedPins.has(doutPin) || doutPin === bclkPin || doutPin === lrclkPin}
+                    collisionText={usedPins.has(doutPin) ? t('pinCollision') : t('pinReuse')}
                   />
                   <PinSelect
                     label={t('pins.bclk')}
                     value={bclkPin}
                     onChange={(v) => update({ audioBclkPin: v })}
-                    collides={usedPins.has(bclkPin)}
-                    collisionText={t('pinCollision')}
+                    collides={usedPins.has(bclkPin) || bclkPin === doutPin || bclkPin === lrclkPin}
+                    collisionText={usedPins.has(bclkPin) ? t('pinCollision') : t('pinReuse')}
                   />
                   <PinSelect
                     label={t('pins.lrclk')}
                     value={lrclkPin}
                     onChange={(v) => update({ audioLrclkPin: v })}
-                    collides={usedPins.has(lrclkPin)}
-                    collisionText={t('pinCollision')}
+                    collides={usedPins.has(lrclkPin) || lrclkPin === doutPin || lrclkPin === bclkPin}
+                    collisionText={usedPins.has(lrclkPin) ? t('pinCollision') : t('pinReuse')}
                   />
+                  {i2sPinsCollide && (
+                    <p className="text-xs text-amber-700 dark:text-amber-400">{t('pinReuse')}</p>
+                  )}
                 </>
               ) : (
                 <PinSelect
