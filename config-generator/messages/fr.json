@@ -146,6 +146,11 @@
       "label": "Masquer l'horloge",
       "description": "Ajoute une ligne supplémentaire pour une grille de capteurs 4×2."
     },
+    "clockTargetScreen": {
+      "label": "Appui sur l'horloge ouvre",
+      "description": "Navigue vers un autre écran lorsque l'horloge est touchée.",
+      "none": "Aucun"
+    },
     "buttonRadius": {
       "label": "Rayon des coins des boutons",
       "help": "0 = coins carrés, 34 = entièrement arrondi."
@@ -218,8 +223,14 @@
       "light": "Lumière",
       "switch": "Interrupteur",
       "input_boolean": "Booléen d'entrée",
-      "action": "Action"
+      "action": "Action",
+      "label": "Étiquette de texte"
     },
+    "targetScreen": "Changer d'écran",
+    "targetScreenNone": "Aucun",
+    "targetScreenCurrent": "cet écran",
+    "valueTextField": "Texte de valeur",
+    "valueTextPlaceholder": "Facultatif",
     "actionField": "Action",
     "actionTextField": "Texte du bouton",
     "actionTextPlaceholder": "Exécuter",

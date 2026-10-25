@@ -74,6 +74,7 @@ export function generateYaml(config: ConfigData): string {
       hideClock ?? false,
       migrated.buttonRadius ?? 0,
       migrated.screens,
+      migrated.clockTargetScreen,
     ) +
     generateBinarySensorConfig(
       binarySensors,

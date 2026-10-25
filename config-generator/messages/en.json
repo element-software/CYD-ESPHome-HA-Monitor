@@ -146,6 +146,11 @@
       "label": "Hide Clock",
       "description": "Adds an extra row for a 4×2 sensor grid on Screen 1."
     },
+    "clockTargetScreen": {
+      "label": "Clock tap opens",
+      "description": "Navigate to another screen when the clock is tapped.",
+      "none": "None"
+    },
     "invertColors": {
       "label": "Invert colours",
       "description": "Use if colours look inverted or negative on your panel."
@@ -237,8 +242,14 @@
       "light": "Light",
       "switch": "Switch",
       "input_boolean": "Input Boolean",
-      "action": "Action"
+      "action": "Action",
+      "label": "Text label"
     },
+    "targetScreen": "Change screen",
+    "targetScreenNone": "None",
+    "targetScreenCurrent": "this screen",
+    "valueTextField": "Value text",
+    "valueTextPlaceholder": "Optional",
     "actionField": "Action",
     "actionTextField": "Button text",
     "actionTextPlaceholder": "Run",

@@ -5,6 +5,8 @@ export interface BaseSensorConfig {
   label: string;
   /** When false the slot is omitted from generated YAML and preview. Default true. */
   enabled?: boolean;
+  /** ScreenConfig.id to open on tap (e.g. "s2"). Generated LVGL page id is page_${targetScreen}. */
+  targetScreen?: string;
 }
 
 export interface LightSensorConfig extends BaseSensorConfig {
@@ -108,6 +110,15 @@ export interface ActionSensorConfig extends BaseSensorConfig {
   iconColor: string;
 }
 
+/** Static text tile; no Home Assistant subscription. Click navigates via targetScreen. */
+export interface LabelSensorConfig extends Omit<BaseSensorConfig, "entity"> {
+  type: "label";
+  entity?: string;
+  icon?: string;
+  iconColor?: string;
+  valueText?: string;
+}
+
 /** Discriminated union of all sensor config types */
 export type SensorConfig =
   | NumericSensorConfig
@@ -116,7 +127,8 @@ export type SensorConfig =
   | LightSensorConfig
   | SwitchSensorConfig
   | InputBooleanSensorConfig
-  | ActionSensorConfig;
+  | ActionSensorConfig
+  | LabelSensorConfig;
 
 /** Keys that can be updated on any sensor (union of keys from all config types) */
 export type SensorConfigKey =
@@ -126,7 +138,8 @@ export type SensorConfigKey =
   | keyof LightSensorConfig
   | keyof SwitchSensorConfig
   | keyof InputBooleanSensorConfig
-  | keyof ActionSensorConfig;
+  | keyof ActionSensorConfig
+  | keyof LabelSensorConfig;
 
 /** Icon font used in the UI and in generated ESPHome YAML. */
 export type IconSet = 'material_design_icons' | 'material_symbols';
@@ -169,6 +182,8 @@ export interface ConfigData {
   deviceName: string;
   friendlyName: string;
   hideClock?: boolean;
+  /** ScreenConfig.id to open when the clock is tapped (e.g. "s2"). */
+  clockTargetScreen?: string;
   /** Display transform swap_xy. Default true matches most CYD boards. Set false for alternate rotation variants. */
   displaySwapXy?: boolean;
   /** Invert display colours. Default false. */

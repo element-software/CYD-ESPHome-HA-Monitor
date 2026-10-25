@@ -127,6 +127,33 @@ export default function DisplaySettingsModal({ config, onChange, open, onClose }
           </label>
         </div>
 
+        {(config.screens?.length ?? 0) >= 2 && !config.hideClock && (
+          <>
+            <hr className="border-gray-100" />
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{t('clockTargetScreen.label')}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{t('clockTargetScreen.description')}</p>
+              </div>
+              <select
+                value={config.clockTargetScreen ?? ''}
+                onChange={(e) =>
+                  onChange({ ...config, clockTargetScreen: e.target.value || undefined })
+                }
+                className="px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                aria-label={t('clockTargetScreen.label')}
+              >
+                <option value="">{t('clockTargetScreen.none')}</option>
+                {(config.screens ?? []).filter((_, i) => i !== 0).map((screen) => (
+                  <option key={screen.id} value={screen.id}>
+                    {screen.name || screen.id}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
+
         <hr className="border-gray-100" />
 
         <div className="flex items-center justify-between gap-4">

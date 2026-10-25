@@ -146,6 +146,11 @@
       "label": "Dölj klocka",
       "description": "Lägger till en extra rad för ett 4×2-sensornät."
     },
+    "clockTargetScreen": {
+      "label": "Klocktryck öppnar",
+      "description": "Navigerar till en annan skärm när klockan trycks.",
+      "none": "Ingen"
+    },
     "buttonRadius": {
       "label": "Knapphornsradie",
       "help": "0 = raka hörn, 34 = helt avrundade."
@@ -218,8 +223,14 @@
       "light": "Ljus",
       "switch": "Strömbrytare",
       "input_boolean": "Ingång Boolean",
-      "action": "Åtgärd"
+      "action": "Åtgärd",
+      "label": "Textetikett"
     },
+    "targetScreen": "Byt skärm",
+    "targetScreenNone": "Ingen",
+    "targetScreenCurrent": "denna skärm",
+    "valueTextField": "Värdetext",
+    "valueTextPlaceholder": "Valfritt",
     "actionField": "Åtgärd",
     "actionTextField": "Knapptext",
     "actionTextPlaceholder": "Kör",

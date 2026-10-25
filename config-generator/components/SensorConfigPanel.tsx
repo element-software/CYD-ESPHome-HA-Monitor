@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { IconSet, NumericSensorConfig, SensorConfig, SensorConfigKey, ThresholdConfig, ActionKind } from "@/types/config";
+import { IconSet, NumericSensorConfig, ScreenConfig, SensorConfig, SensorConfigKey, ThresholdConfig, ActionKind } from "@/types/config";
 import IconPicker from "@/components/IconPicker";
 import { cydColorToCss, cssToCydColor } from "@/lib/colorUtils";
 
@@ -111,6 +111,8 @@ interface SensorConfigPanelProps {
   onToggle: () => void;
   onChange: (sensor: SensorConfig) => void;
   iconSet?: IconSet;
+  screens?: ScreenConfig[];
+  currentScreenId?: string;
   enableAudio?: boolean;
 }
 
@@ -127,6 +129,8 @@ export default function SensorConfigPanel({
   onToggle,
   onChange,
   iconSet,
+  screens,
+  currentScreenId,
   enableAudio = false,
 }: SensorConfigPanelProps) {
   const t = useTranslations("sensorPanel");
@@ -180,7 +184,13 @@ export default function SensorConfigPanel({
 
   const changeType = (newType: string) => {
     if (newType === sensor.type) return;
-    const base = { id: sensor.id, entity: sensor.entity, label: sensor.label };
+    const base = {
+      id: sensor.id,
+      entity: sensor.entity,
+      label: sensor.label,
+      enabled: sensor.enabled,
+      targetScreen: sensor.targetScreen,
+    };
     switch (newType) {
       case "sensor":
         onChange({
@@ -262,6 +272,17 @@ export default function SensorConfigPanel({
           iconColor: "0x00BFFF",
         });
         break;
+      case "label":
+        onChange({
+          ...base,
+          type: "label",
+          entity: undefined,
+          label: sensor.label || "Back",
+          valueText: "",
+          icon: "\\ue5c4",
+          iconColor: "0x00BFFF",
+        });
+        break;
     }
   };
 
@@ -301,6 +322,8 @@ export default function SensorConfigPanel({
                       ? "bg-teal-100 text-teal-800"
                       : sensor.type === "action"
                         ? "bg-indigo-100 text-indigo-800"
+                        : sensor.type === "label"
+                          ? "bg-sky-100 text-sky-800"
                       : "bg-amber-100 text-amber-800"
             }`}
           >
@@ -355,6 +378,7 @@ export default function SensorConfigPanel({
                 <option value="switch">{t("types.switch")}</option>
                 <option value="input_boolean">{t("types.input_boolean")}</option>
                 <option value="action">{t("types.action")}</option>
+                <option value="label">{t("types.label")}</option>
               </select>
             </div>
             <div>
@@ -371,18 +395,46 @@ export default function SensorConfigPanel({
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-0.5">
-              {t("entityId")}
-            </label>
-            <input
-              type="text"
-              value={sensor.entity}
-              onChange={(e) => updateField("entity", e.target.value)}
-              className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              placeholder={t("entityPlaceholder")}
-            />
-          </div>
+          {sensor.type !== "label" && (
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-0.5">
+                {t("entityId")}
+              </label>
+              <input
+                type="text"
+                value={sensor.entity}
+                onChange={(e) => updateField("entity", e.target.value)}
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                placeholder={t("entityPlaceholder")}
+              />
+            </div>
+          )}
+
+          {(screens?.length ?? 0) >= 2 && (
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-0.5">
+                {t("targetScreen")}
+              </label>
+              <select
+                value={sensor.targetScreen ?? ""}
+                onChange={(e) =>
+                  onChange({
+                    ...sensor,
+                    targetScreen: e.target.value || undefined,
+                  })
+                }
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">{t("targetScreenNone")}</option>
+                {screens!.map((screen) => (
+                  <option key={screen.id} value={screen.id}>
+                    {screen.name || screen.id}
+                    {screen.id === currentScreenId ? ` (${t("targetScreenCurrent")})` : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <div className="flex gap-2 flex-wrap justify-start items-center">
@@ -489,6 +541,43 @@ export default function SensorConfigPanel({
                     <label className="block text-xs text-gray-600 mb-0.5">Icon</label>
                     <IconPicker
                       value={sensor.icon}
+                      onChange={(code) => updateField("icon", code)}
+                      iconColor={sensor.iconColor ?? "0x00BFFF"}
+                      iconSet={iconSet}
+                    />
+                  </div>
+                  <div className="min-w-[100px]">
+                    <label className="block text-xs text-gray-600 mb-0.5">
+                      {t("thresholdColor")}
+                    </label>
+                    <input
+                      type="color"
+                      value={cydColorToCss(sensor.iconColor ?? "0x00BFFF")}
+                      onChange={(e) => updateField("iconColor", cssToCydColor(e.target.value))}
+                      className="w-10 h-8 shrink-0 rounded border border-gray-300 cursor-pointer"
+                      title={t("thresholdColor")}
+                    />
+                  </div>
+                </div>
+              )}
+              {sensor.type === "label" && (
+                <div className="flex-1 min-w-0 flex gap-2 items-end justify-start flex-wrap">
+                  <div className="min-w-[100px] flex-1">
+                    <label className="block text-xs text-gray-600 mb-0.5">
+                      {t("valueTextField")}
+                    </label>
+                    <input
+                      type="text"
+                      value={sensor.valueText ?? ""}
+                      onChange={(e) => updateField("valueText", e.target.value)}
+                      className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                      placeholder={t("valueTextPlaceholder")}
+                    />
+                  </div>
+                  <div className="min-w-[100px]">
+                    <label className="block text-xs text-gray-600 mb-0.5">Icon</label>
+                    <IconPicker
+                      value={sensor.icon ?? ""}
                       onChange={(code) => updateField("icon", code)}
                       iconColor={sensor.iconColor ?? "0x00BFFF"}
                       iconSet={iconSet}

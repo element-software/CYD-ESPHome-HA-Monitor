@@ -146,6 +146,11 @@
       "label": "Ocultar reloj",
       "description": "Añade una fila adicional para una cuadrícula de sensores 4×2."
     },
+    "clockTargetScreen": {
+      "label": "El toque en el reloj abre",
+      "description": "Navega a otra pantalla al tocar el reloj.",
+      "none": "Ninguna"
+    },
     "buttonRadius": {
       "label": "Radio de esquina de los botones",
       "help": "0 = esquinas cuadradas, 34 = completamente redondeado."
@@ -218,8 +223,14 @@
       "light": "Luz",
       "switch": "Interruptor",
       "input_boolean": "Boolean de entrada",
-      "action": "Acción"
+      "action": "Acción",
+      "label": "Etiqueta de texto"
     },
+    "targetScreen": "Cambiar pantalla",
+    "targetScreenNone": "Ninguna",
+    "targetScreenCurrent": "esta pantalla",
+    "valueTextField": "Texto del valor",
+    "valueTextPlaceholder": "Opcional",
     "actionField": "Acción",
     "actionTextField": "Texto del botón",
     "actionTextPlaceholder": "Ejecutar",

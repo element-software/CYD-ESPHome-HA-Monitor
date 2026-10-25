@@ -146,6 +146,11 @@
       "label": "Nascondi orologio",
       "description": "Aggiunge una riga extra per una griglia sensori 4×2."
     },
+    "clockTargetScreen": {
+      "label": "Il tocco sull'orologio apre",
+      "description": "Passa a un'altra schermata toccando l'orologio.",
+      "none": "Nessuna"
+    },
     "buttonRadius": {
       "label": "Raggio angoli pulsanti",
       "help": "0 = angoli retti, 34 = completamente arrotondati."
@@ -218,8 +223,14 @@
       "light": "Luce",
       "switch": "Interruttore",
       "input_boolean": "Boolean di input",
-      "action": "Azione"
+      "action": "Azione",
+      "label": "Etichetta di testo"
     },
+    "targetScreen": "Cambia schermata",
+    "targetScreenNone": "Nessuna",
+    "targetScreenCurrent": "questa schermata",
+    "valueTextField": "Testo del valore",
+    "valueTextPlaceholder": "Opzionale",
     "actionField": "Azione",
     "actionTextField": "Testo pulsante",
     "actionTextPlaceholder": "Esegui",
