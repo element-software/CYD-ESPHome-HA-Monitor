@@ -13,7 +13,9 @@ export function configExportBasename(config: {
   deviceName?: string;
   friendlyName?: string;
 }): string {
-  return sanitizeExportBasename(config.deviceName || config.friendlyName || '');
+  const fromDevice = sanitizeExportBasename(config.deviceName || '', '');
+  if (fromDevice) return fromDevice;
+  return sanitizeExportBasename(config.friendlyName || '');
 }
 
 export function jsonExportFilename(config: {

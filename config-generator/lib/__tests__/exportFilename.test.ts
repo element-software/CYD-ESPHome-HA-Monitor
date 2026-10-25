@@ -36,4 +36,10 @@ describe('config export filenames', () => {
     expect(jsonExportFilename({ deviceName: '', friendlyName: '' })).toBe('hamon-config.json');
     expect(yamlExportFilename({})).toBe('hamon.yaml');
   });
+
+  it('uses friendlyName when deviceName slugs to empty', () => {
+    expect(yamlExportFilename({ deviceName: '!!!', friendlyName: 'Hall Clock' })).toBe(
+      'hall-clock.yaml',
+    );
+  });
 });

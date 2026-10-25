@@ -99,7 +99,7 @@ export default function ConfigGeneratorClient() {
 
   return (
     <>
-      <PageHeader name={config.friendlyName || config.deviceName} />
+      <PageHeader name={config.friendlyName?.trim() || config.deviceName} />
       <div
         className="mb-6 rounded-lg border border-blue-100 bg-blue-50/90 px-4 py-3 text-sm text-gray-800 leading-relaxed dark:border-blue-700 dark:bg-blue-950 dark:text-slate-100"
         role="note"
