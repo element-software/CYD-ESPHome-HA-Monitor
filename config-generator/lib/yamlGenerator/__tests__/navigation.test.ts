@@ -84,10 +84,17 @@ describe("targetScreen LVGL on_click", () => {
     expect(result).not.toContain("homeassistant.action:");
   });
 
-  it("omits on_click when targetScreen does not match a generated page", () => {
+  it("omits on_click when a numeric targetScreen does not match a generated page", () => {
     const sensor: NumericSensorConfig = { ...numeric, targetScreen: "s3" };
     const result = generateLvglWidget(sensor, 1, 1, false, 0, ["s1", "s2"]);
     expect(result).not.toContain("on_click:");
+    expect(result).not.toContain("lvgl.page.show:");
+  });
+
+  it("keeps light.toggle when a light's targetScreen is stale", () => {
+    const sensor: LightSensorConfig = { ...light, targetScreen: "s9" };
+    const result = generateLvglWidget(sensor, 1, 2, false, 0, ["s1", "s2"]);
+    expect(result).toContain("light.toggle");
     expect(result).not.toContain("lvgl.page.show:");
   });
 });
@@ -95,7 +102,7 @@ describe("targetScreen LVGL on_click", () => {
 describe("label type", () => {
   it("emits type, label, optional icon/color/value_text substitutions", () => {
     const result = generateSensorSubstitutions(label, "Row 2, Column 1");
-    expect(result).toContain('r2c1_entity: ""');
+    expect(result).not.toContain("r2c1_entity:");
     expect(result).toContain('r2c1_type: "label"');
     expect(result).toContain('r2c1_label: "Back"');
     expect(result).toContain("r2c1_icon:");
@@ -166,6 +173,12 @@ describe("clock tap navigation", () => {
 
   it("omits button_clock when clockTargetScreen does not match a page", () => {
     const yaml = generateYaml(twoScreenConfig({ clockTargetScreen: "s9" }));
+    expect(yaml).not.toContain("id: button_clock");
+    expect(yaml).toContain("id: label_clock");
+  });
+
+  it("omits button_clock when the clock target is screen 1", () => {
+    const yaml = generateYaml(twoScreenConfig({ clockTargetScreen: "s1" }));
     expect(yaml).not.toContain("id: button_clock");
     expect(yaml).toContain("id: label_clock");
   });

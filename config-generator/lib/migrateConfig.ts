@@ -49,11 +49,14 @@ export function remapNavigationTargets(config: ConfigData): ConfigData {
   const screens = config.screens ?? [];
   const idMap = new Map(screens.map((s, i) => [s.id, `s${i + 1}`]));
   const reindexed = reindexScreens(screens);
+  const clockTarget = remapTargetScreen(config.clockTargetScreen, idMap);
+  const firstId = reindexed[0]?.id;
   return {
     ...config,
     screens: reindexed,
     sensors: reindexed[0]?.sensors ?? config.sensors,
-    clockTargetScreen: remapTargetScreen(config.clockTargetScreen, idMap),
+    clockTargetScreen:
+      reindexed.length < 2 || !clockTarget || clockTarget === firstId ? undefined : clockTarget,
   };
 }
 

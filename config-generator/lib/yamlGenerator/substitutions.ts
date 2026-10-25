@@ -32,7 +32,9 @@ export function generateSensorSubstitutions(
 
   const lines: string[] = [];
   lines.push(`  # --- ${position} ---`);
-  lines.push(`  ${sensor.id}_entity: "${sensor.entity}"`);
+  if (sensor.type !== "label") {
+    lines.push(`  ${sensor.id}_entity: "${sensor.entity}"`);
+  }
   lines.push(`  ${sensor.id}_type: "${sensor.type}"`);
   lines.push(`  ${sensor.id}_label: "${sensor.label}"`);
 

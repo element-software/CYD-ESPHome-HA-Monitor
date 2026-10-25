@@ -1,15 +1,16 @@
 import type { SensorConfig, ScreenConfig } from "@/types/config";
 
+function isScreenId(id: string): boolean {
+  return /^s\d+$/.test(id);
+}
+
 function getOnClickBlock(sensor: SensorConfig, validScreenIds: string[]): string {
   const target = sensor.targetScreen?.trim();
-  if (target) {
-    if (validScreenIds.includes(target)) {
-      return `
+  if (target && isScreenId(target) && validScreenIds.includes(target)) {
+    return `
             on_click:
               - lvgl.page.show:
                   id: page_${target}`;
-    }
-    return "";
   }
   if (sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean") {
     const toggleAction =
@@ -50,12 +51,7 @@ export function generateLvglWidget(
   const xPos = col === 1 ? 2 : 121;
   const yPos = hideClock ? 6 + (row - 1) * 78 : 100 + (row - 1) * 70;
   const onClickBlock = getOnClickBlock(sensor, validScreenIds);
-  const isClickable =
-    Boolean(sensor.targetScreen?.trim()) ||
-    sensor.type === "light" ||
-    sensor.type === "switch" ||
-    sensor.type === "input_boolean" ||
-    sensor.type === "action";
+  const isClickable = Boolean(onClickBlock);
   const valueText =
     sensor.type === "action"
       ? `"\${${sensor.id}_action_text}"`
@@ -116,7 +112,10 @@ function getClockWidgets(
 ): string {
   if (hideClock) return "";
   const target = clockTargetScreen?.trim();
-  const navTarget = target && validScreenIds.includes(target) ? target : undefined;
+  const navTarget =
+    target && isScreenId(target) && validScreenIds.includes(target) && target !== screenId
+      ? target
+      : undefined;
   if (!navTarget) {
     return `
         - label:

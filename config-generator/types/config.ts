@@ -103,12 +103,12 @@ export interface ActionSensorConfig extends BaseSensorConfig {
 }
 
 /** Static text tile; no Home Assistant subscription. Click navigates via targetScreen. */
-export interface LabelSensorConfig extends BaseSensorConfig {
+export interface LabelSensorConfig extends Omit<BaseSensorConfig, "entity"> {
   type: "label";
+  entity?: string;
   icon?: string;
   iconColor?: string;
   valueText?: string;
-  targetScreen?: string;
 }
 
 /** Discriminated union of all sensor config types */

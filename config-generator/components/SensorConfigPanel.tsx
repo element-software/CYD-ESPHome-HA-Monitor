@@ -274,12 +274,11 @@ export default function SensorConfigPanel({
         onChange({
           ...base,
           type: "label",
-          entity: "",
-          label: "Back",
+          entity: undefined,
+          label: sensor.label || "Back",
           valueText: "",
           icon: "\\ue5c4",
           iconColor: "0x00BFFF",
-          targetScreen: "s1",
         });
         break;
     }
