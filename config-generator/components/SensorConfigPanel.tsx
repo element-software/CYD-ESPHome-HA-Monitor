@@ -186,7 +186,7 @@ export default function SensorConfigPanel({
     if (newType === sensor.type) return;
     const base = {
       id: sensor.id,
-      entity: sensor.entity,
+      entity: sensor.entity ?? "",
       label: sensor.label,
       enabled: sensor.enabled,
       targetScreen: sensor.targetScreen,
