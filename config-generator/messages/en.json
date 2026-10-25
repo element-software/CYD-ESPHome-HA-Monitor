@@ -88,6 +88,8 @@
     "friendlyName": "Friendly Name",
     "gpioConfig": "GPIO Config",
     "displaySettings": "Display Settings",
+    "orientationPortrait": "Portrait",
+    "orientationLandscape": "Landscape",
     "clockWith": "With clock",
     "clockWithout": "No clock",
     "swapXyOn": "Swap XY: On",

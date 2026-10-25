@@ -88,6 +88,8 @@
     "friendlyName": "Weergavenaam",
     "gpioConfig": "GPIO-configuratie",
     "displaySettings": "Displayinstellingen",
+    "orientationPortrait": "Staand",
+    "orientationLandscape": "Liggend",
     "clockWith": "Met klok",
     "clockWithout": "Zonder klok",
     "swapXyOn": "Swap XY: Aan",

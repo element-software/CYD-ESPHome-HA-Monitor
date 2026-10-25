@@ -88,6 +88,8 @@
     "friendlyName": "Przyjazna nazwa",
     "gpioConfig": "Konfiguracja GPIO",
     "displaySettings": "Ustawienia wyświetlacza",
+    "orientationPortrait": "Pionowa",
+    "orientationLandscape": "Pozioma",
     "clockWith": "Z zegarem",
     "clockWithout": "Bez zegara",
     "swapXyOn": "Swap XY: Wł.",

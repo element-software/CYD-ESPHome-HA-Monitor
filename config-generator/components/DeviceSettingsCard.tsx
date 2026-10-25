@@ -33,6 +33,9 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
   const iconSetLabel = t(`iconSets.${iconSetKey}`);
 
   const displaySummary = [
+    (config.orientation ?? 'portrait') === 'landscape'
+      ? t('orientationLandscape')
+      : t('orientationPortrait'),
     config.hideClock ? t('clockWithout') : t('clockWith'),
     (config.displaySwapXy ?? true) ? t('swapXyOn') : t('swapXyOff'),
     t('radius', { value: config.buttonRadius ?? 0 }),

@@ -88,6 +88,8 @@
     "friendlyName": "Nombre descriptivo",
     "gpioConfig": "Configuración GPIO",
     "displaySettings": "Configuración de pantalla",
+    "orientationPortrait": "Vertical",
+    "orientationLandscape": "Horizontal",
     "clockWith": "Con reloj",
     "clockWithout": "Sin reloj",
     "swapXyOn": "Swap XY: Sí",

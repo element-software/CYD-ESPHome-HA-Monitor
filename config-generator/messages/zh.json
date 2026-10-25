@@ -88,6 +88,8 @@
     "friendlyName": "友好名称",
     "gpioConfig": "GPIO 配置",
     "displaySettings": "显示设置",
+    "orientationPortrait": "竖屏",
+    "orientationLandscape": "横屏",
     "clockWith": "显示时钟",
     "clockWithout": "不显示时钟",
     "swapXyOn": "交换 XY：开",

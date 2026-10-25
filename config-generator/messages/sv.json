@@ -88,6 +88,8 @@
     "friendlyName": "Visningsnamn",
     "gpioConfig": "GPIO-konfiguration",
     "displaySettings": "Displayinställningar",
+    "orientationPortrait": "Stående",
+    "orientationLandscape": "Liggande",
     "clockWith": "Med klocka",
     "clockWithout": "Utan klocka",
     "swapXyOn": "Swap XY: På",

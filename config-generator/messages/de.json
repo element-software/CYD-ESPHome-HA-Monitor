@@ -88,6 +88,8 @@
     "friendlyName": "Anzeigename",
     "gpioConfig": "GPIO-Konfiguration",
     "displaySettings": "Anzeigeeinstellungen",
+    "orientationPortrait": "Hochformat",
+    "orientationLandscape": "Querformat",
     "clockWith": "Mit Uhr",
     "clockWithout": "Ohne Uhr",
     "swapXyOn": "Swap XY: Ein",
