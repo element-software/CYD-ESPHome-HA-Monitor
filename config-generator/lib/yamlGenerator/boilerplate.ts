@@ -1,5 +1,6 @@
 import type { ConfigData } from "@/types/config";
 import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
+import { getBuzzerOutputYaml } from "./audio";
 
 export function generateBoilerplate(config: ConfigData): string {
   const { deviceName, friendlyName, hideClock } = config;
@@ -115,7 +116,7 @@ output:
   - platform: ledc
     pin: ${p.backlightPin}
     id: backlight_pwm
-${i2cBlock}
+${getBuzzerOutputYaml(config)}${i2cBlock}
 spi:
   - id: tft
     clk_pin: ${p.tftClk}

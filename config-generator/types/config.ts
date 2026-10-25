@@ -15,6 +15,8 @@ export interface LightSensorConfig extends BaseSensorConfig {
   iconOff?: string;
   colorOn?: string;
   colorOff?: string;
+  /** Play the beep script when this entity turns ON. Requires enableAudio. */
+  beepOnAlert?: boolean;
 }
 
 export interface SwitchSensorConfig extends BaseSensorConfig {
@@ -25,6 +27,8 @@ export interface SwitchSensorConfig extends BaseSensorConfig {
   iconOff?: string;
   colorOn?: string;
   colorOff?: string;
+  /** Play the beep script when this entity turns ON. Requires enableAudio. */
+  beepOnAlert?: boolean;
 }
 
 export interface InputBooleanSensorConfig extends BaseSensorConfig {
@@ -35,6 +39,8 @@ export interface InputBooleanSensorConfig extends BaseSensorConfig {
   iconOff?: string;
   colorOn?: string;
   colorOff?: string;
+  /** Play the beep script when this entity turns ON. Requires enableAudio. */
+  beepOnAlert?: boolean;
 }
 
 /** A single threshold entry: if sensor value exceeds `value`, use `color` (and optionally `icon`). */
@@ -83,6 +89,8 @@ export interface BinarySensorConfig extends BaseSensorConfig {
   iconOff?: string;
   colorOn?: string;
   colorOff?: string;
+  /** Play the beep script when this entity turns ON. Requires enableAudio. */
+  beepOnAlert?: boolean;
 }
 
 export type ActionKind =
@@ -125,6 +133,9 @@ export type IconSet = 'material_design_icons' | 'material_symbols';
 
 /** Board/variant: SPI touch (XPT2046), I2C touch (CST816), or custom pins. */
 export type DeviceVariant = 'spi_touch' | 'i2c_touch' | 'custom';
+
+/** Optional audio hardware: I2S DAC on the CYD connector, or an RTTTL piezo buzzer. */
+export type AudioHardware = 'i2s' | 'rtttl';
 
 /** All GPIO pin mappings for display, touch, and I2C (when used). */
 export interface DevicePins {
@@ -180,6 +191,20 @@ export interface ConfigData {
   deviceVariant?: DeviceVariant;
   /** Full pin map; used for YAML and for custom variant. */
   devicePins?: DevicePins;
+  /**
+   * Opt-in speaker/buzzer support. Default false / omitted so existing flashes stay unchanged.
+   */
+  enableAudio?: boolean;
+  /** Audio hardware when enableAudio is true. Default 'i2s'. */
+  audioHardware?: AudioHardware;
+  /** I2S data-out pin. Default GPIO26 (CYD audio connector). */
+  audioDoutPin?: string;
+  /** I2S bit clock. Default GPIO17 (unused RGB LED pin). I2S only. */
+  audioBclkPin?: string;
+  /** I2S LRCLK / word select. Default GPIO16 (unused RGB LED pin). I2S only. */
+  audioLrclkPin?: string;
+  /** Piezo / LEDC pin for RTTTL buzzer mode. Default GPIO26. */
+  audioRtttlPin?: string;
   /** Screen 1 sensors. Kept in sync with screens[0].sensors for older saved configs. */
   sensors: SensorConfig[];
   screens?: ScreenConfig[];
