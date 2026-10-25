@@ -6,6 +6,7 @@ import { ConfigData } from '@/types/config';
 import { getEffectivePins } from '@/lib/devicePresets';
 import DeviceGpioModal from './DeviceGpioModal';
 import DisplaySettingsModal from './DisplaySettingsModal';
+import AudioSettingsModal from './AudioSettingsModal';
 
 interface DeviceSettingsCardProps {
   config: ConfigData;
@@ -24,6 +25,7 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
   const t = useTranslations('deviceSettings');
   const [gpioModalOpen, setGpioModalOpen] = useState(false);
   const [displayModalOpen, setDisplayModalOpen] = useState(false);
+  const [audioModalOpen, setAudioModalOpen] = useState(false);
 
   const pins = getEffectivePins(config);
   const variant = config.deviceVariant ?? 'spi_touch';
@@ -41,6 +43,10 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
     t('radius', { value: config.buttonRadius ?? 0 }),
     iconSetLabel,
   ].join(' · ');
+
+  const audioSummary = config.enableAudio
+    ? (config.audioHardware === 'rtttl' ? t('audioRtttlSummary') : t('audioI2sSummary'))
+    : t('audioOff');
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -93,6 +99,18 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
             </div>
             <ChevronRight />
           </button>
+
+          <button
+            type="button"
+            onClick={() => setAudioModalOpen(true)}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 text-left flex items-center justify-between gap-2 transition-colors"
+          >
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-700">{t('audioSettings')}</p>
+              <p className="text-xs text-gray-500 truncate">{audioSummary}</p>
+            </div>
+            <ChevronRight />
+          </button>
         </div>
       </div>
 
@@ -107,6 +125,12 @@ export default function DeviceSettingsCard({ config, onChange }: DeviceSettingsC
         onChange={onChange}
         open={displayModalOpen}
         onClose={() => setDisplayModalOpen(false)}
+      />
+      <AudioSettingsModal
+        config={config}
+        onChange={onChange}
+        open={audioModalOpen}
+        onClose={() => setAudioModalOpen(false)}
       />
     </div>
   );

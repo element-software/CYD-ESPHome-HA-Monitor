@@ -99,7 +99,18 @@ function landscapeClockHidden(): Layout {
   return { widgets };
 }
 
-function getOnClickBlock(sensor: SensorConfig): string {
+function isScreenId(id: string): boolean {
+  return /^s\d+$/.test(id);
+}
+
+function getOnClickBlock(sensor: SensorConfig, validScreenIds: string[]): string {
+  const target = sensor.targetScreen?.trim();
+  if (target && isScreenId(target) && validScreenIds.includes(target)) {
+    return `
+            on_click:
+              - lvgl.page.show:
+                  id: page_${target}`;
+  }
   if (sensor.type === "light" || sensor.type === "switch" || sensor.type === "input_boolean") {
     const toggleAction =
       sensor.type === "light"
@@ -132,18 +143,19 @@ export function generateLvglWidget(
   width: number,
   height: number,
   buttonRadius: number = 0,
+  validScreenIds: string[] = [],
 ): string {
   if (!sensor) return "";
   if (sensor.enabled === false) return "";
 
-  const isClickable =
-    sensor.type === "light" ||
-    sensor.type === "switch" ||
-    sensor.type === "input_boolean" ||
-    sensor.type === "action";
-  const onClickBlock = getOnClickBlock(sensor);
+  const onClickBlock = getOnClickBlock(sensor, validScreenIds);
+  const isClickable = Boolean(onClickBlock);
   const valueText =
-    sensor.type === "action" ? `"\${${sensor.id}_action_text}"` : '"--"';
+    sensor.type === "action"
+      ? `"\${${sensor.id}_action_text}"`
+      : sensor.type === "label"
+        ? `"\${${sensor.id}_value_text}"`
+        : '"--"';
 
   const screenId = sensor.id.includes("_") ? sensor.id.split("_")[0] : "s1";
   const fontColorSub = `\${${screenId}_font_color}`;
@@ -227,10 +239,21 @@ function getClockWidgets(
   hideClock: boolean,
   screenId: string = "s1",
   orientation: DisplayOrientation = "portrait",
+  clockTargetScreen?: string,
+  validScreenIds: string[] = [],
 ): string {
   if (hideClock) return "";
-  const { clockY, dateY } = getLayout(orientation, hideClock);
-  return `
+  const layout = getLayout(orientation, hideClock);
+  const clockY = layout.clockY ?? 15;
+  const dateY = layout.dateY ?? 65;
+  const isLandscape = getDisplayOrientation({ orientation }) === "landscape";
+  const target = clockTargetScreen?.trim();
+  const navTarget =
+    target && isScreenId(target) && validScreenIds.includes(target) && target !== screenId
+      ? target
+      : undefined;
+  if (!navTarget) {
+    return `
         - label:
             id: label_clock
             text: "--:--"
@@ -246,6 +269,40 @@ function getClockWidgets(
             align: TOP_MID
             y: ${dateY}
 `;
+  }
+  return `
+        - button:
+            id: button_clock
+            align: TOP_MID
+            y: 0
+            width: ${isLandscape ? 320 : 240}
+            height: ${isLandscape ? 50 : 96}
+            bg_opa: TRANSP
+            border_width: 0
+            shadow_width: 0
+            pad_all: 0
+            press_lock: false
+            on_click:
+              - lvgl.page.show:
+                  id: page_${navTarget}
+            widgets:
+              - label:
+                  id: label_clock
+                  clickable: false
+                  text: "--:--"
+                  text_font: clock_font
+                  text_color: \${${screenId}_font_color}
+                  align: TOP_MID
+                  y: ${clockY}
+              - label:
+                  id: label_date
+                  clickable: false
+                  text: "--- --/--"
+                  text_font: date_font
+                  text_color: \${${screenId}_font_color}
+                  align: TOP_MID
+                  y: ${dateY}
+`;
 }
 
 function generateScreenWidgets(
@@ -254,10 +311,18 @@ function generateScreenWidgets(
   getSensor: (id: string) => SensorConfig | undefined,
   buttonRadius: number,
   orientation: DisplayOrientation,
+  validScreenIds: string[],
+  clockTargetScreen?: string,
 ): string {
   const hideClock = !showClock;
   const layout = getLayout(orientation, hideClock);
-  const clockWidgets = getClockWidgets(hideClock, screenId, orientation);
+  const clockWidgets = getClockWidgets(
+    hideClock,
+    screenId,
+    orientation,
+    clockTargetScreen,
+    validScreenIds,
+  );
   const widgets: string[] = [];
   let hasActualWidget = false;
 
@@ -283,6 +348,7 @@ function generateScreenWidgets(
         rect.width,
         rect.height,
         buttonRadius,
+        validScreenIds,
       );
       if (w) {
         widgets.push(w);
@@ -307,12 +373,14 @@ export function generateLvglConfig(
   buttonRadius: number = 0,
   screens?: ScreenConfig[],
   orientation: DisplayOrientation = "portrait",
+  clockTargetScreen?: string,
 ): string {
   const pages = screens?.length
     ? screens
     : [{ id: "s1", name: "Screen 1", sensors: [] }];
   const pageCount = pages.length;
   const resolvedOrientation = getDisplayOrientation({ orientation });
+  const validScreenIds = pages.map((page) => page.id);
 
   const pageBlocks = pages.map((screen, index) => {
     const bgImg = screen.backgroundImage?.trim()
@@ -337,7 +405,7 @@ export function generateLvglConfig(
     return `    - id: page_${screen.id}
       bg_color: \${${screen.id}_bg_color}${bgImg}${swipe}
       widgets:
-${generateScreenWidgets(screen.id, showClock, getSensor, buttonRadius, resolvedOrientation)}`;
+${generateScreenWidgets(screen.id, showClock, getSensor, buttonRadius, resolvedOrientation, validScreenIds, clockTargetScreen)}`;
   });
 
   return `

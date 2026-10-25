@@ -73,7 +73,7 @@
     }
   },
   "pageHeader": {
-    "title": "CYD HAMon Config Generator",
+    "title": "CYD {name} Config",
     "subtitle": "配置您的 Cheap Yellow Display Home Assistant 监控器"
   },
   "configGeneratorPage": {
@@ -103,7 +103,11 @@
     "iconSets": {
       "material_symbols": "Material Symbols",
       "material_design_icons": "Material Design Icons"
-    }
+    },
+    "audioSettings": "Audio",
+    "audioOff": "Audio off",
+    "audioI2sSummary": "I2S speaker",
+    "audioRtttlSummary": "RTTTL buzzer"
   },
   "gpioModal": {
     "title": "设备 GPIO 配置",
@@ -150,6 +154,11 @@
       "label": "隐藏时钟",
       "description": "在屏幕 1 上增加 r4c1 和 r4c2 插槽（竖屏为额外一行，横屏为额外列）。"
     },
+    "clockTargetScreen": {
+      "label": "点击时钟打开",
+      "description": "点击时钟时切换到另一个屏幕。",
+      "none": "无"
+    },
     "buttonRadius": {
       "label": "按钮圆角半径",
       "help": "0 = 直角，34 = 完全圆角。"
@@ -187,6 +196,28 @@
       "description": "Adds ESPHome web_server v3 so you can open the device IP to view entities and set backlight brightness."
     }
   },
+  "audioModal": {
+    "title": "Audio / Beep",
+    "subtitle": "Optional speaker or buzzer. Off by default so existing flashes stay unchanged.",
+    "enable": {
+      "label": "Enable audio",
+      "description": "Adds a Beep button in Home Assistant and lets sensors play a short tone on alert."
+    },
+    "hardware": {
+      "label": "Hardware",
+      "description": "I2S DAC on the CYD audio connector, or a piezo buzzer driven by RTTTL.",
+      "i2s": "I2S DAC (speaker)",
+      "rtttl": "RTTTL buzzer (piezo)"
+    },
+    "pins": {
+      "dout": "I2S DOUT",
+      "bclk": "I2S BCLK",
+      "lrclk": "I2S LRCLK",
+      "rtttl": "Buzzer pin"
+    },
+    "pinCollision": "This pin is already used by display, touch, or backlight.",
+    "pinReuse": "I2S DOUT、BCLK 和 LRCLK 必须是三个不同的引脚。"
+  },
   "sensorList": {
     "title": "传感器配置"
   },
@@ -200,8 +231,14 @@
       "light": "灯光",
       "switch": "开关",
       "input_boolean": "输入布尔值",
-      "action": "操作"
+      "action": "操作",
+      "label": "文本标签"
     },
+    "targetScreen": "切换屏幕",
+    "targetScreenNone": "无",
+    "targetScreenCurrent": "当前屏幕",
+    "valueTextField": "值文本",
+    "valueTextPlaceholder": "可选",
     "actionField": "操作",
     "actionTextField": "按钮文字",
     "actionTextPlaceholder": "运行",
@@ -240,10 +277,12 @@
     "offPlaceholderBinary": "关闭",
     "onPlaceholderLight": "开",
     "offPlaceholderLight": "关",
-    "enabled": "Enabled"
+    "enabled": "Enabled",
+    "beepOnAlert": "Beep on alert"
   },
   "yamlModal": {
-    "title": "生成的 YAML"
+    "title": "生成的 YAML",
+    "download": "Download"
   },
   "whatsNewModal": {
     "title": "What’s new",

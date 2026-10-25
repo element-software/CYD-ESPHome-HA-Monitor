@@ -23,6 +23,7 @@ Monitor Home Assistant entities on one required screen, then add extra swipeable
 - **Enable/disable slots:** Leave unused blocks empty without generating unused Home Assistant subscriptions.
 - **Action buttons:** Trigger a script, fire an automation, activate a scene, or press an `input_button` with a single tap.
 - **On-device web UI:** Optional ESPHome `web_server` v3 so you can open the device IP to view entities and set backlight brightness.
+- **Optional beep / speaker:** Opt-in in the YAML generator. Use a small speaker on the CYD audio connector (I2S on GPIO26) or a piezo buzzer on GPIO26 (RTTTL). Off by default so existing flashes are unchanged.
 - **Display tweaks:** Portrait or landscape orientation in the YAML generator, Swap X/Y (default on; panel-variant), invert colours, RGB/BGR, and mirror X/Y — stock CYD defaults stay as they were.
 - **Dynamic Colours:** Icons and values change colour based on state or configurable thresholds.
 - **Easy Configuration:** All entities, icons, labels, colours, and state messages are defined in the `substitutions:` block — no need to touch any code.

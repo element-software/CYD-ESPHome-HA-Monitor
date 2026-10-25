@@ -73,7 +73,7 @@
     }
   },
   "pageHeader": {
-    "title": "CYD HAMon Konfigurations-Generator",
+    "title": "CYD {name} Konfiguration",
     "subtitle": "Konfigurieren Sie Ihren Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
@@ -103,7 +103,11 @@
     "iconSets": {
       "material_symbols": "Material Symbols",
       "material_design_icons": "Material Design Icons"
-    }
+    },
+    "audioSettings": "Audio",
+    "audioOff": "Audio off",
+    "audioI2sSummary": "I2S speaker",
+    "audioRtttlSummary": "RTTTL buzzer"
   },
   "gpioModal": {
     "title": "Geräte-GPIO-Konfiguration",
@@ -150,6 +154,11 @@
       "label": "Uhr ausblenden",
       "description": "Fügt die Slots r4c1 und r4c2 auf Bildschirm 1 hinzu (Hochformat extra Zeile, Querformat extra Spalten)."
     },
+    "clockTargetScreen": {
+      "label": "Uhr-Tipp öffnet",
+      "description": "Wechselt beim Tippen auf die Uhr zu einem anderen Bildschirm.",
+      "none": "Keine"
+    },
     "buttonRadius": {
       "label": "Schaltflächen-Eckenradius",
       "help": "0 = eckige Ecken, 34 = vollständig gerundet."
@@ -187,6 +196,28 @@
       "description": "Adds ESPHome web_server v3 so you can open the device IP to view entities and set backlight brightness."
     }
   },
+  "audioModal": {
+    "title": "Audio / Beep",
+    "subtitle": "Optional speaker or buzzer. Off by default so existing flashes stay unchanged.",
+    "enable": {
+      "label": "Enable audio",
+      "description": "Adds a Beep button in Home Assistant and lets sensors play a short tone on alert."
+    },
+    "hardware": {
+      "label": "Hardware",
+      "description": "I2S DAC on the CYD audio connector, or a piezo buzzer driven by RTTTL.",
+      "i2s": "I2S DAC (speaker)",
+      "rtttl": "RTTTL buzzer (piezo)"
+    },
+    "pins": {
+      "dout": "I2S DOUT",
+      "bclk": "I2S BCLK",
+      "lrclk": "I2S LRCLK",
+      "rtttl": "Buzzer pin"
+    },
+    "pinCollision": "This pin is already used by display, touch, or backlight.",
+    "pinReuse": "I2S DOUT, BCLK und LRCLK müssen drei verschiedene Pins sein."
+  },
   "sensorList": {
     "title": "Sensor-Konfiguration"
   },
@@ -200,8 +231,14 @@
       "light": "Licht",
       "switch": "Schalter",
       "input_boolean": "Eingabe Boolean",
-      "action": "Aktion"
+      "action": "Aktion",
+      "label": "Textbeschriftung"
     },
+    "targetScreen": "Bildschirm wechseln",
+    "targetScreenNone": "Keine",
+    "targetScreenCurrent": "dieser Bildschirm",
+    "valueTextField": "Werttext",
+    "valueTextPlaceholder": "Optional",
     "actionField": "Aktion",
     "actionTextField": "Schaltflächentext",
     "actionTextPlaceholder": "Ausführen",
@@ -240,10 +277,12 @@
     "offPlaceholderBinary": "Geschlossen",
     "onPlaceholderLight": "An",
     "offPlaceholderLight": "Aus",
-    "enabled": "Enabled"
+    "enabled": "Enabled",
+    "beepOnAlert": "Beep on alert"
   },
   "yamlModal": {
-    "title": "Generiertes YAML"
+    "title": "Generiertes YAML",
+    "download": "Download"
   },
   "whatsNewModal": {
     "title": "What’s new",

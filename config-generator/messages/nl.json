@@ -73,7 +73,7 @@
     }
   },
   "pageHeader": {
-    "title": "CYD HAMon Config Generator",
+    "title": "CYD {name} Config",
     "subtitle": "Configureer je Cheap Yellow Display Home Assistant Monitor"
   },
   "configGeneratorPage": {
@@ -103,7 +103,11 @@
     "iconSets": {
       "material_symbols": "Material Symbols",
       "material_design_icons": "Material Design Icons"
-    }
+    },
+    "audioSettings": "Audio",
+    "audioOff": "Audio off",
+    "audioI2sSummary": "I2S speaker",
+    "audioRtttlSummary": "RTTTL buzzer"
   },
   "gpioModal": {
     "title": "GPIO-configuratie apparaat",
@@ -150,6 +154,11 @@
       "label": "Klok verbergen",
       "description": "Voegt slots r4c1 en r4c2 toe op Scherm 1 (extra rij in staand, extra kolommen in liggend)."
     },
+    "clockTargetScreen": {
+      "label": "Tik op klok opent",
+      "description": "Navigeer naar een ander scherm wanneer op de klok wordt getikt.",
+      "none": "Geen"
+    },
     "buttonRadius": {
       "label": "Hoekradius knoppen",
       "help": "0 = rechte hoeken, 34 = volledig afgerond."
@@ -187,6 +196,28 @@
       "description": "Adds ESPHome web_server v3 so you can open the device IP to view entities and set backlight brightness."
     }
   },
+  "audioModal": {
+    "title": "Audio / Beep",
+    "subtitle": "Optional speaker or buzzer. Off by default so existing flashes stay unchanged.",
+    "enable": {
+      "label": "Enable audio",
+      "description": "Adds a Beep button in Home Assistant and lets sensors play a short tone on alert."
+    },
+    "hardware": {
+      "label": "Hardware",
+      "description": "I2S DAC on the CYD audio connector, or a piezo buzzer driven by RTTTL.",
+      "i2s": "I2S DAC (speaker)",
+      "rtttl": "RTTTL buzzer (piezo)"
+    },
+    "pins": {
+      "dout": "I2S DOUT",
+      "bclk": "I2S BCLK",
+      "lrclk": "I2S LRCLK",
+      "rtttl": "Buzzer pin"
+    },
+    "pinCollision": "This pin is already used by display, touch, or backlight.",
+    "pinReuse": "I2S DOUT, BCLK en LRCLK moeten drie verschillende pinnen zijn."
+  },
   "sensorList": {
     "title": "Sensorconfiguratie"
   },
@@ -200,8 +231,14 @@
       "light": "Licht",
       "switch": "Schakelaar",
       "input_boolean": "Invoer Boolean",
-      "action": "Actie"
+      "action": "Actie",
+      "label": "Tekstlabel"
     },
+    "targetScreen": "Scherm wijzigen",
+    "targetScreenNone": "Geen",
+    "targetScreenCurrent": "dit scherm",
+    "valueTextField": "Waardetekst",
+    "valueTextPlaceholder": "Optioneel",
     "actionField": "Actie",
     "actionTextField": "Knoptekst",
     "actionTextPlaceholder": "Uitvoeren",
@@ -240,10 +277,12 @@
     "offPlaceholderBinary": "Gesloten",
     "onPlaceholderLight": "Aan",
     "offPlaceholderLight": "Uit",
-    "enabled": "Enabled"
+    "enabled": "Enabled",
+    "beepOnAlert": "Beep on alert"
   },
   "yamlModal": {
-    "title": "Gegenereerde YAML"
+    "title": "Gegenereerde YAML",
+    "download": "Download"
   },
   "whatsNewModal": {
     "title": "What’s new",

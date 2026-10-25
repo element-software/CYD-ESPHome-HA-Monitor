@@ -75,6 +75,9 @@ export default function SensorList({ config, onChange, activeScreenIndex }: Sens
               onToggle={() => toggleRow(rowIndex)}
               onChange={(updatedSensor) => updateSensor(index, updatedSensor)}
               iconSet={config.iconSet}
+              screens={config.screens}
+              currentScreenId={config.screens?.[activeScreenIndex]?.id}
+              enableAudio={config.enableAudio === true}
             />
           );
         })}

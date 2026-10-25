@@ -7,6 +7,7 @@ import CydScreenGrid from "./CydScreenGrid";
 interface CydDevicePreviewProps {
   config: ConfigData;
   activeScreenIndex?: number;
+  onNavigateScreen?: (index: number) => void;
 }
 
 /**
@@ -14,7 +15,11 @@ interface CydDevicePreviewProps {
  * Add your device frame to public/cyd-device.png. When you have an image with the
  * screen area transparent, use that so the grid content shows through the cutout.
  */
-export default function CydDevicePreview({ config, activeScreenIndex = 0 }: CydDevicePreviewProps) {
+export default function CydDevicePreview({
+  config,
+  activeScreenIndex = 0,
+  onNavigateScreen,
+}: CydDevicePreviewProps) {
   const [imageError, setImageError] = useState(false);
   const isLandscape = config.orientation === "landscape";
 
@@ -38,7 +43,11 @@ export default function CydDevicePreview({ config, activeScreenIndex = 0 }: CydD
           }}
           aria-hidden
         >
-          <CydScreenGrid config={config} activeScreenIndex={activeScreenIndex} />
+          <CydScreenGrid
+            config={config}
+            activeScreenIndex={activeScreenIndex}
+            onNavigateScreen={onNavigateScreen}
+          />
         </div>
         {/* Portrait rotates the landscape device photo 90°. Landscape uses the photo as-is. */}
         {!imageError ? (

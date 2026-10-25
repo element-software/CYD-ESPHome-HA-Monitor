@@ -58,3 +58,10 @@ export function isI2cTouch(pins: DevicePins): boolean {
     pins.touchReset != null && pins.touchReset !== ''
   );
 }
+
+/** Pin values currently assigned to display, touch, or backlight. */
+export function collectUsedPinValues(pins: DevicePins): string[] {
+  return (Object.values(pins) as Array<string | undefined>).filter(
+    (value): value is string => typeof value === 'string' && value.trim() !== '',
+  );
+}

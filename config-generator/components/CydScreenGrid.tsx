@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, type CSSProperties } from 'react';
-import { ConfigData, IconSet, SensorConfig, NumericSensorConfig } from '@/types/config';
+import { ConfigData, IconSet, SensorConfig, NumericSensorConfig, ScreenConfig } from '@/types/config';
 import { cydColorToCss, readableColor } from '@/lib/colorUtils';
 import { getIconFontClass, iconCodeToLigature } from '@/lib/icons';
 import { previewImageCache } from '@/lib/previewImageCache';
@@ -27,6 +27,7 @@ const FONT = {
 interface CydScreenGridProps {
   config: ConfigData;
   activeScreenIndex?: number;
+  onNavigateScreen?: (index: number) => void;
 }
 
 /** Sample values per unit type for preview (format suffix hint). */
@@ -136,6 +137,8 @@ function SensorCell({
   previewValue,
   onPreviewValueChange,
   fontColor = DEVICE.label,
+  screens = [],
+  onNavigateScreen,
 }: {
   sensor: SensorConfig;
   isOn: boolean;
@@ -145,6 +148,8 @@ function SensorCell({
   previewValue?: string;
   onPreviewValueChange?: (value: string) => void;
   fontColor?: string;
+  screens?: ScreenConfig[];
+  onNavigateScreen?: (index: number) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
@@ -163,8 +168,12 @@ function SensorCell({
 
   const canToggle = sensor.type === 'binary' || sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean';
   const isAction = sensor.type === 'action';
-  const isClickable = canToggle || isAction;
-  const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean') && isOn;
+  const targetIndex = sensor.targetScreen
+    ? screens.findIndex((s) => s.id === sensor.targetScreen)
+    : -1;
+  const hasNav = targetIndex >= 0;
+  const isClickable = hasNav || canToggle || isAction;
+  const isToggleableOn = (sensor.type === 'light' || sensor.type === 'switch' || sensor.type === 'input_boolean') && isOn && !hasNav;
 
   // Resolve the effective numeric value: user-entered preview overrides the sample default.
   let effectiveNumericValue = 0;
@@ -176,8 +185,8 @@ function SensorCell({
   const iconCode =
     sensor.type === 'sensor'
       ? getThresholdIconForValue(sensor, effectiveNumericValue)
-      : sensor.type === 'text' || sensor.type === 'action'
-        ? sensor.icon
+      : sensor.type === 'text' || sensor.type === 'action' || sensor.type === 'label'
+        ? (sensor.icon ?? '')
         : isOn
         ? (sensor.iconOn ?? sensor.iconOff ?? '')
         : (sensor.iconOff ?? sensor.iconOn ?? '');
@@ -185,7 +194,7 @@ function SensorCell({
   const iconColorRaw =
     sensor.type === 'sensor'
       ? getThresholdColorForValue(sensor, effectiveNumericValue)
-      : sensor.type === 'text' || sensor.type === 'action'
+      : sensor.type === 'text' || sensor.type === 'action' || sensor.type === 'label'
         ? (sensor.iconColor ?? '0x888888')
         : isOn
         ? (sensor.colorOn ?? '0xFF0000')
@@ -206,6 +215,8 @@ function SensorCell({
         ? 'Sample'
         : sensor.type === 'action'
           ? (sensor.actionText ?? 'Run')
+        : sensor.type === 'label'
+          ? (sensor.valueText ?? '')
         : isOn
         ? (sensor.stateOn ?? 'On')
         : (sensor.type === 'binary' ? (sensor.stateOff ?? 'Closed') : (sensor.stateOff ?? 'Off'));
@@ -215,7 +226,7 @@ function SensorCell({
       ? isToggleableOn ? onFgCss : fontColor
       : fontColor;
   const valueColor =
-    sensor.type === 'sensor' || sensor.type === 'text' || sensor.type === 'action'
+    sensor.type === 'sensor' || sensor.type === 'text' || sensor.type === 'action' || sensor.type === 'label'
       ? fontColor
       : isToggleableOn
         ? onFgCss
@@ -239,6 +250,10 @@ function SensorCell({
   };
 
   const handleCellClick = () => {
+    if (hasNav) {
+      onNavigateScreen?.(targetIndex);
+      return;
+    }
     if (canToggle) onToggle?.();
     else if (isAction) handleActionClick();
     else if (sensor.type === 'sensor') handleNumericClick();
@@ -249,7 +264,7 @@ function SensorCell({
       className={[
         'flex items-center gap-[1.2cqmin] min-h-0 p-[1.8cqmin]',
         isClickable ? 'cursor-pointer' : '',
-        sensor.type === 'sensor' ? 'cursor-text' : '',
+        sensor.type === 'sensor' && !hasNav ? 'cursor-text' : '',
       ].filter(Boolean).join(' ')}
       style={{
         backgroundColor: onBgCss,
@@ -304,7 +319,11 @@ function SensorCell({
   );
 }
 
-export default function CydScreenGrid({ config, activeScreenIndex = 0 }: CydScreenGridProps) {
+export default function CydScreenGrid({
+  config,
+  activeScreenIndex = 0,
+  onNavigateScreen,
+}: CydScreenGridProps) {
   const [toggledOn, setToggledOn] = useState<Set<string>>(() => new Set());
   const [previewValues, setPreviewValues] = useState<Record<string, string>>({});
 
@@ -338,6 +357,10 @@ export default function CydScreenGrid({ config, activeScreenIndex = 0 }: CydScre
     : showClockOnThisScreen
       ? 'grid-cols-2 grid-rows-3'
       : 'grid-cols-2 grid-rows-4';
+  const screens = config.screens ?? [];
+  const clockTargetIndex = config.clockTargetScreen
+    ? screens.findIndex((s) => s.id === config.clockTargetScreen)
+    : -1;
 
   const screenBg = currentScreen.backgroundColor || DEFAULT_SCREEN_BG;
   const screenFont = currentScreen.fontColor || DEFAULT_SCREEN_FG;
@@ -361,7 +384,13 @@ export default function CydScreenGrid({ config, activeScreenIndex = 0 }: CydScre
       style={bgStyle}
     >
       {showClockOnThisScreen && (
-        <CydClock fontColor={screenFont} compact={config.orientation === 'landscape'} />
+        <CydClock
+          fontColor={screenFont}
+          compact={config.orientation === 'landscape'}
+          onClick={
+            clockTargetIndex >= 0 ? () => onNavigateScreen?.(clockTargetIndex) : undefined
+          }
+        />
       )}
 
       <div
@@ -379,6 +408,8 @@ export default function CydScreenGrid({ config, activeScreenIndex = 0 }: CydScre
             previewValue={previewValues[sensor.id]}
             onPreviewValueChange={(val) => setPreviewValue(sensor.id, val)}
             fontColor={screenFont}
+            screens={screens}
+            onNavigateScreen={onNavigateScreen}
           />
         ))}
       </div>

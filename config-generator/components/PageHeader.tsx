@@ -2,13 +2,18 @@
 
 import { useTranslations } from 'next-intl';
 
-export default function PageHeader() {
+interface PageHeaderProps {
+  name?: string;
+}
+
+export default function PageHeader({ name }: PageHeaderProps) {
   const t = useTranslations('pageHeader');
+  const displayName = name?.trim() || 'HAMon';
   return (
     <header className="mb-8 flex flex-col lg:flex-row gap-4 justify-between">
       <div className="flex flex-col §items-center gap-2">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
-          {t('title')}
+          {t('title', { name: displayName })}
         </h1>
         <p className="text-gray-600">
           {t('subtitle')}
