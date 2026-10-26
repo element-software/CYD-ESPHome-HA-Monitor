@@ -30,6 +30,16 @@ export default function PrayerTimesSettingsCard({ config, onChange }: PrayerTime
       <p className="text-sm text-gray-500 mb-4">
         Configure the <a href="https://prayertimes.dev" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">prayertimes.dev</a> API for your location.
       </p>
+      <div
+        className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100"
+        role="note"
+      >
+        The prayertimes.dev API requires an API key. Add it to your ESPHome{' '}
+        <code className="font-mono text-[0.9em]">secrets.yaml</code> as{' '}
+        <code className="font-mono text-[0.9em]">prayertimes_api_key</code>
+        {' '}(the generated YAML references it with <code className="font-mono text-[0.9em]">!secret</code>).
+        Do not enter the key here — this site never stores it.
+      </div>
 
       <div className="space-y-4">
         {/* City selector */}

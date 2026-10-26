@@ -3,6 +3,12 @@ import { generateHeader } from "./header";
 import { generateLightConfig } from "./light";
 import { getEffectivePins, isI2cTouch, isSpiTouch } from "@/lib/devicePresets";
 
+/**
+ * ESPHome secrets.yaml key for the prayertimes.dev API.
+ * Generated YAML must only reference this via `!secret` — never interpolate a real key.
+ */
+export const PRAYERTIMES_API_KEY_SECRET = "prayertimes_api_key";
+
 /** The 6 prayer time keys returned by prayertimes.dev */
 const PRAYERS = [
   { key: "fajr", label: "Fajr", icon: "\\ue51c" },      // dark_mode
@@ -42,7 +48,10 @@ function generatePrayerTimesSubstitutions(config: ConfigData): string {
   bg_image_opa: "40%"
 
   # --- Prayer Times API ---
+  # API key lives in ESPHome secrets.yaml as ${PRAYERTIMES_API_KEY_SECRET}.
+  # Do not paste a real key into this file or the config generator.
   prayer_api_url: "${buildApiUrl(config)}"
+  prayer_api_key: !secret ${PRAYERTIMES_API_KEY_SECRET}
   prayer_city: "${city}"
   prayer_school: "${school}"
 `;
@@ -624,9 +633,10 @@ script:
     mode: single
     then:
       - logger.log: "Fetching prayer times from API..."
-      - logger.log: "URL: \${prayer_api_url}"
       - http_request.get:
           url: \${prayer_api_url}
+          request_headers:
+            Authorization: Bearer \${prayer_api_key}
           capture_response: true
           on_response:
             then:

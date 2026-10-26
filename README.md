@@ -81,6 +81,9 @@ wifi_password: "your-wifi-password"
 api_key: "the-api-key-generated-by-esphome"
 ota_password: "the-ota-password-generated-by-esphome"
 ap_password: "any-fallback-hotspot-password"
+# Required for the prayer times preset. Get a key from https://api.prayertimes.dev/docs
+# Never commit a real prayertimes.dev API key to git or a pull request.
+prayertimes_api_key: "your-prayertimes-dev-api-key"
 ```
 
 > **Tip:** The `api_key` and `ota_password` are shown when you first create the device. Copy them into `secrets.yaml` before proceeding.
@@ -113,7 +116,7 @@ A web-based configuration generator is available in the `config-generator/` dire
 - Visual sensor configuration
 - Icon picker with support for **Material Design Icons** and **Material Symbols**
 - Device GPIO preset selection (SPI touch / I2C touch / custom)
-- **Prayer times preset**: standalone screen with prayertimes.dev API; optional **RGB LED alert** using the CYD onboard LED (Red GPIO 4, Green 16, Blue 17, active low) — flashes green 10× when a prayer time is reached, blue 5× on fetch success, red 5× on fetch failure (on-device logic, no HA needed).
+- **Prayer times preset**: standalone screen with the prayertimes.dev API (API key via ESPHome `secrets.yaml` as `prayertimes_api_key` — the generator never stores the key); optional **RGB LED alert** using the CYD onboard LED (Red GPIO 4, Green 16, Blue 17, active low) — flashes green 10× when a prayer time is reached, blue 5× on fetch success, red 5× on fetch failure (on-device logic, no HA needed).
 - Color customization
 - Real-time YAML generation
 - One-click copy to clipboard

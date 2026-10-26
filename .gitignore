@@ -19,3 +19,8 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local env / API keys — never commit real credentials
+.env
+.env.*
+!.env.example
