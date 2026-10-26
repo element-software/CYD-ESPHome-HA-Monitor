@@ -27,6 +27,20 @@ function touchSwapXy(yaml: string): boolean | undefined {
   return match ? match[1] === "true" : undefined;
 }
 
+function displayMirrorX(yaml: string): boolean | undefined {
+  const displayBlock = yaml.match(/display:[\s\S]*?(?=\n(?:touchscreen|# --- FONTS ---))/);
+  if (!displayBlock) return undefined;
+  const match = displayBlock[0].match(/mirror_x:\s*(true|false)/);
+  return match ? match[1] === "true" : undefined;
+}
+
+function touchMirrorX(yaml: string): boolean | undefined {
+  const touchBlock = yaml.match(/touchscreen:[\s\S]*?(?=\n(?:# --- FONTS ---))/);
+  if (!touchBlock) return undefined;
+  const match = touchBlock[0].match(/mirror_x:\s*(true|false)/);
+  return match ? match[1] === "true" : undefined;
+}
+
 describe("landscape YAML", () => {
   it("uses 320x240 dimensions and inverts display swap_xy", () => {
     const yaml = generateYaml(landscapeConfig());
@@ -94,6 +108,27 @@ describe("landscape YAML", () => {
     expect(touchSwapXy(generateBoilerplate(defaultConfig))).toBe(false);
   });
 
+  it("turns off display and SPI touch mirror_x in landscape", () => {
+    const yaml = generateBoilerplate(landscapeConfig());
+    expect(displayMirrorX(yaml)).toBe(false);
+    expect(touchMirrorX(yaml)).toBe(false);
+  });
+
+  it("keeps portrait display and SPI touch mirror_x true", () => {
+    const yaml = generateBoilerplate(defaultConfig);
+    expect(displayMirrorX(yaml)).toBe(true);
+    expect(touchMirrorX(yaml)).toBe(true);
+  });
+
+  it("inverts landscape display mirror_x relative to the user panel setting", () => {
+    expect(displayMirrorX(generateBoilerplate(landscapeConfig({ displayMirrorX: true })))).toBe(
+      false,
+    );
+    expect(displayMirrorX(generateBoilerplate(landscapeConfig({ displayMirrorX: false })))).toBe(
+      true,
+    );
+  });
+
   it("uses 4×2 packing when the clock is hidden", () => {
     const yaml = generateYaml(landscapeConfig({ hideClock: true }));
     expect(yaml).toContain("x: 81");
@@ -118,6 +153,7 @@ describe("landscape YAML", () => {
     expect(yaml).toContain("platform: cst816");
     expect(yaml).toContain("display: my_display");
     expect(touchSwapXy(yaml)).toBe(false);
+    expect(touchMirrorX(yaml)).toBe(false);
   });
 });
 

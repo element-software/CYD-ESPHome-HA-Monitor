@@ -14,7 +14,9 @@ export function generateBoilerplate(config: ConfigData): string {
   const dateFontSize = isLandscape ? 16 : 20;
   const invertColors = config.displayInvertColors ?? false;
   const colorOrder = config.displayColorOrder ?? "RGB";
-  const mirrorX = config.displayMirrorX !== false;
+  const userMirrorX = config.displayMirrorX !== false;
+  // Landscape inverts mirror_x so a horizontal mount is not left-right flipped.
+  const mirrorX = isLandscape ? !userMirrorX : userMirrorX;
   const mirrorY = config.displayMirrorY !== false;
   const enableWebServer = config.enableWebServer !== false;
   const p = getEffectivePins(config);
@@ -54,7 +56,7 @@ touchscreen:
     y_max: 3749
   transform:
     swap_xy: ${isLandscape}
-    mirror_x: true
+    mirror_x: ${!isLandscape}
     mirror_y: false
   on_touch:
     - lambda: |-
