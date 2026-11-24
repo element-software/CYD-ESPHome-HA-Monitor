@@ -47,7 +47,7 @@ export default function PageFooter() {
         </a>
         <span className="hidden sm:inline text-gray-300">|</span>
         <a
-          href="https://element-software.co.uk"
+          href="https://element-software.co.uk/services/software-development"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-gray-900 transition-colors"

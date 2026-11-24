@@ -24,7 +24,7 @@
   "footer": {
     "tagline": "Outils de config CYD & infos · ESPHome / Home Assistant",
     "affiliateNotice": "ACHETER est un lien d'affiliation.",
-    "poweredBy": "Propulsé par",
+    "poweredBy": "Développement logiciel par",
     "links": {
       "home": "Accueil",
       "aboutCyd": "À propos du CYD",
