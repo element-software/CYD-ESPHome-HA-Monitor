@@ -16,7 +16,7 @@ export default function SiteFooter() {
     { href: BUY_NOW_URL, labelKey: 'buyNow', external: true },
     { href: 'https://github.com/element-software/CYD-ESPHome-HA-Monitor', labelKey: 'github', external: true },
     { href: '/privacy-policy', labelKey: 'privacyPolicy', external: false },
-    { href: 'https://element-software.co.uk', labelKey: 'softwareDev', external: true },
+    { href: 'https://element-software.co.uk/services/software-development', labelKey: 'softwareDev', external: true },
     { href: 'https://element-connect.co.uk', labelKey: 'smartHome', external: true },
   ] as const;
 
@@ -60,7 +60,7 @@ export default function SiteFooter() {
         <p className="mt-2 text-center text-xs text-gray-500">
           {t('poweredBy')}{' '}
           <a
-            href="https://element-software.co.uk"
+            href="https://element-software.co.uk/services/software-development"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
